@@ -1,264 +1,138 @@
-# Pagila
+# Pagila (openGauss)
 
-Pagila started as a port of the [Sakila](https://dev.mysql.com/doc/sakila/en/) example database available for MySQL, which was
-originally developed by Mike Hillyer of the MySQL AB documentation team. It
-is intended to provide a standard schema that can be used for examples in
-books, tutorials, articles, samples, etc.
+[Pagila] （https://github.com/devrimgunduz/pagila）是 [Sakila](https://dev.mysql.com/doc/sakila/en/) 示例数据库的 PostgreSQL 移植版，本项目将其进一步迁移到 **openGauss** 数据库（Oracle 兼容模式）。
 
-Pagila has been tested against PostgreSQL 12 and above.
+原始 Pagila 由 Mike Hillyer (MySQL AB) 开发，用于在书籍、教程、文章中提供标准示例 schema。
 
-All the tables, data, views, and functions have been ported; some of the
-changes made were:
+## 与原始 Pagila 的主要差异
 
-- Changed char(1) true/false fields to true boolean fields
-- The last_update columns were set with triggers to update them
-- Added foreign keys
-- Removed 'DEFAULT 0' on foreign keys since it's pointless with real FK's
-- Used PostgreSQL built-in fulltext searching for fulltext index.
-  Removed the need for the film_text table.
-- The rewards_report function was ported to a simple SRF
-- Added JSONB data
+从 PostgreSQL 迁移到 openGauss 时做了以下适配：
 
-The pagila database is made available under PostgreSQL license.
+- **分区语法重写**：PG 的 `ATTACH PARTITION ... FOR VALUES FROM ... TO ...` → openGauss 内联 `VALUES LESS THAN`
+- **DOMAIN 类型移除**：openGauss 不支持 `CREATE DOMAIN`，`year` 域改为 `integer`，`bıgınt` 域删除
+- **`operator(pg_catalog.||)` 改写**：openGauss 不支持 schema 限定操作符语法，改为普通 `||`
+- **IDENTITY 列改写**：`GENERATED ALWAYS AS IDENTITY` → `CREATE SEQUENCE` + `nextval` 默认值
+- **`phone`/`district` 列改为可空**：Oracle 兼容模式下空字符串等价于 NULL
+- **OWNER 统一为 `gaussdb`**：原始 `OWNER TO postgres` 全部替换
+- **分区索引/FK 提升到父表**：openGauss 内联分区不暴露为独立表
+- **JSONB 数据格式转换**：二进制 `pg_dump -Fc` 备份 → 纯 SQL 文本格式
 
-## EXAMPLE QUERY
+## 快速开始
 
-Find late rentals:
+### Docker Compose（推荐）
+
+```bash
+docker-compose up -d
+```
+
+首次启动时，空容器会自动完成全部初始化（约 4 秒）：
+
+1. 创建 openGauss 实例 + `pagila` 数据库
+2. 加载 schema（表、函数、触发器、索引、视图）
+3. 加载 JSONB 表结构
+4. 导入全部业务数据（COPY 格式）
+5. 导入 JSONB 包数据
+
+```bash
+# 连接数据库
+docker exec -it pagila gsql -d pagila
+
+# pgAdmin Web UI
+# http://localhost:5050
+# 用户名: admin@admin.com  密码: root
+# 数据库连接已预配置（用户 gaussdb / 数据库 pagila）
+```
+
+### 手动加载
+
+```bash
+# 创建数据库
+gsql -d postgres -c "CREATE DATABASE pagila;"
+
+# 加载 schema + 数据
+gsql -d pagila -f pagila-schema-opengauss.sql
+gsql -d pagila -f pagila-schema-jsonb-opengauss.sql
+gsql -d pagila -f pagila-data-opengauss.sql
+gsql -d pagila -f pagila-data-apt-jsonb.sql
+gsql -d pagila -f pagila-data-yum-jsonb.sql
+```
+
+## 示例查询
+
+### 查找逾期未还
 
 ```sql
 SELECT
-	CONCAT(customer.last_name, ', ', customer.first_name) AS customer,
-	address.phone,
-	film.title
-FROM
-	rental
-	INNER JOIN customer ON rental.customer_id = customer.customer_id
-	INNER JOIN address ON customer.address_id = address.address_id
-	INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
-	INNER JOIN film ON inventory.film_id = film.film_id
-WHERE
-	rental.return_date IS NULL
-	AND rental_date < CURRENT_DATE
-ORDER BY
-	title
+    CONCAT(customer.last_name, ', ', customer.first_name) AS customer,
+    address.phone,
+    film.title
+FROM rental
+    INNER JOIN customer ON rental.customer_id = customer.customer_id
+    INNER JOIN address ON customer.address_id = address.address_id
+    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
+    INNER JOIN film ON inventory.film_id = film.film_id
+WHERE rental.return_date IS NULL
+    AND rental_date < CURRENT_DATE
+ORDER BY title
 LIMIT 5;
 ```
 
-## FULLTEXT SEARCH
+### 全文检索
 
-Fulltext functionality is built in PostgreSQL, so parts of the schema exist
-in the main schema file.
-
-Example usage:
-
-SELECT * FROM film WHERE fulltext @@ to_tsquery('fate&india');
-
-pgAdmin is included in the docker-compose.
-
-Navigate to the URL : http://localhost:5050/
-Default Username: admin@admin.com
-Default Password: root
-
-## PARTITIONED TABLES
-
-The payment table is designed as a partitioned table with a 7 month timespan
-for the date ranges.
-
-## INSTALL NOTE
-
-The pagila-data.sql file and the pagila-insert-data.sql both contain the same
-data, the former using COPY commands, the latter using INSERT commands, so you
-only need to install one of them. Both formats are provided for those who have
-trouble using one version or another, and for instructors who want to point out
-the longer data loading time with the latter. You can load them via psql, pgAdmin, etc.
-
-Since JSONB data is quite large to store on Github, the backup is not a plain SQL
-file. You can still use psql/pgAdmin, etc. to load `pagila-schema-jsonb.backup`, however
-please use pg_restore to load jsonb data files:
-
-```
-pg_restore /usr/share/pagila/pagila-data-yum-jsonb.backup -U postgres -d pagila
-pg_restore /usr/share/pagila/pagila-data-apt-jsonb.backup -U postgres -d pagila
+```sql
+SELECT title FROM film WHERE fulltext @@ to_tsquery('fate&india');
 ```
 
-## VERSION HISTORY
+### 分区表查询
 
-Version 3.0.0
+`payment` 表按月分区（7 个分区：2022 年 1-7 月），openGauss 自动进行分区裁剪：
 
-- Add JSONB sample data (based on the packages at apt.postgresql.org and yum.postgresql.org)
-- Add docker compose support ( contributed by https://github.com/theothermattm ) https://github.com/devrimgunduz/pagila/pull/16
-- Add steps to create pagila database on docker by @dedeco in https://github.com/devrimgunduz/pagila/pull/13
-- Add missing user argument by @zOxta in https://github.com/devrimgunduz/pagila/pull/14
-- Update dates to 2022
-- Fix various issues reported in Github
-
-Version 2.1.0
-
-- Replace varchar(n) with text (David Fetter)
-- Match foreign key and primary key data type in some tables (Ganeshan Venkataraman)
-- Change CREATE TABLE statement for customer table to use
-  DEFAULT nextval('customer_customer_id_seq'::regclass) for customer_id
-  field instead of SERIAL (Adrian Klaver).
-
-Version 2.0
-
-- Update schema for newer PostgreSQL versions
-- Remove RULE for partitioning, add trigger support.
-- Update years in sample data.
-- Remove ARTICLES section from README, all links are dead.
-
-Version 0.10.1
-
-- Add pagila-data-insert.sql file, added articles section
-
-Version 0.10
-
-- Support for built-in fulltext. Add enum example
-
-Version 0.9
-
-- Add table partitioning example
-
-Version 0.8
-
-- First release of pagila
-
-## CREATE DATABASE ON [DOCKER](https://docs.docker.com/)
-
-1. On terminal pull the latest postgres image:
-
-```
- docker pull postgres
+```sql
+SELECT count(*) FROM payment WHERE payment_date >= '2022-03-01' AND payment_date < '2022-04-01';
 ```
 
-2. Run image:
+### JSONB 查询
 
-```
- docker run --name postgres -e POSTGRES_PASSWORD=secret -d postgres
-```
-
-3. Run postgres and create the database:
-
-```
-docker exec -it postgres psql -U postgres
+```sql
+SELECT aptdata->'Package' AS package, aptdata->'Version' AS version
+FROM packages_apt_postgresql_org
+LIMIT 5;
 ```
 
-```
-psql (13.1 (Debian 13.1-1.pgdg100+1))
-Type "help" for help.
+## Schema 概览
 
-postgres=# CREATE DATABASE pagila;
-postgres-# CREATE DATABASE
-postgres=\q
-```
+| 对象类型 | 数量 | 说明 |
+|----------|------|------|
+| 表 | 15 + 2 JSONB | actor, film, customer, rental, payment (分区表) 等 |
+| 视图 | 7 + 1 物化视图 | actor_info, customer_list, film_list 等 |
+| 函数 | 10 | film_in_stock, rewards_report, last_day 等（含 1 个自定义聚合） |
+| 触发器 | 15 | 14 个 last_update 自动更新 + 1 个全文检索触发器 |
+| 分区 | 7 | payment_p2022_01 ~ payment_p2022_07 |
 
-4. Create all schema objetcs (tables, etc) replace `<local-repo>` by your local directory :
+ER 图见 `pagila-schema-diagram.png`。
 
-```
-cat <local-repo>/pagila-schema.sql | docker exec -i postgres psql -U postgres -d pagila
-```
+## Docker 配置
 
-5. Insert all data:
+| 配置项 | 值 |
+|--------|-----|
+| 镜像 | `opengauss/opengauss:latest` |
+| 端口 | 5432 (openGauss) / 5050 (pgAdmin) |
+| 数据库 | `pagila`（通过 `GS_DB` 自动创建） |
+| 用户 | `gaussdb` / 密码: `Enmo@123` |
+| 兼容模式 | Oracle (`A`) |
 
-```
-cat <local-repo>/pagila-data.sql | docker exec -i postgres psql -U postgres -d pagila
-```
+## 文件说明
 
-6. Done! Just use:
+| 文件 | 说明 |
+|------|------|
+| `pagila-schema-opengauss.sql` | 主 schema：表、函数、触发器、索引、视图 |
+| `pagila-schema-jsonb-opengauss.sql` | JSONB 扩展表（apt/yum 包数据） |
+| `pagila-data-opengauss.sql` | 业务数据（COPY 格式） |
+| `pagila-data-apt-jsonb.sql` | apt.postgresql.org 包数据（JSONB，纯 SQL） |
+| `pagila-data-yum-jsonb.sql` | yum.postgresql.org 包数据（JSONB，纯 SQL） |
+| `docker-compose.yml` | openGauss + pgAdmin4 编排 |
+| `pgadmin/` | pgAdmin4 预配置（服务器定义 + 密码文件） |
 
-```
-docker exec -it postgres psql -U postgres
-```
+## 许可证
 
-````
-postgres
-psql (13.1 (Debian 13.1-1.pgdg100+1))
-Type "help" for help.
-
-postgres=# \c pagila
-You are now connected to database "pagila" as user "postgres".
-pagila=# \dt
-                    List of relations
- Schema |       Name       |       Type        |  Owner
---------+------------------+-------------------+----------
- public | actor            | table             | postgres
- public | address          | table             | postgres
- public | category         | table             | postgres
- public | city             | table             | postgres
- public | country          | table             | postgres
- public | customer         | table             | postgres
- public | film             | table             | postgres
- public | film_actor       | table             | postgres
- public | film_category    | table             | postgres
- public | inventory        | table             | postgres
- public | language         | table             | postgres
- public | payment          | partitioned table | postgres
- public | payment_p2022_01 | table             | postgres
- public | payment_p2022_02 | table             | postgres
- public | payment_p2022_03 | table             | postgres
- public | payment_p2022_04 | table             | postgres
- public | payment_p2022_05 | table             | postgres
- public | payment_p2022_06 | table             | postgres
- public | payment_p2022_07 | table             | postgres
- public | rental           | table             | postgres
- public | staff            | table             | postgres
- public | store            | table             | postgres
-(21 rows)
-
-pagila=#
-```
-````
-
-## CREATE DATABASE ON [DOCKER-COMPOSE](https://docs.docker.com/compose/)
-
-1. Run:
-
-```
-docker-compose up
-```
-
-2. Done! Just use:
-
-```
-docker exec -it pagila psql -U postgres
-```
-
-```
-
-postgres
-psql (13.1 (Debian 13.1-1.pgdg100+1))
-Type "help" for help.
-
-postgres=# \c pagila
-You are now connected to database "pagila" as user "postgres".
-pagila=# \dt
-                    List of relations
- Schema |       Name       |       Type        |  Owner
---------+------------------+-------------------+----------
- public | actor            | table             | postgres
- public | address          | table             | postgres
- public | category         | table             | postgres
- public | city             | table             | postgres
- public | country          | table             | postgres
- public | customer         | table             | postgres
- public | film             | table             | postgres
- public | film_actor       | table             | postgres
- public | film_category    | table             | postgres
- public | inventory        | table             | postgres
- public | language         | table             | postgres
- public | payment          | partitioned table | postgres
- public | payment_p2022_01 | table             | postgres
- public | payment_p2022_02 | table             | postgres
- public | payment_p2022_03 | table             | postgres
- public | payment_p2022_04 | table             | postgres
- public | payment_p2022_05 | table             | postgres
- public | payment_p2022_06 | table             | postgres
- public | payment_p2022_07 | table             | postgres
- public | rental           | table             | postgres
- public | staff            | table             | postgres
- public | store            | table             | postgres
-(21 rows)
-
-pagila=#
-
-```
+PostgreSQL License — 见 `LICENSE.txt`。
