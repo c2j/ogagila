@@ -6,12 +6,21 @@ services:
     environment:
       GS_PASSWORD: Enmo@123
       GS_DB: pagila
+      GAUSSHOME: /usr/local/opengauss
+      LD_LIBRARY_PATH: /usr/local/opengauss/lib:/scws/lib
+      PATH: /usr/local/opengauss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      PGUSER: gaussdb
+      PGHOST: /tmp
     volumes:
-      - ./pagila-schema-opengauss.sql:/docker-entrypoint-initdb.d/1-schema.sql
-      - ./pagila-schema-jsonb-opengauss.sql:/docker-entrypoint-initdb.d/2-schema-jsonb.sql
-      - ./pagila-data-opengauss.sql:/docker-entrypoint-initdb.d/3-data.sql
-      - ./pagila-data-apt-jsonb.sql:/docker-entrypoint-initdb.d/4-data-apt-jsonb.sql
-      - ./pagila-data-yum-jsonb.sql:/docker-entrypoint-initdb.d/5-data-yum-jsonb.sql
+      - ./sqls/ddl/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./sqls/ddl/schema-jsonb.sql:/docker-entrypoint-initdb.d/2-schema-jsonb.sql
+      - ./sqls/program/functions.sql:/docker-entrypoint-initdb.d/3-functions.sql
+      - ./sqls/program/triggers.sql:/docker-entrypoint-initdb.d/4-triggers.sql
+      - ./sqls/program/views.sql:/docker-entrypoint-initdb.d/5-views.sql
+      - ./sqls/init_data/data.sql:/docker-entrypoint-initdb.d/6-data.sql
+      - ./sqls/init_data/data-apt-jsonb.sql:/docker-entrypoint-initdb.d/7-data-apt-jsonb.sql
+      - ./sqls/init_data/data-yum-jsonb.sql:/docker-entrypoint-initdb.d/8-data-yum-jsonb.sql
+      - ./docker/gsql-wrapper.sh:/usr/local/bin/gsql-pagila:ro
       - pgdata:/var/lib/opengauss/data
     ports:
       - "5432:5432"
