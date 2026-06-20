@@ -1,12 +1,12 @@
 {
   "id": "Q26",
-  "target_rule": "MEM",
+  "target_rule": "MEM-001",
   "severity": "warning",
   "scenario": "GROUP BY + ORDER BY 组合排序",
   "has_side_effect": true,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.005,
+  "elapsed_sec": 0.119,
   "explain_file": "Q26.explain"
 }

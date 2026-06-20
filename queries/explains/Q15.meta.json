@@ -1,12 +1,12 @@
 {
   "id": "Q15",
-  "target_rule": "JOIN",
+  "target_rule": "JOIN-001",
   "severity": "warning",
   "scenario": "customer→rental→payment→inventory→film 5 表嵌套循环",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.022,
+  "elapsed_sec": 0.088,
   "explain_file": "Q15.explain"
 }

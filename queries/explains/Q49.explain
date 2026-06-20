@@ -4,8 +4,8 @@
 -- @scenario: actor.last_name 前导通配符
 SELECT actor_id, first_name, last_name FROM actor WHERE last_name LIKE '%son%' LIMIT 10;
 
-Limit  (cost=0.00..4.50 rows=1 width=17) (actual time=0.014..0.014 rows=0 loops=1)
-  ->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.014..0.014 rows=0 loops=1)
+Limit  (cost=0.00..4.50 rows=1 width=17) (actual time=0.066..0.066 rows=0 loops=1)
+  ->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.064..0.064 rows=0 loops=1)
         Filter: (last_name ~~ '%son%'::text)
         Rows Removed by Filter: 200
-Total runtime: 0.023 ms
+Total runtime: 0.140 ms

@@ -6,14 +6,14 @@ SELECT COUNT(*)
 FROM payment p, customer c
 WHERE p.customer_id = c.customer_id;
 
-Aggregate  (cost=588.24..588.25 rows=1 width=8) (actual time=4.002..4.003 rows=1 loops=1)
-  ->  Hash Join  (cost=44.95..548.12 rows=16049 width=0) (actual time=0.136..3.315 rows=16049 loops=1)
+Aggregate  (cost=565.76..565.77 rows=1 width=8) (actual time=12.474..12.475 rows=1 loops=1)
+  ->  Hash Join  (cost=22.48..525.64 rows=16049 width=0) (actual time=0.366..10.515 rows=16049 loops=1)
         Hash Cond: (p.customer_id = c.customer_id)
-        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.008..1.440 rows=16049 loops=1)
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.033..4.027 rows=16049 loops=1)
               Iterations: 7
-              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.014..0.633 rows=16049 loops=7)
+              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.048..2.061 rows=16049 loops=7)
                     Selected Partitions:  1..7
-        ->  Hash  (cost=29.98..29.98 rows=1198 width=4) (actual time=0.095..0.095 rows=599 loops=1)
+        ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.246..0.246 rows=599 loops=1)
                Buckets: 32768  Batches: 1  Memory Usage: 278kB
-              ->  Seq Scan on customer c  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.002..0.058 rows=599 loops=1)
-Total runtime: 4.054 ms
+              ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.003..0.101 rows=599 loops=1)
+Total runtime: 12.779 ms

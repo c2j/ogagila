@@ -1,6 +1,6 @@
 {
   "id": "Q79",
-  "target_rule": "STATS",
+  "target_rule": "STATS-001",
   "severity": "warning",
   "scenario": "删 stats 后统计列数为 0",
   "has_side_effect": false,
@@ -9,6 +9,6 @@
   "warnings": [
     "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
   ],
-  "elapsed_sec": 0.045,
+  "elapsed_sec": 0.013,
   "explain_file": "Q79.explain"
 }

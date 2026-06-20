@@ -8,11 +8,11 @@ FROM payment
 GROUP BY customer_id;
 RESET work_mem;
 
-HashAggregate  (cost=523.23..530.71 rows=599 width=146) (actual time=11.089..20.895 rows=599 loops=1)
+HashAggregate  (cost=523.23..530.71 rows=599 width=146) (actual time=18.801..34.729 rows=599 loops=1)
   Group By Key: customer_id
 Temp File Num: 48
-  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.014..3.726 rows=16049 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.021..5.399 rows=16049 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.039..2.274 rows=16049 loops=7)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.058..3.329 rows=16049 loops=7)
               Selected Partitions:  1..7
-Total runtime: 21.106 ms
+Total runtime: 35.083 ms

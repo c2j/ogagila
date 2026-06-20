@@ -6,12 +6,12 @@ SET work_mem = '128kB';
 SELECT * FROM payment ORDER BY amount DESC LIMIT 50;
 RESET work_mem;
 
-Limit  (cost=815.63..815.75 rows=50 width=30) (actual time=2.683..2.688 rows=50 loops=1)
-  ->  Sort  (cost=815.63..855.75 rows=16049 width=30) (actual time=2.683..2.683 rows=50 loops=1)
+Limit  (cost=815.63..815.75 rows=50 width=30) (actual time=7.792..7.798 rows=50 loops=1)
+  ->  Sort  (cost=815.63..855.75 rows=16049 width=30) (actual time=7.788..7.791 rows=50 loops=1)
         Sort Key: amount DESC
         Sort Method: top-N heapsort  Memory: 31kB
-        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.006..1.429 rows=16049 loops=1)
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.023..4.321 rows=16049 loops=1)
               Iterations: 7
-              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.015..0.609 rows=16049 loops=7)
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.216..2.124 rows=16049 loops=7)
                     Selected Partitions:  1..7
-Total runtime: 2.744 ms
+Total runtime: 7.968 ms

@@ -11,24 +11,24 @@ WHERE f.film_id = fa.film_id
   AND r.customer_id = c.customer_id
 LIMIT 10;
 
-Limit  (cost=0.00..2.06 rows=10 width=28) (actual time=0.157..0.219 rows=10 loops=1)
-  ->  Merge Join  (cost=0.00..18102.45 rows=87920 width=28) (actual time=0.154..0.214 rows=10 loops=1)
+Limit  (cost=0.00..2.05 rows=10 width=28) (actual time=0.253..0.422 rows=10 loops=1)
+  ->  Merge Join  (cost=0.00..18066.45 rows=87920 width=28) (actual time=0.251..0.420 rows=10 loops=1)
         Merge Cond: (r.inventory_id = i.inventory_id)
-        ->  Nested Loop  (cost=0.00..5859.49 rows=16472 width=17) (actual time=0.045..0.045 rows=1 loops=1)
-              ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1111.33 rows=16472 width=8) (actual time=0.026..0.026 rows=1 loops=1)
+        ->  Nested Loop  (cost=0.00..5823.49 rows=16472 width=17) (actual time=0.046..0.046 rows=1 loops=1)
+              ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1111.33 rows=16472 width=8) (actual time=0.027..0.027 rows=1 loops=1)
               ->  Index Scan using customer_pkey on customer c  (cost=0.00..0.28 rows=1 width=17) (actual time=0.012..0.012 rows=1 loops=1)
                     Index Cond: (customer_id = r.customer_id)
-        ->  Materialize  (cost=0.00..10945.73 rows=25097 width=19) (actual time=0.104..0.163 rows=10 loops=1)
-              ->  Nested Loop  (cost=0.00..10882.98 rows=25097 width=19) (actual time=0.093..0.150 rows=10 loops=1)
-                    ->  Nested Loop  (cost=0.00..3782.31 rows=25097 width=23) (actual time=0.044..0.075 rows=10 loops=1)
+        ->  Materialize  (cost=0.00..10945.73 rows=25097 width=19) (actual time=0.199..0.365 rows=10 loops=1)
+              ->  Nested Loop  (cost=0.00..10882.98 rows=25097 width=19) (actual time=0.192..0.346 rows=10 loops=1)
+                    ->  Nested Loop  (cost=0.00..3782.31 rows=25097 width=23) (actual time=0.125..0.230 rows=10 loops=1)
                           Join Filter: (f.film_id = fa.film_id)
-                          ->  Nested Loop  (cost=0.00..1684.64 rows=4581 width=27) (actual time=0.024..0.024 rows=1 loops=1)
-                                ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.011..0.011 rows=1 loops=1)
+                          ->  Nested Loop  (cost=0.00..1684.64 rows=4581 width=27) (actual time=0.025..0.025 rows=1 loops=1)
+                                ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.012..0.012 rows=1 loops=1)
                                 ->  Index Scan using film_pkey on film f  (cost=0.00..0.32 rows=1 width=19) (actual time=0.010..0.010 rows=1 loops=1)
                                       Index Cond: (film_id = i.film_id)
-                          ->  Index Scan using idx_fk_film_id on film_actor fa  (cost=0.00..0.40 rows=5 width=8) (actual time=0.011..0.040 rows=10 loops=1)
+                          ->  Index Scan using idx_fk_film_id on film_actor fa  (cost=0.00..0.40 rows=5 width=8) (actual time=0.012..0.109 rows=10 loops=1)
                                 Index Cond: (film_id = i.film_id)
-                    ->  Index Only Scan using actor_pkey on actor a  (cost=0.00..0.27 rows=1 width=4) (actual time=0.062..0.066 rows=10 loops=10)
+                    ->  Index Only Scan using actor_pkey on actor a  (cost=0.00..0.27 rows=1 width=4) (actual time=0.089..0.095 rows=10 loops=10)
                           Index Cond: (actor_id = fa.actor_id)
                           Heap Fetches: 10
-Total runtime: 0.471 ms
+Total runtime: 0.756 ms

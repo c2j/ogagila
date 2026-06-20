@@ -1,12 +1,12 @@
 {
   "id": "Q44",
-  "target_rule": "TYPE",
+  "target_rule": "TYPE-001",
   "severity": "critical",
   "scenario": "customer_id integer 字段用字符串比较",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.001,
+  "elapsed_sec": 0.003,
   "explain_file": "Q44.explain"
 }

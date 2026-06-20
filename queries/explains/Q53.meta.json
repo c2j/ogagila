@@ -1,12 +1,12 @@
 {
   "id": "Q53",
-  "target_rule": "PUSH",
+  "target_rule": "PUSH-001",
   "severity": "warning",
   "scenario": "算术运算阻止下推",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.001,
+  "elapsed_sec": 0.005,
   "explain_file": "Q53.explain"
 }

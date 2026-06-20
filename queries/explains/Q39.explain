@@ -5,10 +5,10 @@
 DELETE STATISTICS customer;
 SELECT COUNT(*) FROM customer WHERE active = 1;
 
-Aggregate  (cost=35.90..35.91 rows=1 width=8) (actual time=0.101..0.101 rows=1 loops=1)
-  ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=0) (actual time=0.008..0.059 rows=584 loops=1)
+Aggregate  (cost=17.95..17.96 rows=1 width=8) (actual time=0.161..0.161 rows=1 loops=1)
+  ->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.014..0.109 rows=584 loops=1)
         Filter: (active = 1)
         Rows Removed by Filter: 15
-Total runtime: 0.134 ms
+Total runtime: 0.237 ms
 
 -- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS customer'

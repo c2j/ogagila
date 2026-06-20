@@ -1,12 +1,12 @@
 {
   "id": "Q60",
-  "target_rule": "PART",
+  "target_rule": "PART-001",
   "severity": "info",
   "scenario": "payment_date 跨全部分区,正确裁剪为全部",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.003,
+  "elapsed_sec": 0.012,
   "explain_file": "Q60.explain"
 }

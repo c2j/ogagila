@@ -1,12 +1,12 @@
 {
   "id": "Q82",
-  "target_rule": "GEN",
+  "target_rule": "GEN-001",
   "severity": "info",
   "scenario": "多层 CTE 嵌套",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.076,
+  "elapsed_sec": 0.04,
   "explain_file": "Q82.explain"
 }

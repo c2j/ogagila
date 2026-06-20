@@ -9,9 +9,9 @@ ORDER BY rental_date, customer_id
 LIMIT 200;
 RESET work_mem;
 
-Limit  (cost=1030.63..1031.13 rows=200 width=16) (actual time=1.976..1.990 rows=200 loops=1)
-  ->  Sort  (cost=1030.63..1071.81 rows=16472 width=16) (actual time=1.976..1.981 rows=200 loops=1)
+Limit  (cost=1030.63..1031.13 rows=200 width=16) (actual time=5.993..6.013 rows=200 loops=1)
+  ->  Sort  (cost=1030.63..1071.81 rows=16472 width=16) (actual time=5.990..5.991 rows=200 loops=1)
         Sort Key: rental_date, customer_id
         Sort Method: top-N heapsort  Memory: 34kB
-        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.003..0.936 rows=16044 loops=1)
-Total runtime: 2.011 ms
+        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.016..2.893 rows=16044 loops=1)
+Total runtime: 6.189 ms

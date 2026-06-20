@@ -358,7 +358,7 @@ def main():
 
     for q in queries:
         qid = q["id"]
-        target = q["target_rule"]
+        target = q.get("sql_meta", {}).get("target") or q["target_rule"]
         scenario = q["scenario"]
         body = q["body"]
 

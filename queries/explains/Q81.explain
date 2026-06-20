@@ -17,24 +17,24 @@ WHERE f.film_id IN (
 )
 LIMIT 10;
 
-Limit  (cost=77.50..189.19 rows=10 width=15) (actual time=0.920..4.130 rows=10 loops=1)
-  ->  Hash Right Semi Join  (cost=77.50..10777.71 rows=958 width=15) (actual time=0.918..4.124 rows=10 loops=1)
+Limit  (cost=77.50..189.76 rows=10 width=15) (actual time=0.926..1.594 rows=10 loops=1)
+  ->  Hash Right Semi Join  (cost=77.50..10832.40 rows=958 width=15) (actual time=0.922..1.586 rows=10 loops=1)
         Hash Cond: (inventory.film_id = f.film_id)
-        ->  Nested Loop Semi Join  (cost=0.00..10672.34 rows=4581 width=4) (actual time=0.056..3.206 rows=45 loops=1)
-              ->  Seq Scan on inventory  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.017..0.035 rows=46 loops=1)
-              ->  Nested Loop Semi Join  (cost=0.00..5.17 rows=4 width=4) (actual time=3.101..3.101 rows=45 loops=46)
-                    ->  Index Scan using idx_fk_inventory_id on rental  (cost=0.00..0.52 rows=4 width=8) (actual time=0.472..0.472 rows=45 loops=46)
+        ->  Nested Loop Semi Join  (cost=0.00..10727.03 rows=4581 width=4) (actual time=0.070..0.721 rows=45 loops=1)
+              ->  Seq Scan on inventory  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.018..0.025 rows=46 loops=1)
+              ->  Nested Loop Semi Join  (cost=0.00..5.19 rows=4 width=4) (actual time=0.670..0.670 rows=45 loops=46)
+                    ->  Index Scan using idx_fk_inventory_id on rental  (cost=0.00..0.52 rows=4 width=8) (actual time=0.218..0.218 rows=45 loops=46)
                           Index Cond: (inventory_id = inventory.inventory_id)
-                    ->  Nested Loop Semi Join  (cost=0.00..1.15 rows=1 width=4) (actual time=2.362..2.362 rows=45 loops=45)
-                          ->  Index Scan using customer_pkey on customer  (cost=0.00..0.28 rows=1 width=8) (actual time=0.182..0.182 rows=45 loops=45)
+                    ->  Nested Loop Semi Join  (cost=0.00..1.16 rows=1 width=4) (actual time=0.405..0.405 rows=45 loops=45)
+                          ->  Index Scan using customer_pkey on customer  (cost=0.00..0.28 rows=1 width=8) (actual time=0.141..0.141 rows=45 loops=45)
                                 Index Cond: (customer_id = rental.customer_id)
-                          ->  Nested Loop Semi Join  (cost=0.00..0.86 rows=1 width=4) (actual time=1.519..1.519 rows=45 loops=45)
-                                ->  Index Scan using store_pkey on store  (cost=0.00..0.29 rows=1 width=8) (actual time=0.163..0.163 rows=45 loops=45)
+                          ->  Nested Loop Semi Join  (cost=0.00..0.87 rows=1 width=4) (actual time=0.217..0.217 rows=45 loops=45)
+                                ->  Index Scan using store_pkey on store  (cost=0.00..0.30 rows=1 width=8) (actual time=0.082..0.082 rows=45 loops=45)
                                       Index Cond: (store_id = customer.store_id)
-                                ->  Index Scan using staff_pkey on staff  (cost=0.00..0.57 rows=1 width=4) (actual time=1.295..1.295 rows=45 loops=45)
+                                ->  Index Scan using staff_pkey on staff  (cost=0.00..0.57 rows=1 width=4) (actual time=0.093..0.093 rows=45 loops=45)
                                       Index Cond: (staff_id = store.manager_staff_id)
                                       Filter: active
-        ->  Hash  (cost=65.00..65.00 rows=1000 width=19) (actual time=0.752..0.752 rows=1000 loops=1)
+        ->  Hash  (cost=65.00..65.00 rows=1000 width=19) (actual time=0.725..0.725 rows=1000 loops=1)
                Buckets: 32768  Batches: 1  Memory Usage: 308kB
-              ->  Seq Scan on film f  (cost=0.00..65.00 rows=1000 width=19) (actual time=0.020..0.472 rows=1000 loops=1)
-Total runtime: 4.452 ms
+              ->  Seq Scan on film f  (cost=0.00..65.00 rows=1000 width=19) (actual time=0.007..0.432 rows=1000 loops=1)
+Total runtime: 1.892 ms

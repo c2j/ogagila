@@ -4,8 +4,8 @@
 -- @scenario: customer 表 active=1 过滤(active 无索引)
 SELECT COUNT(*) FROM customer WHERE active = 1;
 
-Aggregate  (cost=35.90..35.91 rows=1 width=8) (actual time=0.359..0.359 rows=1 loops=1)
-  ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=0) (actual time=0.018..0.315 rows=584 loops=1)
+Aggregate  (cost=17.95..17.96 rows=1 width=8) (actual time=0.768..0.768 rows=1 loops=1)
+  ->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.368..0.715 rows=584 loops=1)
         Filter: (active = 1)
         Rows Removed by Filter: 15
-Total runtime: 0.409 ms
+Total runtime: 1.363 ms

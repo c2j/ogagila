@@ -8,11 +8,11 @@ INNER JOIN address a ON c.address_id = a.address_id
 WHERE c.active = 1
 LIMIT 50;
 
-Limit  (cost=0.25..7.46 rows=50 width=24) (actual time=0.010..0.053 rows=50 loops=1)
-  ->  Merge Join  (cost=0.25..136.38 rows=944 width=24) (actual time=0.009..0.047 rows=50 loops=1)
-        Merge Cond: (a.address_id = c.address_id)
-        ->  Index Scan using address_pkey on address a  (cost=0.00..36.30 rows=603 width=24) (actual time=0.003..0.009 rows=55 loops=1)
-        ->  Index Scan using idx_fk_address_id on customer c  (cost=0.00..86.22 rows=1168 width=8) (actual time=0.002..0.029 rows=50 loops=1)
+Limit  (cost=0.25..9.80 rows=50 width=24) (actual time=0.028..0.072 rows=50 loops=1)
+  ->  Merge Join  (cost=0.25..111.84 rows=584 width=24) (actual time=0.027..0.068 rows=50 loops=1)
+        Merge Cond: (c.address_id = a.address_id)
+        ->  Index Scan using idx_fk_address_id on customer c  (cost=0.00..66.73 rows=584 width=8) (actual time=0.014..0.025 rows=50 loops=1)
               Filter: (active = 1)
               Rows Removed by Filter: 1
-Total runtime: 0.094 ms
+        ->  Index Scan using address_pkey on address a  (cost=0.00..36.30 rows=603 width=24) (actual time=0.006..0.024 rows=55 loops=1)
+Total runtime: 0.171 ms

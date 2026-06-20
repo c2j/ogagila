@@ -5,10 +5,10 @@
 DELETE STATISTICS inventory;
 SELECT COUNT(*) FROM inventory WHERE store_id = 1;
 
-Aggregate  (cost=92.94..92.95 rows=1 width=8) (actual time=0.361..0.361 rows=1 loops=1)
-  ->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.004..0.264 rows=2270 loops=1)
+Aggregate  (cost=92.94..92.95 rows=1 width=8) (actual time=1.118..1.119 rows=1 loops=1)
+  ->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.064..0.876 rows=2270 loops=1)
         Filter: (store_id = 1)
         Rows Removed by Filter: 2311
-Total runtime: 0.372 ms
+Total runtime: 1.217 ms
 
 -- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS inventory'

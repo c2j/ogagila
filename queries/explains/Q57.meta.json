@@ -1,12 +1,12 @@
 {
   "id": "Q57",
-  "target_rule": "PART",
+  "target_rule": "PART-001",
   "severity": "warning",
   "scenario": "payment_date 用函数包装,无法分区裁剪",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.003,
+  "elapsed_sec": 0.012,
   "explain_file": "Q57.explain"
 }

@@ -7,19 +7,19 @@ FROM rental r
 INNER JOIN payment p ON r.customer_id = p.customer_id
 INNER JOIN inventory i ON r.inventory_id = i.inventory_id;
 
-Aggregate  (cost=7599.86..7599.87 rows=1 width=8) (actual time=55.013..55.013 rows=1 loops=1)
-  ->  Hash Join  (cost=616.17..6480.85 rows=447604 width=0) (actual time=3.240..34.674 rows=445483 loops=1)
+Aggregate  (cost=7599.86..7599.87 rows=1 width=8) (actual time=201.181..201.181 rows=1 loops=1)
+  ->  Hash Join  (cost=616.17..6480.85 rows=447604 width=0) (actual time=10.604..145.647 rows=445483 loops=1)
         Hash Cond: (r.customer_id = p.customer_id)
-        ->  Hash Join  (cost=133.07..674.04 rows=16048 width=4) (actual time=0.589..4.640 rows=16044 loops=1)
+        ->  Hash Join  (cost=133.07..674.04 rows=16048 width=4) (actual time=2.216..19.499 rows=16044 loops=1)
               Hash Cond: (r.inventory_id = i.inventory_id)
-              ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.002..0.989 rows=16044 loops=1)
-              ->  Hash  (cost=75.81..75.81 rows=4581 width=4) (actual time=0.548..0.548 rows=4581 loops=1)
+              ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.017..4.333 rows=16044 loops=1)
+              ->  Hash  (cost=75.81..75.81 rows=4581 width=4) (actual time=1.944..1.944 rows=4581 loops=1)
                      Buckets: 32768  Batches: 1  Memory Usage: 418kB
-                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=4) (actual time=0.002..0.268 rows=4581 loops=1)
-        ->  Hash  (cost=282.49..282.49 rows=16049 width=4) (actual time=2.622..2.622 rows=16049 loops=1)
+                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=4) (actual time=0.014..0.774 rows=4581 loops=1)
+        ->  Hash  (cost=282.49..282.49 rows=16049 width=4) (actual time=8.258..8.258 rows=16049 loops=1)
                Buckets: 32768  Batches: 1  Memory Usage: 821kB
-              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.003..1.558 rows=16049 loops=1)
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.039..5.169 rows=16049 loops=1)
                     Iterations: 7
-                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.010..0.794 rows=16049 loops=7)
+                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.077..2.889 rows=16049 loops=7)
                           Selected Partitions:  1..7
-Total runtime: 55.066 ms
+Total runtime: 201.732 ms

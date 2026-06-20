@@ -5,11 +5,11 @@
 SELECT COUNT(*) FROM payment
 WHERE payment_date >= '2022-03-01' OR customer_id = 100;
 
-Aggregate  (cost=395.06..395.07 rows=1 width=8) (actual time=2.325..2.325 rows=1 loops=1)
-  ->  Partition Iterator  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.053..1.728 rows=12930 loops=1)
+Aggregate  (cost=395.06..395.07 rows=1 width=8) (actual time=6.142..6.143 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.162..4.660 rows=12930 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.221..1.084 rows=12930 loops=7)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.669..3.166 rows=12930 loops=7)
               Filter: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) OR (customer_id = 100))
               Rows Removed by Filter: 3119
               Selected Partitions:  1..7
-Total runtime: 2.358 ms
+Total runtime: 6.404 ms

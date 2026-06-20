@@ -4,5 +4,5 @@
 -- @scenario: language 表(6 行)
 SELECT * FROM language;
 
-Seq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.019..0.021 rows=6 loops=1)
-Total runtime: 0.097 ms
+Seq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.016..0.018 rows=6 loops=1)
+Total runtime: 0.131 ms

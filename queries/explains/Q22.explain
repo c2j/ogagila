@@ -10,24 +10,24 @@ JOIN customer c ON r.customer_id = c.customer_id
 JOIN staff s ON r.staff_id = s.staff_id;
 RESET work_mem;
 
-Aggregate  (cost=2940.96..2940.97 rows=1 width=8) (actual time=13.198..13.198 rows=1 loops=1)
-  ->  Hash Join  (cost=869.33..2900.84 rows=16049 width=0) (actual time=2.845..12.428 rows=16049 loops=1)
+Aggregate  (cost=2908.48..2908.49 rows=1 width=8) (actual time=49.466..49.466 rows=1 loops=1)
+  ->  Hash Join  (cost=841.85..2868.36 rows=16049 width=0) (actual time=11.010..47.200 rows=16049 loops=1)
         Hash Cond: (r.staff_id = s.staff_id)
-        ->  Hash Join  (cost=790.58..2303.41 rows=16049 width=4) (actual time=2.561..10.187 rows=16049 loops=1)
+        ->  Hash Join  (cost=763.10..2270.93 rows=16049 width=4) (actual time=10.316..41.181 rows=16049 loops=1)
               Hash Cond: (r.customer_id = c.customer_id)
-              ->  Hash Join  (cost=734.62..1731.78 rows=16049 width=8) (actual time=2.426..7.787 rows=16049 loops=1)
+              ->  Hash Join  (cost=734.62..1731.78 rows=16049 width=8) (actual time=9.990..31.937 rows=16049 loops=1)
                     Hash Cond: (p.rental_id = r.rental_id)
-                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.004..1.727 rows=16049 loops=1)
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..4.718 rows=16049 loops=1)
                           Iterations: 7
-                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.015..0.962 rows=16049 loops=7)
+                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.148..2.645 rows=16049 loops=7)
                                 Selected Partitions:  1..7
-                    ->  Hash  (cost=318.72..318.72 rows=16472 width=12) (actual time=2.286..2.286 rows=16044 loops=1)
+                    ->  Hash  (cost=318.72..318.72 rows=16472 width=12) (actual time=7.834..7.834 rows=16044 loops=1)
                            Buckets: 8192  Batches: 8  Memory Usage: 147kB
-                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.002..0.966 rows=16044 loops=1)
-              ->  Hash  (cost=29.98..29.98 rows=1198 width=4) (actual time=0.110..0.110 rows=599 loops=1)
+                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.008..2.726 rows=16044 loops=1)
+              ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.289..0.289 rows=599 loops=1)
                      Buckets: 8192  Batches: 2  Memory Usage: 79kB
-                    ->  Seq Scan on customer c  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.002..0.058 rows=599 loops=1)
-        ->  Hash  (cost=46.00..46.00 rows=1500 width=4) (actual time=0.272..0.272 rows=1500 loops=1)
+                    ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.007..0.085 rows=599 loops=1)
+        ->  Hash  (cost=46.00..46.00 rows=1500 width=4) (actual time=0.633..0.633 rows=1500 loops=1)
                Buckets: 8192  Batches: 2  Memory Usage: 91kB
-              ->  Seq Scan on staff s  (cost=0.00..46.00 rows=1500 width=4) (actual time=0.003..0.132 rows=1500 loops=1)
-Total runtime: 13.282 ms
+              ->  Seq Scan on staff s  (cost=0.00..46.00 rows=1500 width=4) (actual time=0.016..0.245 rows=1500 loops=1)
+Total runtime: 50.505 ms

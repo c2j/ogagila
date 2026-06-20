@@ -1,6 +1,6 @@
 {
   "id": "Q37",
-  "target_rule": "EST",
+  "target_rule": "EST-001",
   "severity": "warning",
   "scenario": "删 stats 后严重低估 payment 行数",
   "has_side_effect": true,
@@ -9,6 +9,6 @@
   "warnings": [
     "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
   ],
-  "elapsed_sec": 0.002,
+  "elapsed_sec": 0.01,
   "explain_file": "Q37.explain"
 }

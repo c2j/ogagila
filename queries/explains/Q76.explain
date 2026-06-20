@@ -8,11 +8,11 @@ JOIN inventory i ON r.inventory_id = i.inventory_id
 WHERE r.rental_date >= '2022-06-01'
 LIMIT 20;
 
-Limit  (cost=0.00..2.00 rows=20 width=8) (actual time=0.023..0.086 rows=20 loops=1)
-  ->  Merge Join  (cost=0.00..1515.24 rows=15145 width=8) (actual time=0.022..0.083 rows=20 loops=1)
+Limit  (cost=0.00..2.00 rows=20 width=8) (actual time=0.024..0.084 rows=20 loops=1)
+  ->  Merge Join  (cost=0.00..1515.24 rows=15145 width=8) (actual time=0.023..0.083 rows=20 loops=1)
         Merge Cond: (i.inventory_id = r.inventory_id)
-        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.008..0.010 rows=8 loops=1)
-        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=15145 width=8) (actual time=0.008..0.060 rows=20 loops=1)
+        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.009..0.012 rows=8 loops=1)
+        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=15145 width=8) (actual time=0.009..0.062 rows=20 loops=1)
               Filter: (rental_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)
               Rows Removed by Filter: 2
-Total runtime: 0.153 ms
+Total runtime: 0.146 ms

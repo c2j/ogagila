@@ -6,7 +6,7 @@ SELECT staff_id, COUNT(*) AS rental_cnt
 FROM rental
 GROUP BY staff_id;
 
-HashAggregate  (cost=401.08..401.10 rows=2 width=12) (actual time=6.843..6.844 rows=2 loops=1)
+HashAggregate  (cost=401.08..401.10 rows=2 width=12) (actual time=7.074..7.075 rows=2 loops=1)
   Group By Key: staff_id
-  ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.015..2.809 rows=16044 loops=1)
-Total runtime: 7.064 ms
+  ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.018..2.878 rows=16044 loops=1)
+Total runtime: 7.199 ms

@@ -5,13 +5,13 @@
 DELETE STATISTICS payment;
 SELECT COUNT(*) FROM payment WHERE amount > 5.00;
 
-Aggregate  (cost=332.50..332.51 rows=1 width=8) (actual time=1.548..1.549 rows=1 loops=1)
-  ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.006..1.366 rows=3957 loops=1)
+Aggregate  (cost=332.50..332.51 rows=1 width=8) (actual time=4.561..4.561 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.037..4.117 rows=3957 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.017..1.175 rows=3957 loops=7)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.072..3.527 rows=3957 loops=7)
               Filter: (amount > 5.00)
               Rows Removed by Filter: 12092
               Selected Partitions:  1..7
-Total runtime: 1.573 ms
+Total runtime: 4.790 ms
 
 -- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS payment'

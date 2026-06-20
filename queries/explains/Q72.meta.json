@@ -1,12 +1,12 @@
 {
   "id": "Q72",
-  "target_rule": "AGG",
+  "target_rule": "AGG-001",
   "severity": "warning",
   "scenario": "payment GROUP BY 排序聚合",
   "has_side_effect": true,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.014,
+  "elapsed_sec": 0.019,
   "explain_file": "Q72.explain"
 }

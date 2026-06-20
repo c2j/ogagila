@@ -4,9 +4,9 @@
 -- @scenario: 全文检索使用 GIN 索引
 SELECT title FROM film WHERE fulltext @@ to_tsquery('fate&india');
 
-Bitmap Heap Scan on film  (cost=4.27..11.15 rows=2 width=15) (actual time=0.213..0.224 rows=3 loops=1)
+Bitmap Heap Scan on film  (cost=4.27..11.15 rows=2 width=15) (actual time=0.531..0.542 rows=3 loops=1)
   Recheck Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)
   Heap Blocks: exact=3
-  ->  Bitmap Index Scan on film_fulltext_idx  (cost=0.00..4.26 rows=2 width=0) (actual time=0.180..0.180 rows=3 loops=1)
+  ->  Bitmap Index Scan on film_fulltext_idx  (cost=0.00..4.26 rows=2 width=0) (actual time=0.474..0.474 rows=3 loops=1)
         Index Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)
-Total runtime: 0.361 ms
+Total runtime: 1.314 ms

@@ -1,12 +1,12 @@
 {
   "id": "Q16",
-  "target_rule": "JOIN",
+  "target_rule": "JOIN-001",
   "severity": "warning",
   "scenario": "rental ↔ inventory NL(staff_id 无索引时)",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.001,
+  "elapsed_sec": 0.032,
   "explain_file": "Q16.explain"
 }

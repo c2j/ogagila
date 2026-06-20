@@ -4,7 +4,7 @@
 -- @scenario: 函数包裹索引列,阻止下推
 SELECT * FROM film WHERE UPPER(title) = 'ACADEMY DINOSAUR';
 
-Seq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=0.041..0.256 rows=1 loops=1)
+Seq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=0.560..1.116 rows=1 loops=1)
   Filter: (upper(title) = 'ACADEMY DINOSAUR'::text)
   Rows Removed by Filter: 999
-Total runtime: 0.266 ms
+Total runtime: 1.204 ms

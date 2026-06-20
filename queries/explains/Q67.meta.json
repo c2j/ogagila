@@ -1,12 +1,12 @@
 {
   "id": "Q67",
-  "target_rule": "REW",
+  "target_rule": "REW-001",
   "severity": "warning",
   "scenario": "customer_id IN 大列表",
   "has_side_effect": false,
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.006,
+  "elapsed_sec": 0.005,
   "explain_file": "Q67.explain"
 }
