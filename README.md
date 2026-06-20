@@ -34,8 +34,17 @@ docker-compose up -d
 5. 导入 JSONB 包数据
 
 ```bash
-# 连接数据库
-docker exec -it pagila gsql -d pagila
+# 连接数据库（推荐）
+docker exec -it pagila gsql-pagila
+
+# 执行单条 SQL
+docker exec pagila gsql-pagila -c "SELECT count(*) FROM film;"
+
+# 执行 SQL 文件
+docker exec pagila gsql-pagila -f /path/to/script.sql
+
+# 也可以通过 omm 用户直接使用 gsql（无需密码）
+docker exec -it pagila bash -c "su - omm -c 'gsql -d pagila'"
 
 # pgAdmin Web UI
 # http://localhost:5050
@@ -43,18 +52,23 @@ docker exec -it pagila gsql -d pagila
 # 数据库连接已预配置（用户 gaussdb / 数据库 pagila）
 ```
 
+> **说明：** `gsql-pagila` 是容器内的包装脚本，自动注入用户名 (`gaussdb`) 和密码。openGauss 安全插件要求非 `omm` 用户必须密码认证，因此直接使用 `gsql -d pagila` 需要手动输入密码（`-W Enmo@123`）。
+
 ### 手动加载
 
 ```bash
 # 创建数据库
 gsql -d postgres -c "CREATE DATABASE pagila;"
 
-# 加载 schema + 数据
-gsql -d pagila -f pagila-schema-opengauss.sql
-gsql -d pagila -f pagila-schema-jsonb-opengauss.sql
-gsql -d pagila -f pagila-data-opengauss.sql
-gsql -d pagila -f pagila-data-apt-jsonb.sql
-gsql -d pagila -f pagila-data-yum-jsonb.sql
+# 按顺序加载：DDL → 存储程序 → 数据
+gsql -d pagila -f sqls/ddl/schema.sql
+gsql -d pagila -f sqls/ddl/schema-jsonb.sql
+gsql -d pagila -f sqls/program/functions.sql
+gsql -d pagila -f sqls/program/triggers.sql
+gsql -d pagila -f sqls/program/views.sql
+gsql -d pagila -f sqls/init_data/data.sql
+gsql -d pagila -f sqls/init_data/data-apt-jsonb.sql
+gsql -d pagila -f sqls/init_data/data-yum-jsonb.sql
 ```
 
 ## 示例查询
@@ -123,15 +137,26 @@ ER 图见 `pagila-schema-diagram.png`。
 
 ## 文件说明
 
-| 文件 | 说明 |
-|------|------|
-| `pagila-schema-opengauss.sql` | 主 schema：表、函数、触发器、索引、视图 |
-| `pagila-schema-jsonb-opengauss.sql` | JSONB 扩展表（apt/yum 包数据） |
-| `pagila-data-opengauss.sql` | 业务数据（COPY 格式） |
-| `pagila-data-apt-jsonb.sql` | apt.postgresql.org 包数据（JSONB，纯 SQL） |
-| `pagila-data-yum-jsonb.sql` | yum.postgresql.org 包数据（JSONB，纯 SQL） |
-| `docker-compose.yml` | openGauss + pgAdmin4 编排 |
-| `pgadmin/` | pgAdmin4 预配置（服务器定义 + 密码文件） |
+```
+ogagila/
+├── docker-compose.yml
+├── docker/
+│   └── gsql-wrapper.sh              # gsql 包装脚本（自动注入用户名密码）
+├── sqls/
+│   ├── ddl/                         # DDL：表、序列、类型、约束、索引
+│   │   ├── schema.sql
+│   │   └── schema-jsonb.sql         # JSONB 扩展表
+│   ├── program/                     # 存储程序：函数、触发器、视图
+│   │   ├── functions.sql            # 函数 + 自定义聚合
+│   │   ├── triggers.sql             # 触发器
+│   │   └── views.sql                # 视图 + 物化视图
+│   └── init_data/                   # 初始数据
+│       ├── data.sql                 # 业务数据（COPY 格式）
+│       ├── data-apt-jsonb.sql       # apt 包 JSONB 数据
+│       └── data-yum-jsonb.sql       # yum 包 JSONB 数据
+├── pgadmin/                         # pgAdmin4 预配置
+└── pagila-schema-diagram.png        # ER 图
+```
 
 ## 许可证
 
