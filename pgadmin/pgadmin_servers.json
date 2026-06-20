@@ -4,11 +4,11 @@
       "Name": "pagila",
       "Group": "Servers",
       "Port": 5432,
-      "Username": "postgres",
+      "Username": "gaussdb",
       "Host": "pagila",
       "PassFile": "/pgadmin4/pass",
       "SSLMode": "disable",
-      "MaintenanceDB": "postgres"
+      "MaintenanceDB": "pagila"
     }
   }
 }
