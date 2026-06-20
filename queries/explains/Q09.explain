@@ -1,0 +1,11 @@
+-- @id: Q09
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: rental.return_date IS NULL(高频谓词,缺索引)
+SELECT COUNT(*) FROM rental WHERE return_date IS NULL;
+
+Aggregate  (cost=319.19..319.20 rows=1 width=8) (actual time=2.465..2.465 rows=1 loops=1)
+  ->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=2.463..2.463 rows=0 loops=1)
+        Filter: (return_date IS NULL)
+        Rows Removed by Filter: 16044
+Total runtime: 2.488 ms

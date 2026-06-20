@@ -1,0 +1,14 @@
+-- @id: Q80
+-- @target: STATS-001
+-- @severity: warning
+-- @scenario: 删 stats 后 rental 估算异常
+DELETE STATISTICS rental;
+SELECT COUNT(*) FROM rental WHERE return_date IS NULL;
+
+Aggregate  (cost=319.19..319.20 rows=1 width=8) (actual time=3.195..3.195 rows=1 loops=1)
+  ->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=3.144..3.144 rows=0 loops=1)
+        Filter: (return_date IS NULL)
+        Rows Removed by Filter: 16044
+Total runtime: 3.519 ms
+
+-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'

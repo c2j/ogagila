@@ -1,0 +1,11 @@
+-- @id: Q50
+-- @target: TYPE-004
+-- @severity: warning
+-- @scenario: customer.email 前导通配符
+SELECT customer_id, email FROM customer WHERE email LIKE '%@example.org' LIMIT 10;
+
+Limit  (cost=0.00..32.98 rows=1 width=36) (actual time=0.077..0.077 rows=0 loops=1)
+  ->  Seq Scan on customer  (cost=0.00..32.98 rows=1 width=36) (actual time=0.076..0.076 rows=0 loops=1)
+        Filter: (email ~~ '%@example.org'::text)
+        Rows Removed by Filter: 599
+Total runtime: 0.086 ms

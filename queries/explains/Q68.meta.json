@@ -1,0 +1,12 @@
+{
+  "id": "Q68",
+  "target_rule": "VEC",
+  "severity": "info",
+  "scenario": "普通 SELECT 触发 Row Adapter / Vector Adapter 切换",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q68.explain"
+}

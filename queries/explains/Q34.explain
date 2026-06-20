@@ -1,0 +1,16 @@
+-- @id: Q34
+-- @target: NET-001
+-- @severity: warning
+-- @scenario: 强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute
+SELECT /*+ hashjoin(r c) */ COUNT(*)
+FROM rental r, customer c
+WHERE r.customer_id = c.customer_id;
+
+Aggregate  (cost=631.35..631.36 rows=1 width=8) (actual time=3.590..3.590 rows=1 loops=1)
+  ->  Hash Join  (cost=44.95..590.17 rows=16472 width=0) (actual time=0.133..2.835 rows=16044 loops=1)
+        Hash Cond: (r.customer_id = c.customer_id)
+        ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.003..0.826 rows=16044 loops=1)
+        ->  Hash  (cost=29.98..29.98 rows=1198 width=4) (actual time=0.097..0.097 rows=599 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 278kB
+              ->  Seq Scan on customer c  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.002..0.054 rows=599 loops=1)
+Total runtime: 3.644 ms

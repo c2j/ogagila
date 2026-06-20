@@ -1,0 +1,12 @@
+{
+  "id": "Q01",
+  "target_rule": "SCAN",
+  "severity": "warning",
+  "scenario": "rental 表(16044 行)无 WHERE 条件,触发 Seq Scan + 100% selectivity",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q01.explain"
+}

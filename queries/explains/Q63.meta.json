@@ -1,0 +1,12 @@
+{
+  "id": "Q63",
+  "target_rule": "SUBQ",
+  "severity": "warning",
+  "scenario": "payment 主查询 + 相关子查询(嵌套两层)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q63.explain"
+}

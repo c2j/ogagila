@@ -1,0 +1,12 @@
+{
+  "id": "Q64",
+  "target_rule": "SUBQ",
+  "severity": "critical",
+  "scenario": "rental.return_date 通过相关子查询自更新",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.002,
+  "explain_file": "Q64.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q33",
+  "target_rule": "SORT",
+  "severity": "warning",
+  "scenario": "DISTINCT + ORDER BY 不同字段",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q33.explain"
+}

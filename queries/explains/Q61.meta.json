@@ -1,0 +1,12 @@
+{
+  "id": "Q61",
+  "target_rule": "SUBQ",
+  "severity": "warning",
+  "scenario": "customer 主查询 + 相关 rental 子查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.015,
+  "explain_file": "Q61.explain"
+}

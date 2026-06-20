@@ -1,0 +1,23 @@
+-- @id: Q26
+-- @target: MEM-001
+-- @severity: warning
+-- @scenario: GROUP BY + ORDER BY 组合排序
+SET work_mem = '128kB';
+SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total
+FROM payment
+GROUP BY customer_id
+ORDER BY total DESC
+LIMIT 20;
+RESET work_mem;
+
+Limit  (cost=424.79..424.84 rows=20 width=50) (actual time=4.030..4.031 rows=20 loops=1)
+  ->  Sort  (cost=424.79..426.28 rows=599 width=50) (actual time=4.030..4.030 rows=20 loops=1)
+        Sort Key: (sum(amount)) DESC
+        Sort Method: top-N heapsort  Memory: 27kB
+        ->  HashAggregate  (cost=402.86..408.85 rows=599 width=50) (actual time=3.901..3.942 rows=599 loops=1)
+              Group By Key: customer_id
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.005..1.628 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.012..0.867 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 4.079 ms

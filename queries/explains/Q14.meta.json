@@ -1,0 +1,12 @@
+{
+  "id": "Q14",
+  "target_rule": "SCAN",
+  "severity": "warning",
+  "scenario": "film.description 文本扫描",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.002,
+  "explain_file": "Q14.explain"
+}

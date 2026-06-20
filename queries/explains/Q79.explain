@@ -1,0 +1,17 @@
+-- @id: Q79
+-- @target: STATS-001
+-- @severity: warning
+-- @scenario: 删 stats 后统计列数为 0
+DELETE STATISTICS payment;
+SELECT COUNT(*) FROM payment WHERE amount > 5.00;
+
+Aggregate  (cost=332.50..332.51 rows=1 width=8) (actual time=9.086..9.086 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.096..8.586 rows=3957 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=3957 width=0) (actual time=0.078..7.598 rows=3957 loops=7)
+              Filter: (amount > 5.00)
+              Rows Removed by Filter: 12092
+              Selected Partitions:  1..7
+Total runtime: 9.301 ms
+
+-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS payment'

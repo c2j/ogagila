@@ -1,0 +1,11 @@
+-- @id: Q06
+-- @target: SCAN-001
+-- @severity: warning
+-- @scenario: address 表按 district(非索引列)过滤
+SELECT * FROM address WHERE district = 'California' LIMIT 10;
+
+Limit  (cost=0.00..15.54 rows=9 width=94) (actual time=0.031..0.138 rows=9 loops=1)
+  ->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.031..0.138 rows=9 loops=1)
+        Filter: (district = 'California'::text)
+        Rows Removed by Filter: 594
+Total runtime: 0.167 ms

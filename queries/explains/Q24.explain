@@ -1,0 +1,11 @@
+-- @id: Q24
+-- @target: MEM-001
+-- @severity: warning
+-- @scenario: 大表 ORDER BY 无索引支撑 + 低内存
+SET work_mem = '64kB';
+SELECT * FROM rental ORDER BY rental_date LIMIT 100;
+RESET work_mem;
+
+Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.894..0.924 rows=100 loops=1)
+  ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.893..0.916 rows=100 loops=1)
+Total runtime: 0.953 ms

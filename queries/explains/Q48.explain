@@ -1,0 +1,11 @@
+-- @id: Q48
+-- @target: TYPE-004
+-- @severity: warning
+-- @scenario: film.title 前导通配符 LIKE
+SELECT film_id, title FROM film WHERE title LIKE '%Action%' LIMIT 10;
+
+Limit  (cost=0.00..67.50 rows=1 width=19) (actual time=0.134..0.134 rows=0 loops=1)
+  ->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.134..0.134 rows=0 loops=1)
+        Filter: (title ~~ '%Action%'::text)
+        Rows Removed by Filter: 1000
+Total runtime: 0.148 ms

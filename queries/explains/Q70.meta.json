@@ -1,0 +1,12 @@
+{
+  "id": "Q70",
+  "target_rule": "VEC",
+  "severity": "info",
+  "scenario": "多表连接混合引擎",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.01,
+  "explain_file": "Q70.explain"
+}

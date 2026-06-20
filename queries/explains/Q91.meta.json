@@ -1,0 +1,12 @@
+{
+  "id": "Q91",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "经典 Sakila 已优化查询:逾期未还",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.012,
+  "explain_file": "Q91.explain"
+}

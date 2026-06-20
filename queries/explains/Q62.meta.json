@@ -1,0 +1,12 @@
+{
+  "id": "Q62",
+  "target_rule": "SUBQ",
+  "severity": "warning",
+  "scenario": "film 主查询 + 相关 film_actor 子查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.001,
+  "explain_file": "Q62.explain"
+}

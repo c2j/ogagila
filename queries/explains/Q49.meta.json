@@ -1,0 +1,12 @@
+{
+  "id": "Q49",
+  "target_rule": "TYPE",
+  "severity": "warning",
+  "scenario": "actor.last_name 前导通配符",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.0,
+  "explain_file": "Q49.explain"
+}

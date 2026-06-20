@@ -1,0 +1,12 @@
+{
+  "id": "Q31",
+  "target_rule": "SORT",
+  "severity": "warning",
+  "scenario": "嵌套 ORDER BY(外层 + 内层各排一次)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.001,
+  "explain_file": "Q31.explain"
+}

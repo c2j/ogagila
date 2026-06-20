@@ -1,0 +1,12 @@
+{
+  "id": "Q46",
+  "target_rule": "TYPE",
+  "severity": "critical",
+  "scenario": "address_id 整数与字符串",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.0,
+  "explain_file": "Q46.explain"
+}

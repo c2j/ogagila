@@ -1,0 +1,12 @@
+{
+  "id": "Q82",
+  "target_rule": "GEN",
+  "severity": "info",
+  "scenario": "多层 CTE 嵌套",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.076,
+  "explain_file": "Q82.explain"
+}

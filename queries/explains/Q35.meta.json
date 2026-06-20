@@ -1,0 +1,12 @@
+{
+  "id": "Q35",
+  "target_rule": "NET",
+  "severity": "warning",
+  "scenario": "payment 与 customer 联接",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q35.explain"
+}

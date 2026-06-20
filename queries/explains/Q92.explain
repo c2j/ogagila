@@ -1,0 +1,17 @@
+-- @id: Q92
+-- @target: NONE
+-- @severity: info
+-- @scenario: payment 按月分区裁剪正确
+SELECT COUNT(*) FROM payment WHERE payment_date >= '2022-03-01' AND payment_date < '2022-04-01';
+
+Aggregate  (cost=104.40..104.41 rows=1 width=8) (actual time=1.260..1.260 rows=1 loops=1)
+  ->  Partition Iterator  (cost=40.01..97.63 rows=2708 width=0) (actual time=0.394..1.015 rows=2713 loops=1)
+        Iterations: 1
+        ->  Partitioned Bitmap Heap Scan on payment  (cost=40.01..97.63 rows=2708 width=0) (actual time=0.377..0.719 rows=2713 loops=1)
+              Recheck Cond: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) AND (payment_date < '2022-04-01 00:00:00+00'::timestamp with time zone))
+              Heap Blocks: exact=21
+              Selected Partitions:  3
+              ->  Partitioned Bitmap Index Scan on payment_pkey  (cost=0.00..39.33 rows=2708 width=0) (actual time=0.354..0.354 rows=2713 loops=1)
+                    Index Cond: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) AND (payment_date < '2022-04-01 00:00:00+00'::timestamp with time zone))
+                    Selected Partitions:  3
+Total runtime: 1.750 ms

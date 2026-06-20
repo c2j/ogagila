@@ -1,0 +1,9 @@
+-- @id: Q87
+-- @target: NONE
+-- @severity: info
+-- @scenario: film 主键点查
+SELECT * FROM film WHERE film_id = 100;
+
+Index Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.249..0.252 rows=1 loops=1)
+  Index Cond: (film_id = 100)
+Total runtime: 0.417 ms
