@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-06-21T08:11:52.536538+00:00",
+  "version": "2.0",
+  "generated_at": "2026-06-21T08:43:13.223525+00:00",
   "total_cases": 97,
   "skipped_due_to_missing_files": [],
   "cases": [
@@ -16,7 +16,7 @@
     {
       "case_id": "OGEXP-GT-2026-0002",
       "source_query_id": "Q02",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q02.explain",
@@ -25,7 +25,7 @@
     {
       "case_id": "OGEXP-GT-2026-0003",
       "source_query_id": "Q03",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q03.explain",
@@ -34,7 +34,7 @@
     {
       "case_id": "OGEXP-GT-2026-0004",
       "source_query_id": "Q04",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q04.explain",
@@ -52,7 +52,7 @@
     {
       "case_id": "OGEXP-GT-2026-0006",
       "source_query_id": "Q06",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q06.explain",
@@ -61,7 +61,7 @@
     {
       "case_id": "OGEXP-GT-2026-0007",
       "source_query_id": "Q07",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q07.explain",
@@ -70,7 +70,7 @@
     {
       "case_id": "OGEXP-GT-2026-0008",
       "source_query_id": "Q08",
-      "target_rule": "SCAN-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q08.explain",
@@ -304,7 +304,7 @@
     {
       "case_id": "OGEXP-GT-2026-0034",
       "source_query_id": "Q34",
-      "target_rule": "NET-001",
+      "target_rule": "SCAN-001",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q34.explain",
@@ -313,7 +313,7 @@
     {
       "case_id": "OGEXP-GT-2026-0035",
       "source_query_id": "Q35",
-      "target_rule": "NET-001",
+      "target_rule": "SCAN-001",
       "is_healthy": false,
       "actually_triggered": true,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q35.explain",
@@ -322,7 +322,7 @@
     {
       "case_id": "OGEXP-GT-2026-0036",
       "source_query_id": "Q36",
-      "target_rule": "NET-001",
+      "target_rule": "SCAN-004",
       "is_healthy": false,
       "actually_triggered": false,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q36.explain",
@@ -549,7 +549,7 @@
       "source_query_id": "Q61",
       "target_rule": "SUBQ-001",
       "is_healthy": false,
-      "actually_triggered": true,
+      "actually_triggered": false,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q61.explain",
       "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/cases/OGEXP-GT-2026-0061.json"
     },
@@ -558,7 +558,7 @@
       "source_query_id": "Q62",
       "target_rule": "SUBQ-001",
       "is_healthy": false,
-      "actually_triggered": true,
+      "actually_triggered": false,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q62.explain",
       "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/cases/OGEXP-GT-2026-0062.json"
     },
@@ -567,7 +567,7 @@
       "source_query_id": "Q63",
       "target_rule": "SUBQ-001",
       "is_healthy": false,
-      "actually_triggered": true,
+      "actually_triggered": false,
       "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/explains/Q63.explain",
       "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v2/cases/OGEXP-GT-2026-0063.json"
     },

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0096",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.532091+00:00",
-  "updated_at": "2026-06-21T08:11:52.532173+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.974428+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment 索引列范围查(customer_id)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM payment WHERE customer_id = 50",
-    "explain_output": "-- @id: Q96\n-- @target: NONE\n-- @severity: info\n-- @scenario: payment 索引列范围查(customer_id)\nSELECT COUNT(*) FROM payment WHERE customer_id = 50;\n\nAggregate  (cost=82.17..82.18 rows=1 width=8) (actual time=0.237..0.237 rows=1 loops=1)\n  ->  Bitmap Heap Scan on payment  (cost=4.52..82.08 rows=35 width=0) (actual time=0.072..0.224 rows=35 loops=1)\n        Recheck Cond: (customer_id = 50)\n        Heap Blocks: exact=18\n        ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.51 rows=35 width=0) (actual time=0.025..0.025 rows=35 loops=1)\n              Index Cond: (customer_id = 50)\nTotal runtime: 0.347 ms\n",
+    "explain_output": "-- @id: Q96\n-- @target: NONE\n-- @severity: info\n-- @scenario: payment 索引列范围查(customer_id)\nSELECT COUNT(*) FROM payment WHERE customer_id = 50;\n\nAggregate  (cost=82.17..82.18 rows=1 width=8) (actual time=0.258..0.258 rows=1 loops=1)\n  ->  Bitmap Heap Scan on payment  (cost=4.52..82.08 rows=35 width=0) (actual time=0.076..0.244 rows=35 loops=1)\n        Recheck Cond: (customer_id = 50)\n        Heap Blocks: exact=18\n        ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.51 rows=35 width=0) (actual time=0.025..0.025 rows=35 loops=1)\n              Index Cond: (customer_id = 50)\nTotal runtime: 0.388 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

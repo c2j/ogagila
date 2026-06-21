@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0076",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.459559+00:00",
-  "updated_at": "2026-06-21T08:11:52.459579+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.786108+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental 无分布键提示",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT r.rental_id, i.film_id\nFROM rental r\nJOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.rental_date >= '2022-06-01'\nLIMIT 20",
-    "explain_output": "-- @id: Q76\n-- @target: DIST-001\n-- @severity: info\n-- @scenario: rental 无分布键提示\nSELECT r.rental_id, i.film_id\nFROM rental r\nJOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.rental_date >= '2022-06-01'\nLIMIT 20;\n\nLimit  (cost=0.00..2.00 rows=20 width=8) (actual time=0.022..0.079 rows=20 loops=1)\n  ->  Merge Join  (cost=0.00..1515.24 rows=15145 width=8) (actual time=0.020..0.074 rows=20 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.007..0.010 rows=8 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=15145 width=8) (actual time=0.008..0.055 rows=20 loops=1)\n              Filter: (rental_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)\n              Rows Removed by Filter: 2\nTotal runtime: 0.141 ms\n",
+    "explain_output": "-- @id: Q76\n-- @target: DIST-001\n-- @severity: info\n-- @scenario: rental 无分布键提示\nSELECT r.rental_id, i.film_id\nFROM rental r\nJOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.rental_date >= '2022-06-01'\nLIMIT 20;\n\nLimit  (cost=0.00..2.00 rows=20 width=8) (actual time=0.024..0.084 rows=20 loops=1)\n  ->  Merge Join  (cost=0.00..1515.24 rows=15145 width=8) (actual time=0.023..0.083 rows=20 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=8) (actual time=0.009..0.012 rows=8 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=15145 width=8) (actual time=0.009..0.062 rows=20 loops=1)\n              Filter: (rental_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)\n              Rows Removed by Filter: 2\nTotal runtime: 0.146 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

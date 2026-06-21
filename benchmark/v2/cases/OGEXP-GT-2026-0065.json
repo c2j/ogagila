@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0065",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.365228+00:00",
-  "updated_at": "2026-06-21T08:11:52.365242+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.766623+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "customer.active 通过 rental 计数自更新",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "UPDATE customer c\nSET active = (\n  SELECT COUNT(*) > 0\n  FROM rental r\n  WHERE r.customer_id = c.customer_id\n)",
-    "explain_output": "-- @id: Q65\n-- @target: SUBQ-006\n-- @severity: critical\n-- @scenario: customer.active 通过 rental 计数自更新\nUPDATE customer c\nSET active = (\n  SELECT COUNT(*) > 0\n  FROM rental r\n  WHERE r.customer_id = c.customer_id\n);\n\nUpdate on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=6.686..1349.192 rows=599 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=2.366..1235.061 rows=599 loops=1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=1228.785..1228.921 rows=599 loops=599)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=46.018..1219.026 rows=16044 loops=599)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 9594312\nTrigger last_updated: time=34.045 calls=599\nTotal runtime: 1349.508 ms\n",
+    "explain_output": "-- @id: Q65\n-- @target: SUBQ-006\n-- @severity: critical\n-- @scenario: customer.active 通过 rental 计数自更新\nUPDATE customer c\nSET active = (\n  SELECT COUNT(*) > 0\n  FROM rental r\n  WHERE r.customer_id = c.customer_id\n);\n\nUpdate on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=10.988..1739.533 rows=599 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=3.669..1569.436 rows=599 loops=1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=1558.803..1558.969 rows=599 loops=599)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=57.048..1542.559 rows=16044 loops=599)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 9594312\nTrigger last_updated: time=50.536 calls=599\nTotal runtime: 1740.007 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 1349,
+    "plan_actual_runtime_ms": 1740,
     "related_tables": [
       "customer",
       "rental"
@@ -37,11 +37,25 @@
         "ogexplain_rule_category": "SUBQ-",
         "severity": "critical",
         "description": "customer.active 通过 rental 计数自更新",
-        "evidence": "->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=2.366..1235.061 rows=599 loops=1)\nFilter: (customer_id = c.customer_id)\nRows Removed by Filter: 9594312",
+        "evidence": "->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=3.669..1569.436 rows=599 loops=1)\nFilter: (customer_id = c.customer_id)\nRows Removed by Filter: 9594312",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 1349ms; actually_triggered=True; signal=\"UPDATE with SubPlan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1740ms; actually_triggered=True; signal=\"UPDATE with SubPlan present\"",
         "verified_by": [
           "build_cases.py:auto"
+        ]
+      },
+      {
+        "cause_id": "RC-2",
+        "category": "over_under_estimation",
+        "ogexplain_rule_id": "EST-001",
+        "ogexplain_rule_category": "EST-",
+        "severity": "warning",
+        "description": "customer 表估算可能偏差(次要发现)",
+        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
+        "verification_method": "consensus_only",
+        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
+        "verified_by": [
+          "v2_review:auto"
         ]
       }
     ],
@@ -54,6 +68,15 @@
         "sql_or_action": "改写为 UPDATE ... FROM",
         "applied": false,
         "effect_validated": false
+      },
+      {
+        "fix_id": "FIX-2",
+        "cause_id": "RC-2",
+        "type": "update_stats",
+        "description": "Default fix template for EST-001",
+        "sql_or_action": "ANALYZE <table>;",
+        "applied": false,
+        "effect_validated": false
       }
     ]
   },
@@ -63,7 +86,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "v2_change_note": "customer 表估算可能偏差(次要发现)"
   },
   "tags": [
     "SUBQ-006",

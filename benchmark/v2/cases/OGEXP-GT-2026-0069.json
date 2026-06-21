@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0069",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.377479+00:00",
-  "updated_at": "2026-06-21T08:11:52.378352+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.770921+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "聚合查询触发 Row Adapter",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT c.customer_id, COUNT(*) AS cnt, SUM(p.amount) AS total\nFROM customer c\nJOIN payment p ON c.customer_id = p.customer_id\nGROUP BY c.customer_id\nLIMIT 20",
-    "explain_output": "-- @id: Q69\n-- @target: VEC-001\n-- @severity: info\n-- @scenario: 聚合查询触发 Row Adapter\nSELECT c.customer_id, COUNT(*) AS cnt, SUM(p.amount) AS total\nFROM customer c\nJOIN payment p ON c.customer_id = p.customer_id\nGROUP BY c.customer_id\nLIMIT 20;\n\nLimit  (cost=0.08..28.46 rows=20 width=50) (actual time=0.185..0.675 rows=20 loops=1)\n  ->  GroupAggregate  (cost=0.08..1699.60 rows=1198 width=50) (actual time=0.184..0.671 rows=20 loops=1)\n        Group By Key: c.customer_id\n        ->  Merge Join  (cost=0.08..1567.25 rows=16049 width=10) (actual time=0.064..0.511 rows=544 loops=1)\n              Merge Cond: (c.customer_id = p.customer_id)\n              ->  Index Only Scan using customer_pkey on customer c  (cost=0.00..59.22 rows=1198 width=4) (actual time=0.012..0.036 rows=21 loops=1)\n                    Heap Fetches: 41\n              ->  Index Scan using idx_fk_payment_customer_id on payment p  (cost=0.00..1304.50 rows=16049 width=10) (actual time=0.046..0.376 rows=544 loops=1)\nTotal runtime: 0.782 ms\n",
+    "explain_output": "-- @id: Q69\n-- @target: VEC-001\n-- @severity: info\n-- @scenario: 聚合查询触发 Row Adapter\nSELECT c.customer_id, COUNT(*) AS cnt, SUM(p.amount) AS total\nFROM customer c\nJOIN payment p ON c.customer_id = p.customer_id\nGROUP BY c.customer_id\nLIMIT 20;\n\nLimit  (cost=0.08..28.46 rows=20 width=50) (actual time=0.727..3.939 rows=20 loops=1)\n  ->  GroupAggregate  (cost=0.08..1699.60 rows=1198 width=50) (actual time=0.724..3.919 rows=20 loops=1)\n        Group By Key: c.customer_id\n        ->  Merge Join  (cost=0.08..1567.25 rows=16049 width=10) (actual time=0.392..3.097 rows=544 loops=1)\n              Merge Cond: (c.customer_id = p.customer_id)\n              ->  Index Only Scan using customer_pkey on customer c  (cost=0.00..59.22 rows=1198 width=4) (actual time=0.129..0.375 rows=21 loops=1)\n                    Heap Fetches: 41\n              ->  Index Scan using idx_fk_payment_customer_id on payment p  (cost=0.00..1304.50 rows=16049 width=10) (actual time=0.097..1.946 rows=544 loops=1)\nTotal runtime: 4.701 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 0,
+    "plan_actual_runtime_ms": 4,
     "related_tables": [
       "customer",
       "payment"
@@ -39,7 +39,7 @@
         "description": "聚合查询触发 Row Adapter",
         "evidence": "(no obvious signal)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"Row/Vector Adapter present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 4ms; actually_triggered=True; signal=\"Row/Vector Adapter present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

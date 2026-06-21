@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0049",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.320352+00:00",
-  "updated_at": "2026-06-21T08:11:52.320357+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.744126+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "actor.last_name 前导通配符",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT actor_id, first_name, last_name FROM actor WHERE last_name LIKE '%son%' LIMIT 10",
-    "explain_output": "-- @id: Q49\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: actor.last_name 前导通配符\nSELECT actor_id, first_name, last_name FROM actor WHERE last_name LIKE '%son%' LIMIT 10;\n\nLimit  (cost=0.00..4.50 rows=1 width=17) (actual time=0.047..0.047 rows=0 loops=1)\n  ->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.045..0.045 rows=0 loops=1)\n        Filter: (last_name ~~ '%son%'::text)\n        Rows Removed by Filter: 200\nTotal runtime: 0.105 ms\n",
+    "explain_output": "-- @id: Q49\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: actor.last_name 前导通配符\nSELECT actor_id, first_name, last_name FROM actor WHERE last_name LIKE '%son%' LIMIT 10;\n\nLimit  (cost=0.00..4.50 rows=1 width=17) (actual time=0.066..0.066 rows=0 loops=1)\n  ->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.064..0.064 rows=0 loops=1)\n        Filter: (last_name ~~ '%son%'::text)\n        Rows Removed by Filter: 200\nTotal runtime: 0.140 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "TYPE-",
         "severity": "warning",
         "description": "actor.last_name 前导通配符",
-        "evidence": "->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.045..0.045 rows=0 loops=1)\nFilter: (last_name ~~ '%son%'::text)\nRows Removed by Filter: 200",
+        "evidence": "->  Seq Scan on actor  (cost=0.00..4.50 rows=1 width=17) (actual time=0.064..0.064 rows=0 loops=1)\nFilter: (last_name ~~ '%son%'::text)\nRows Removed by Filter: 200",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"LIKE ~~ with Filter (leading wildcard)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"explicit cast visible in EXPLAIN\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -73,7 +73,7 @@
   "_auto_eval": {
     "target_rule_designed": "TYPE-004",
     "actually_triggered": true,
-    "trigger_signal": "LIKE ~~ with Filter (leading wildcard)",
+    "trigger_signal": "explicit cast visible in EXPLAIN",
     "run_warnings": []
   }
 }

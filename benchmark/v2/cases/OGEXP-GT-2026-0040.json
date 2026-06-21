@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0040",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.285156+00:00",
-  "updated_at": "2026-06-21T08:11:52.285160+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.714111+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "删 stats 后 inventory 估算偏差",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "DELETE STATISTICS inventory;\nSELECT COUNT(*) FROM inventory WHERE store_id = 1",
-    "explain_output": "-- @id: Q40\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 inventory 估算偏差\nDELETE STATISTICS inventory;\nSELECT COUNT(*) FROM inventory WHERE store_id = 1;\n\nAggregate  (cost=92.94..92.95 rows=1 width=8) (actual time=0.883..0.883 rows=1 loops=1)\n  ->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.022..0.696 rows=2270 loops=1)\n        Filter: (store_id = 1)\n        Rows Removed by Filter: 2311\nTotal runtime: 0.989 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS inventory'\n",
+    "explain_output": "-- @id: Q40\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 inventory 估算偏差\nDELETE STATISTICS inventory;\nSELECT COUNT(*) FROM inventory WHERE store_id = 1;\n\nAggregate  (cost=92.94..92.95 rows=1 width=8) (actual time=1.118..1.119 rows=1 loops=1)\n  ->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.064..0.876 rows=2270 loops=1)\n        Filter: (store_id = 1)\n        Rows Removed by Filter: 2311\nTotal runtime: 1.217 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS inventory'\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 0,
+    "plan_actual_runtime_ms": 1,
     "related_tables": [
       "inventory"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "EST-",
         "severity": "warning",
         "description": "删 stats 后 inventory 估算偏差",
-        "evidence": "->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.022..0.696 rows=2270 loops=1)\nFilter: (store_id = 1)\nRows Removed by Filter: 2311",
+        "evidence": "->  Seq Scan on inventory  (cost=0.00..87.26 rows=2270 width=0) (actual time=0.064..0.876 rows=2270 loops=1)\nFilter: (store_id = 1)\nRows Removed by Filter: 2311",
         "verification_method": "consensus_only",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

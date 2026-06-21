@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0094",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.514743+00:00",
-  "updated_at": "2026-06-21T08:11:52.514754+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.970474+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film 索引列范围查(rating)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM film WHERE rating = 'PG-13'",
-    "explain_output": "-- @id: Q94\n-- @target: NONE\n-- @severity: info\n-- @scenario: film 索引列范围查(rating)\nSELECT COUNT(*) FROM film WHERE rating = 'PG-13';\n\nAggregate  (cost=68.06..68.07 rows=1 width=8) (actual time=0.759..0.759 rows=1 loops=1)\n  ->  Seq Scan on film  (cost=0.00..67.50 rows=223 width=0) (actual time=0.022..0.719 rows=223 loops=1)\n        Filter: (rating = 'PG-13'::mpaa_rating)\n        Rows Removed by Filter: 777\nTotal runtime: 0.856 ms\n",
+    "explain_output": "-- @id: Q94\n-- @target: NONE\n-- @severity: info\n-- @scenario: film 索引列范围查(rating)\nSELECT COUNT(*) FROM film WHERE rating = 'PG-13';\n\nAggregate  (cost=68.06..68.07 rows=1 width=8) (actual time=0.554..0.555 rows=1 loops=1)\n  ->  Seq Scan on film  (cost=0.00..67.50 rows=223 width=0) (actual time=0.023..0.526 rows=223 loops=1)\n        Filter: (rating = 'PG-13'::mpaa_rating)\n        Rows Removed by Filter: 777\nTotal runtime: 0.658 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -34,7 +34,7 @@
         "category": "no_real_problem",
         "severity": "info",
         "description": "No real performance problem; query is well-optimized.",
-        "evidence": "->  Seq Scan on film  (cost=0.00..67.50 rows=223 width=0) (actual time=0.022..0.719 rows=223 loops=1)\nFilter: (rating = 'PG-13'::mpaa_rating)\nRows Removed by Filter: 777",
+        "evidence": "->  Seq Scan on film  (cost=0.00..67.50 rows=223 width=0) (actual time=0.023..0.526 rows=223 loops=1)\nFilter: (rating = 'PG-13'::mpaa_rating)\nRows Removed by Filter: 777",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [

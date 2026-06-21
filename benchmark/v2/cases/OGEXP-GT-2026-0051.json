@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0051",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.321879+00:00",
-  "updated_at": "2026-06-21T08:11:52.321884+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.746154+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "复杂表达式阻止谓词下推",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM rental\nWHERE EXTRACT(YEAR FROM rental_date) = 2022\nLIMIT 10",
-    "explain_output": "-- @id: Q51\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 复杂表达式阻止谓词下推\nSELECT * FROM rental\nWHERE EXTRACT(YEAR FROM rental_date) = 2022\nLIMIT 10;\n\nLimit  (cost=0.00..48.91 rows=10 width=40) (actual time=0.057..0.061 rows=10 loops=1)\n  ->  Seq Scan on rental  (cost=0.00..401.08 rows=82 width=40) (actual time=0.055..0.059 rows=10 loops=1)\n        Filter: (date_part('year'::text, rental_date) = 2022::double precision)\nTotal runtime: 0.137 ms\n",
+    "explain_output": "-- @id: Q51\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 复杂表达式阻止谓词下推\nSELECT * FROM rental\nWHERE EXTRACT(YEAR FROM rental_date) = 2022\nLIMIT 10;\n\nLimit  (cost=0.00..48.91 rows=10 width=40) (actual time=0.386..0.391 rows=10 loops=1)\n  ->  Seq Scan on rental  (cost=0.00..401.08 rows=82 width=40) (actual time=0.383..0.387 rows=10 loops=1)\n        Filter: (date_part('year'::text, rental_date) = 2022::double precision)\nTotal runtime: 0.470 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "PUSH-",
         "severity": "warning",
         "description": "复杂表达式阻止谓词下推",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..401.08 rows=82 width=40) (actual time=0.055..0.059 rows=10 loops=1)\nFilter: (date_part('year'::text, rental_date) = 2022::double precision)",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..401.08 rows=82 width=40) (actual time=0.383..0.387 rows=10 loops=1)\nFilter: (date_part('year'::text, rental_date) = 2022::double precision)",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [

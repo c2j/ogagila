@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0050",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.321449+00:00",
-  "updated_at": "2026-06-21T08:11:52.321453+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.744916+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "customer.email 前导通配符",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT customer_id, email FROM customer WHERE email LIKE '%@example.org' LIMIT 10",
-    "explain_output": "-- @id: Q50\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: customer.email 前导通配符\nSELECT customer_id, email FROM customer WHERE email LIKE '%@example.org' LIMIT 10;\n\nLimit  (cost=0.00..16.49 rows=1 width=36) (actual time=0.144..0.144 rows=0 loops=1)\n  ->  Seq Scan on customer  (cost=0.00..16.49 rows=1 width=36) (actual time=0.142..0.142 rows=0 loops=1)\n        Filter: (email ~~ '%@example.org'::text)\n        Rows Removed by Filter: 599\nTotal runtime: 0.225 ms\n",
+    "explain_output": "-- @id: Q50\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: customer.email 前导通配符\nSELECT customer_id, email FROM customer WHERE email LIKE '%@example.org' LIMIT 10;\n\nLimit  (cost=0.00..16.49 rows=1 width=36) (actual time=0.159..0.159 rows=0 loops=1)\n  ->  Seq Scan on customer  (cost=0.00..16.49 rows=1 width=36) (actual time=0.157..0.157 rows=0 loops=1)\n        Filter: (email ~~ '%@example.org'::text)\n        Rows Removed by Filter: 599\nTotal runtime: 0.239 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "TYPE-",
         "severity": "warning",
         "description": "customer.email 前导通配符",
-        "evidence": "->  Seq Scan on customer  (cost=0.00..16.49 rows=1 width=36) (actual time=0.142..0.142 rows=0 loops=1)\nFilter: (email ~~ '%@example.org'::text)\nRows Removed by Filter: 599",
+        "evidence": "->  Seq Scan on customer  (cost=0.00..16.49 rows=1 width=36) (actual time=0.157..0.157 rows=0 loops=1)\nFilter: (email ~~ '%@example.org'::text)\nRows Removed by Filter: 599",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"LIKE ~~ with Filter (leading wildcard)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"explicit cast visible in EXPLAIN\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -73,7 +73,7 @@
   "_auto_eval": {
     "target_rule_designed": "TYPE-004",
     "actually_triggered": true,
-    "trigger_signal": "LIKE ~~ with Filter (leading wildcard)",
+    "trigger_signal": "explicit cast visible in EXPLAIN",
     "run_warnings": []
   }
 }

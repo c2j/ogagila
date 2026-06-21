@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0008",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.228428+00:00",
-  "updated_at": "2026-06-21T08:11:52.228456+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.669275+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment 表 amount > 10 高 selectivity 过滤(无索引)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM payment WHERE amount > 10.00",
-    "explain_output": "-- @id: Q08\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: payment 表 amount > 10 高 selectivity 过滤(无索引)\nSELECT COUNT(*) FROM payment WHERE amount > 10.00;\n\nAggregate  (cost=322.88..322.89 rows=1 width=8) (actual time=2.205..2.206 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..322.61 rows=107 width=0) (actual time=0.085..2.189 rows=114 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=107 width=0) (actual time=0.244..2.101 rows=114 loops=7)\n              Filter: (amount > 10.00)\n              Rows Removed by Filter: 15935\n              Selected Partitions:  1..7\nTotal runtime: 2.439 ms\n",
+    "explain_output": "-- @id: Q08\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: payment 表 amount > 10 高 selectivity 过滤(无索引)\nSELECT COUNT(*) FROM payment WHERE amount > 10.00;\n\nAggregate  (cost=322.88..322.89 rows=1 width=8) (actual time=48.865..48.865 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..322.61 rows=107 width=0) (actual time=0.117..48.654 rows=114 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=107 width=0) (actual time=3.316..46.940 rows=114 loops=7)\n              Filter: (amount > 10.00)\n              Rows Removed by Filter: 15935\n              Selected Partitions:  1..7\nTotal runtime: 49.155 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 2,
+    "plan_actual_runtime_ms": 49,
     "related_tables": [
       "payment"
     ]
@@ -31,14 +31,14 @@
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
+        "category": "missing_index",
+        "ogexplain_rule_id": "SCAN-004",
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
-        "description": "payment 表 amount > 10 高 selectivity 过滤(无索引)",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=107 width=0) (actual time=0.244..2.101 rows=114 loops=7)\nFilter: (amount > 10.00)\nRows Removed by Filter: 15935",
+        "description": "v2 fix: 由 SCAN-001 改分类为 SCAN-004(payment WHERE amount>10,amount 列无索引,应归 SCAN-004)",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=107 width=0) (actual time=3.316..46.940 rows=114 loops=7)\nFilter: (amount > 10.00)\nRows Removed by Filter: 15935",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 2ms; actually_triggered=True; signal=\"Seq Scan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 49ms; actually_triggered=True; signal=\"Seq Scan present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -62,7 +62,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "v2_change_note": "payment WHERE amount>10,amount 列无索引,应归 SCAN-004"
   },
   "tags": [
     "SCAN-001",
@@ -71,7 +72,7 @@
     "auto-generated"
   ],
   "_auto_eval": {
-    "target_rule_designed": "SCAN-001",
+    "target_rule_designed": "SCAN-004",
     "actually_triggered": true,
     "trigger_signal": "Seq Scan present",
     "run_warnings": []

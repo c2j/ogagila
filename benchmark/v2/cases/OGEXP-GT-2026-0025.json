@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0025",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.259752+00:00",
-  "updated_at": "2026-06-21T08:11:52.259774+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.692942+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大表 ORDER BY amount",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SET work_mem = '128kB';\nSELECT * FROM payment ORDER BY amount DESC LIMIT 50;\nRESET work_mem",
-    "explain_output": "-- @id: Q25\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 大表 ORDER BY amount\nSET work_mem = '128kB';\nSELECT * FROM payment ORDER BY amount DESC LIMIT 50;\nRESET work_mem;\n\nLimit  (cost=815.63..815.75 rows=50 width=30) (actual time=6.447..6.452 rows=50 loops=1)\n  ->  Sort  (cost=815.63..855.75 rows=16049 width=30) (actual time=6.444..6.445 rows=50 loops=1)\n        Sort Key: amount DESC\n        Sort Method: top-N heapsort  Memory: 31kB\n        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.023..3.558 rows=16049 loops=1)\n              Iterations: 7\n              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.054..1.827 rows=16049 loops=7)\n                    Selected Partitions:  1..7\nTotal runtime: 7.159 ms\n",
+    "explain_output": "-- @id: Q25\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 大表 ORDER BY amount\nSET work_mem = '128kB';\nSELECT * FROM payment ORDER BY amount DESC LIMIT 50;\nRESET work_mem;\n\nLimit  (cost=815.63..815.75 rows=50 width=30) (actual time=7.792..7.798 rows=50 loops=1)\n  ->  Sort  (cost=815.63..855.75 rows=16049 width=30) (actual time=7.788..7.791 rows=50 loops=1)\n        Sort Key: amount DESC\n        Sort Method: top-N heapsort  Memory: 31kB\n        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.023..4.321 rows=16049 loops=1)\n              Iterations: 7\n              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.216..2.124 rows=16049 loops=7)\n                    Selected Partitions:  1..7\nTotal runtime: 7.968 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 7,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "MEM-",
         "severity": "warning",
         "description": "大表 ORDER BY amount",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.054..1.827 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.216..2.124 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 7ms; actually_triggered=True; signal=\"Sort Method: top-N heapsort  Memory: 31kB\"",
         "verified_by": [

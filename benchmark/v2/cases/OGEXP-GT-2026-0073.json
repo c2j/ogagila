@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0073",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.451844+00:00",
-  "updated_at": "2026-06-21T08:11:52.451869+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.778853+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大 GROUP BY + 低 work_mem",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SET work_mem = '128kB';\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount), MAX(amount), MIN(amount)\nFROM payment\nGROUP BY customer_id;\nRESET work_mem",
-    "explain_output": "-- @id: Q73\n-- @target: AGG-002\n-- @severity: warning\n-- @scenario: 大 GROUP BY + 低 work_mem\nSET work_mem = '128kB';\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount), MAX(amount), MIN(amount)\nFROM payment\nGROUP BY customer_id;\nRESET work_mem;\n\nHashAggregate  (cost=523.23..530.71 rows=599 width=146) (actual time=7.794..12.556 rows=599 loops=1)\n  Group By Key: customer_id\nTemp File Num: 48\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.019..2.254 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.037..1.335 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 12.784 ms\n",
+    "explain_output": "-- @id: Q73\n-- @target: AGG-002\n-- @severity: warning\n-- @scenario: 大 GROUP BY + 低 work_mem\nSET work_mem = '128kB';\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount), MAX(amount), MIN(amount)\nFROM payment\nGROUP BY customer_id;\nRESET work_mem;\n\nHashAggregate  (cost=523.23..530.71 rows=599 width=146) (actual time=18.801..34.729 rows=599 loops=1)\n  Group By Key: customer_id\nTemp File Num: 48\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.021..5.399 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.058..3.329 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 35.083 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 12,
+    "plan_actual_runtime_ms": 35,
     "related_tables": [
       "payment"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "AGG-",
         "severity": "warning",
         "description": "大 GROUP BY + 低 work_mem",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.037..1.335 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.058..3.329 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 12ms; actually_triggered=True; signal=\"HashAggregate present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 35ms; actually_triggered=True; signal=\"HashAggregate present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0006",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.224219+00:00",
-  "updated_at": "2026-06-21T08:11:52.224248+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.666162+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "address 表按 district(非索引列)过滤",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT * FROM address WHERE district = 'California' LIMIT 10",
-    "explain_output": "-- @id: Q06\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: address 表按 district(非索引列)过滤\nSELECT * FROM address WHERE district = 'California' LIMIT 10;\n\nLimit  (cost=0.00..15.54 rows=9 width=94) (actual time=0.067..0.274 rows=9 loops=1)\n  ->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.066..0.273 rows=9 loops=1)\n        Filter: (district = 'California'::text)\n        Rows Removed by Filter: 594\nTotal runtime: 0.370 ms\n",
+    "explain_output": "-- @id: Q06\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: address 表按 district(非索引列)过滤\nSELECT * FROM address WHERE district = 'California' LIMIT 10;\n\nLimit  (cost=0.00..15.54 rows=9 width=94) (actual time=0.457..1.016 rows=9 loops=1)\n  ->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.453..1.009 rows=9 loops=1)\n        Filter: (district = 'California'::text)\n        Rows Removed by Filter: 594\nTotal runtime: 1.309 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 0,
+    "plan_actual_runtime_ms": 1,
     "related_tables": [
       "address"
     ]
@@ -31,14 +31,14 @@
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
+        "category": "missing_index",
+        "ogexplain_rule_id": "SCAN-004",
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
-        "description": "address 表按 district(非索引列)过滤",
-        "evidence": "->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.066..0.273 rows=9 loops=1)\nFilter: (district = 'California'::text)\nRows Removed by Filter: 594",
+        "description": "v2 fix: 由 SCAN-001 改分类为 SCAN-004(address WHERE district=,district 列无索引,应归 SCAN-004)",
+        "evidence": "->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.453..1.009 rows=9 loops=1)\nFilter: (district = 'California'::text)\nRows Removed by Filter: 594",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"Seq Scan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=True; signal=\"Seq Scan present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -62,7 +62,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "v2_change_note": "address WHERE district=,district 列无索引,应归 SCAN-004"
   },
   "tags": [
     "SCAN-001",
@@ -71,7 +72,7 @@
     "auto-generated"
   ],
   "_auto_eval": {
-    "target_rule_designed": "SCAN-001",
+    "target_rule_designed": "SCAN-004",
     "actually_triggered": true,
     "trigger_signal": "Seq Scan present",
     "run_warnings": []

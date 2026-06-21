@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0044",
-  "version": "1.0",
-  "created_at": "2026-06-21T08:11:52.314813+00:00",
-  "updated_at": "2026-06-21T08:11:52.314827+00:00",
+  "version": "2.0",
+  "created_at": "2026-06-20T22:59:33.732418+00:00",
+  "updated_at": "2026-06-21T08:43:13.223525+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "customer_id integer 字段用字符串比较",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM customer WHERE customer_id = '42'",
-    "explain_output": "-- @id: Q44\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: customer_id integer 字段用字符串比较\nSELECT * FROM customer WHERE customer_id = '42';\n\nIndex Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=78) (actual time=0.014..0.015 rows=1 loops=1)\n  Index Cond: (customer_id = 42)\nTotal runtime: 0.057 ms\n",
+    "explain_output": "-- @id: Q44\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: customer_id integer 字段用字符串比较\nSELECT * FROM customer WHERE customer_id = '42';\n\nIndex Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=78) (actual time=0.013..0.014 rows=1 loops=1)\n  Index Cond: (customer_id = 42)\nTotal runtime: 0.054 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
