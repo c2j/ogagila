@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0072",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.777046+00:00",
-  "updated_at": "2026-06-20T22:59:33.777078+00:00",
+  "updated_at": "2026-06-21T11:55:08.514706+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment GROUP BY 排序聚合",
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "AGG-001",
-        "ogexplain_rule_category": "AGG-",
-        "severity": "warning",
-        "description": "payment GROUP BY 排序聚合",
+        "severity": "info",
+        "description": "GroupAggregate forced but only 2 staff groups — data too small for this rule",
         "evidence": "(no obvious signal)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 15ms; actually_triggered=True; signal=\"GroupAggregate present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 15ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for AGG-001",
-        "sql_or_action": "enable_hashagg=on / enable_sort=on",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): GroupAggregate forced but only 2 staff groups — data too small for this rule"
   },
   "tags": [
     "AGG-001",

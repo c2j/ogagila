@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0015",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.679787+00:00",
-  "updated_at": "2026-06-20T22:59:33.679808+00:00",
+  "updated_at": "2026-06-21T11:55:08.506272+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "customer→rental→payment→inventory→film 5 表嵌套循环",
@@ -30,35 +30,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "suboptimal_join_algorithm",
-        "ogexplain_rule_id": "JOIN-001",
-        "ogexplain_rule_category": "JOIN-",
-        "severity": "warning",
-        "description": "customer→rental→payment→inventory→film 5 表嵌套循环",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Optimizer chose Hash Join (×4), not Nested Loop — already optimal join strategy",
         "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.069..2.502 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 72ms; actually_triggered=True; signal=\"Hash Join present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 72ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for JOIN-001",
-        "sql_or_action": "enable_nestloop=off / 强制使用 Hash Join",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -66,7 +54,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Optimizer chose Hash Join (×4), not Nested Loop — already optimal join strategy"
   },
   "tags": [
     "JOIN-001",
