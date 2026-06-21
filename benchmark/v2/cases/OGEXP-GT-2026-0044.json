@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0044",
   "version": "2.0",
   "created_at": "2026-06-20T22:59:33.732418+00:00",
-  "updated_at": "2026-06-21T08:43:13.223525+00:00",
+  "updated_at": "2026-06-21T12:00:58.703505+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "customer_id integer 字段用字符串比较",
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "critical",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "implicit_type_coercion",
-        "ogexplain_rule_id": "TYPE-001",
-        "ogexplain_rule_category": "TYPE-",
-        "severity": "critical",
-        "description": "customer_id integer 字段用字符串比较",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Implicit cast handled correctly — optimizer used Index Scan (customer_id = 42)",
         "evidence": "Index Cond: (customer_id = 42)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"no obvious cast signal in EXPLAIN\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for TYPE-001",
-        "sql_or_action": "将字面量转为目标列类型",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Implicit cast handled correctly — optimizer used Index Scan (customer_id = 42)"
   },
   "tags": [
     "TYPE-001",

@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0082",
   "version": "2.0",
   "created_at": "2026-06-20T22:59:33.817638+00:00",
-  "updated_at": "2026-06-21T08:43:13.223525+00:00",
+  "updated_at": "2026-06-21T12:00:58.703347+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多层 CTE 嵌套",
@@ -30,35 +30,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "info",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "GEN-001",
-        "ogexplain_rule_category": "GEN-",
         "severity": "info",
-        "description": "多层 CTE 嵌套",
+        "description": "Plan depth ~3-4, GEN-001 threshold >10 — optimizer flattened nested queries to Semi Joins",
         "evidence": "->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.072..0.362 rows=584 loops=1)\nFilter: (active = 1)\nRows Removed by Filter: 15",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 31ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 31ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for GEN-001",
-        "sql_or_action": "简化嵌套或拆 CTE",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -66,7 +54,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Plan depth ~3-4, GEN-001 threshold >10 — optimizer flattened nested queries to Semi Joins"
   },
   "tags": [
     "GEN-001",
