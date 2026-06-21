@@ -1,0 +1,14 @@
+-- @id: Q72
+-- @target: AGG-001
+-- @severity: warning
+-- @scenario: payment GROUP BY 排序聚合
+SET enable_hashagg = off;
+SELECT staff_id, COUNT(*) FROM payment GROUP BY staff_id LIMIT 10;
+RESET enable_hashagg;
+
+Limit  (cost=0.00..1232.75 rows=2 width=12) (actual time=9.286..27.892 rows=2 loops=1)
+  ->  GroupAggregate  (cost=0.00..1232.75 rows=2 width=12) (actual time=9.283..27.885 rows=2 loops=1)
+        Group By Key: staff_id
+        ->  Index Only Scan using idx_fk_payment_staff_id on payment  (cost=0.00..1152.49 rows=16049 width=4) (actual time=0.132..25.273 rows=16049 loops=1)
+              Heap Fetches: 13484
+Total runtime: 28.107 ms

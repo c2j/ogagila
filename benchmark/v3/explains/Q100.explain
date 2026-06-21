@@ -1,0 +1,23 @@
+-- @id: Q100
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 累计 SUM OVER,触发 WindowAgg 节点
+SELECT
+    customer_id,
+    payment_date,
+    amount,
+    SUM(amount) OVER (PARTITION BY customer_id ORDER BY payment_date) AS running_total
+FROM payment
+WHERE customer_id <= 5
+ORDER BY customer_id, payment_date;
+
+WindowAgg  (cost=138.89..141.51 rows=131 width=18) (actual time=0.330..0.425 rows=145 loops=1)
+  ->  Sort  (cost=138.89..139.22 rows=131 width=18) (actual time=0.315..0.318 rows=145 loops=1)
+        Sort Key: customer_id, payment_date
+        Sort Method: quicksort  Memory: 36kB
+        ->  Bitmap Heap Scan on payment  (cost=5.27..134.29 rows=131 width=18) (actual time=0.084..0.246 rows=145 loops=1)
+              Recheck Cond: (customer_id <= 5)
+              Heap Blocks: exact=25
+              ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..5.23 rows=131 width=0) (actual time=0.028..0.028 rows=145 loops=1)
+                    Index Cond: (customer_id <= 5)
+Total runtime: 0.550 ms

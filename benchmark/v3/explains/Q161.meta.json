@@ -1,0 +1,12 @@
+{
+  "id": "Q161",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "跨分区查询,customer_id 无全局索引",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.019,
+  "explain_file": "Q161.explain"
+}

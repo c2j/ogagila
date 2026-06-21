@@ -1,0 +1,70 @@
+{
+  "case_id": "OGEXP-GT-2026-0027",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.370138+00:00",
+  "updated_at": "2026-06-21T12:01:47.480921+00:00",
+  "status": "draft",
+  "source": {
+    "business_scenario": "多列 ORDER BY 触发 external sort",
+    "database_version": "openGauss 7.0.0-RC1",
+    "database_mode": "centralized",
+    "table_size_class": "medium",
+    "data_volume_rows": 16049,
+    "collection_date": "2026-06-20",
+    "collector_id": "ogagila-auto",
+    "anonymized": true,
+    "redaction_notes": "Synthetic Pagila schema; no real customer data"
+  },
+  "input": {
+    "sql": "SET work_mem = '64kB';\nSELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem",
+    "explain_output": "-- @id: Q27\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 多列 ORDER BY 触发 external sort\nSET work_mem = '64kB';\nSELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem;\n\nLimit  (cost=1030.63..1031.13 rows=200 width=16) (actual time=4.205..4.269 rows=200 loops=1)\n  ->  Sort  (cost=1030.63..1071.81 rows=16472 width=16) (actual time=4.202..4.252 rows=200 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: top-N heapsort  Memory: 34kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.012..2.188 rows=16044 loops=1)\nTotal runtime: 4.350 ms\n",
+    "explain_format": "text",
+    "has_analyze": true,
+    "plan_actual_runtime_ms": 4,
+    "related_tables": [
+      "rental"
+    ]
+  },
+  "ground_truth": {
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
+    "root_causes": [
+      {
+        "cause_id": "RC-1",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "top-N heapsort (Memory: 34kB) — in-memory sort, not external spill",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.012..2.188 rows=16044 loops=1)",
+        "verification_method": "runtime_trace",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 4ms",
+        "verified_by": [
+          "reclassified_per_issue_1"
+        ]
+      }
+    ],
+    "suggested_fixes": []
+  },
+  "annotations": [],
+  "validation": {
+    "consensus_reached": false,
+    "disputed_fields": [],
+    "arbiter_id": "pending",
+    "final_decision_at": null,
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): top-N heapsort (Memory: 34kB) — in-memory sort, not external spill"
+  },
+  "tags": [
+    "MEM-001",
+    "db-version:og7.0",
+    "schema:pagila",
+    "auto-generated",
+    "side-effect",
+    "skipped-statements"
+  ],
+  "_auto_eval": {
+    "target_rule_designed": "MEM-001",
+    "actually_triggered": true,
+    "trigger_signal": "Sort Method: top-N heapsort  Memory: 34kB",
+    "run_warnings": []
+  }
+}

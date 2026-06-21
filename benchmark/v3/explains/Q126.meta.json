@@ -1,0 +1,12 @@
+{
+  "id": "Q126",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "相关子查询 in SELECT + WHERE",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.038,
+  "explain_file": "Q126.explain"
+}

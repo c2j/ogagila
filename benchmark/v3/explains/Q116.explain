@@ -1,0 +1,33 @@
+-- @id: Q116
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: LATERAL 取前 N 个 actor
+SELECT f.film_id, f.title, a.actor_id, a.first_name
+FROM film f
+CROSS JOIN LATERAL (
+    SELECT fa.actor_id, ac.first_name
+    FROM film_actor fa
+    JOIN actor ac ON fa.actor_id = ac.actor_id
+    WHERE fa.film_id = f.film_id
+    ORDER BY fa.actor_id
+    LIMIT 3
+) a
+ORDER BY f.film_id;
+
+Nested Loop  (cost=22.95..23119.67 rows=3000 width=29) (actual time=2.066..195.349 rows=2880 loops=1)
+  ->  Index Scan using film_pkey on film f  (cost=0.00..101.59 rows=1000 width=19) (actual time=0.093..1.741 rows=1000 loops=1)
+  ->  Limit  (cost=22.95..22.96 rows=3 width=10) (actual time=190.067..190.433 rows=2880 loops=1000)
+        ->  Sort  (cost=22.95..22.96 rows=5 width=10) (actual time=188.223..188.322 rows=2880 loops=1000)
+              Sort Key: fa.actor_id
+              Sort Method: quicksort  Memory: 25kB
+              ->  Hash Join  (cost=18.29..22.89 rows=5 width=10) (actual time=126.544..159.900 rows=5462 loops=1000)
+                    Hash Cond: (ac.actor_id = fa.actor_id)
+                    ->  Seq Scan on actor ac  (cost=0.00..4.00 rows=200 width=10) (actual time=3.793..15.801 rows=199400 loops=997)
+                    ->  Hash  (cost=18.23..18.23 rows=5 width=4) (actual time=41.390..41.390 rows=5462 loops=1000)
+                           Buckets: 32768  Batches: 1  Memory Usage: 257kB
+                          ->  Bitmap Heap Scan on film_actor fa  (cost=4.29..18.23 rows=5 width=4) (actual time=20.149..30.173 rows=5462 loops=1000)
+                                Recheck Cond: (film_id = f.film_id)
+                                Heap Blocks: exact=5075
+                                ->  Bitmap Index Scan on idx_fk_film_id  (cost=0.00..4.29 rows=5 width=0) (actual time=15.810..15.810 rows=5462 loops=1000)
+                                      Index Cond: (film_id = f.film_id)
+Total runtime: 196.758 ms

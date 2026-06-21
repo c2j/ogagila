@@ -1,0 +1,28 @@
+-- @id: Q145
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 队列分析:按首次付费月份分组
+SELECT
+    DATE_TRUNC('month', first_payment) AS cohort,
+    COUNT(*) AS cohort_size
+FROM (
+    SELECT customer_id, MIN(payment_date) AS first_payment
+    FROM payment
+    GROUP BY customer_id
+) sub
+GROUP BY DATE_TRUNC('month', first_payment)
+ORDER BY cohort;
+
+Sort  (cost=379.50..379.52 rows=10 width=16) (actual time=10.310..10.311 rows=3 loops=1)
+  Sort Key: (date_trunc('month'::text, sub.first_payment))
+  Sort Method: quicksort  Memory: 25kB
+  ->  HashAggregate  (cost=379.21..379.33 rows=10 width=16) (actual time=10.291..10.291 rows=3 loops=1)
+        Group By Key: date_trunc('month'::text, sub.first_payment)
+        ->  Subquery Scan on sub  (cost=362.74..376.21 rows=599 width=8) (actual time=10.025..10.191 rows=599 loops=1)
+              ->  HashAggregate  (cost=362.74..368.73 rows=599 width=20) (actual time=9.971..10.017 rows=599 loops=1)
+                    Group By Key: payment.customer_id
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=12) (actual time=0.017..6.101 rows=16049 loops=1)
+                          Iterations: 7
+                          ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=12) (actual time=0.074..2.757 rows=16049 loops=7)
+                                Selected Partitions:  1..7
+Total runtime: 10.831 ms

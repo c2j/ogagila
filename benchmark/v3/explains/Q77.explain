@@ -1,0 +1,16 @@
+-- @id: Q77
+-- @target: SKEW-001
+-- @severity: warning
+-- @scenario: 按 customer_id 聚合,数据分布不均(部分客户消费多)
+SELECT customer_id, COUNT(*) AS pay_cnt, SUM(amount) AS pay_total
+FROM payment
+GROUP BY customer_id
+HAVING SUM(amount) > 30
+LIMIT 10;
+
+Limit  (cost=0.00..25.92 rows=10 width=82) (actual time=0.177..0.402 rows=10 loops=1)
+  ->  GroupAggregate  (cost=0.00..1552.48 rows=599 width=82) (actual time=0.175..0.397 rows=10 loops=1)
+        Group By Key: customer_id
+        Filter: (sum(amount) > 30::numeric)
+        ->  Index Scan using idx_fk_payment_customer_id on payment  (cost=0.00..1384.50 rows=16049 width=10) (actual time=0.069..0.297 rows=279 loops=1)
+Total runtime: 0.567 ms

@@ -1,0 +1,17 @@
+-- @id: Q192
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图内 LIMIT(反例: LIMIT 阻止谓词下推)
+CREATE OR REPLACE VIEW v_top10_films AS
+SELECT film_id, title, rental_rate FROM film ORDER BY rental_rate DESC LIMIT 10;
+SELECT * FROM v_top10_films WHERE film_id = 1;
+
+Subquery Scan on v_top10_films  (cost=97.62..97.77 rows=1 width=25) (actual time=4.711..4.711 rows=0 loops=1)
+  Filter: (v_top10_films.film_id = 1)
+  Rows Removed by Filter: 10
+  ->  Limit  (cost=97.62..97.65 rows=10 width=25) (actual time=4.690..4.693 rows=10 loops=1)
+        ->  Sort  (cost=97.62..100.44 rows=1127 width=25) (actual time=4.688..4.690 rows=10 loops=1)
+              Sort Key: film.rental_rate DESC
+              Sort Method: top-N heapsort  Memory: 25kB
+              ->  Seq Scan on film  (cost=0.00..73.27 rows=1127 width=25) (actual time=0.021..3.989 rows=1000 loops=1)
+Total runtime: 4.823 ms

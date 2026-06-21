@@ -1,0 +1,25 @@
+-- @id: Q101
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: RANK vs DENSE_RANK
+SELECT
+    film_id,
+    title,
+    rental_rate,
+    RANK() OVER (ORDER BY rental_rate DESC) AS rk,
+    DENSE_RANK() OVER (ORDER BY rental_rate DESC) AS drk
+FROM film
+WHERE rental_rate > 2.99
+ORDER BY rental_rate DESC, film_id;
+
+Sort  (cost=102.42..103.26 rows=336 width=25) (actual time=1.279..1.289 rows=336 loops=1)
+  Sort Key: rental_rate DESC, film_id
+  Sort Method: quicksort  Memory: 52kB
+  ->  WindowAgg  (cost=81.60..88.32 rows=336 width=25) (actual time=0.688..0.965 rows=336 loops=1)
+        ->  Sort  (cost=81.60..82.44 rows=336 width=25) (actual time=0.677..0.692 rows=336 loops=1)
+              Sort Key: rental_rate DESC
+              Sort Method: quicksort  Memory: 51kB
+              ->  Seq Scan on film  (cost=0.00..67.50 rows=336 width=25) (actual time=0.014..0.594 rows=336 loops=1)
+                    Filter: (rental_rate > 2.99)
+                    Rows Removed by Filter: 664
+Total runtime: 1.396 ms

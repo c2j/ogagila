@@ -18,6 +18,7 @@
     "validation"
   ],
   "additionalProperties": false,
+  "$comment": "⚠️  additionalProperties=false 意味着任何 build_cases.py 新增的字段必须同步在此 schema 中定义,否则所有 case JSON 校验失败。见 Issue #1 历史。",
   "properties": {
     "case_id": {
       "type": "string",
@@ -217,6 +218,7 @@
     "_auto_eval": {
       "type": "object",
       "additionalProperties": false,
+      "$comment": "由 build_cases.py:build_case() 自动生成。与顶层 additionalProperties=false 联动 — build_cases.py 新增字段必须同步更新此 schema,否则全部 case JSON 校验失败。",
       "description": "Auto-evaluation metadata from build_cases.py (heuristic, not ground truth)",
       "properties": {
         "target_rule_designed": {

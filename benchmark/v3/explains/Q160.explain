@@ -1,0 +1,13 @@
+-- @id: Q160
+-- @target: PART-001
+-- @severity: info
+-- @scenario: 局部分区索引 seek(单分区)
+CREATE INDEX IF NOT EXISTS idx_payment_date ON payment (payment_date) LOCAL;
+SELECT * FROM payment WHERE payment_date BETWEEN '2022-06-01' AND '2022-06-30';
+
+Partition Iterator  (cost=0.00..85.47 rows=2567 width=30) (actual time=0.572..3.938 rows=2571 loops=1)
+  Iterations: 1
+  ->  Partitioned Index Scan using idx_payment_date on payment  (cost=0.00..85.47 rows=2567 width=30) (actual time=0.561..3.650 rows=2571 loops=1)
+        Index Cond: ((payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone) AND (payment_date <= '2022-06-30 00:00:00+00'::timestamp with time zone))
+        Selected Partitions:  6
+Total runtime: 4.387 ms

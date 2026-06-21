@@ -1,0 +1,12 @@
+{
+  "id": "Q148",
+  "target_rule": "MEM-004",
+  "severity": "warning",
+  "scenario": "大 Hash 表 + 多表 JOIN(降低 work_mem)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.092,
+  "explain_file": "Q148.explain"
+}

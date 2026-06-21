@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0024",
   "version": "2.0",
   "created_at": "2026-06-20T22:59:33.691887+00:00",
-  "updated_at": "2026-06-21T08:43:13.223525+00:00",
+  "updated_at": "2026-06-21T12:00:58.699510+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大表 ORDER BY 无索引支撑 + 低内存",
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "excessive_sort_spill",
-        "ogexplain_rule_id": "MEM-001",
-        "ogexplain_rule_category": "MEM-",
-        "severity": "warning",
-        "description": "大表 ORDER BY 无索引支撑 + 低内存",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Index Scan avoids sorting entirely — no Sort node, no spill",
         "evidence": "(no obvious signal)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for MEM-001",
-        "sql_or_action": "SET work_mem = '256MB';",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Index Scan avoids sorting entirely — no Sort node, no spill"
   },
   "tags": [
     "MEM-001",

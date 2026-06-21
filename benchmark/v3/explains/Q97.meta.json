@@ -1,0 +1,12 @@
+{
+  "id": "Q97",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "rental 索引列精确查(inventory_id)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q97.explain"
+}

@@ -1,0 +1,25 @@
+-- @id: Q103
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: FIRST_VALUE + DISTINCT
+SELECT DISTINCT
+    customer_id,
+    FIRST_VALUE(payment_date) OVER (PARTITION BY customer_id ORDER BY payment_date) AS first_pay,
+    LAST_VALUE(payment_date) OVER (PARTITION BY customer_id ORDER BY payment_date
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_pay
+FROM payment
+WHERE customer_id <= 10;
+
+HashAggregate  (cost=157.76..160.37 rows=261 width=12) (actual time=0.750..0.751 rows=10 loops=1)
+  Group By Key: customer_id, (first_value(payment_date) OVER (PARTITION BY customer_id ORDER BY payment_date USING = NULLS LAST)), last_value(payment_date) OVER (PARTITION BY customer_id ORDER BY payment_date USING = NULLS LAST ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+  ->  WindowAgg  (cost=146.01..155.80 rows=261 width=12) (actual time=0.442..0.651 rows=278 loops=1)
+        ->  WindowAgg  (cost=146.01..151.23 rows=261 width=12) (actual time=0.400..0.525 rows=278 loops=1)
+              ->  Sort  (cost=146.01..146.66 rows=261 width=12) (actual time=0.391..0.401 rows=278 loops=1)
+                    Sort Key: customer_id, payment_date
+                    Sort Method: quicksort  Memory: 38kB
+                    ->  Bitmap Heap Scan on payment  (cost=10.27..135.54 rows=261 width=12) (actual time=0.096..0.279 rows=278 loops=1)
+                          Recheck Cond: (customer_id <= 10)
+                          Heap Blocks: exact=29
+                          ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..10.21 rows=261 width=0) (actual time=0.033..0.033 rows=278 loops=1)
+                                Index Cond: (customer_id <= 10)
+Total runtime: 0.918 ms

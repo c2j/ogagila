@@ -1,0 +1,12 @@
+{
+  "id": "Q174",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "UPDATE 嵌套相关子查询(多层)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.09,
+  "explain_file": "Q174.explain"
+}

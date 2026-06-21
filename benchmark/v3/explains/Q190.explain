@@ -1,0 +1,18 @@
+-- @id: Q190
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图套分区表 + 谓词(反例: 谓词不下推导致全分区扫)
+CREATE OR REPLACE VIEW v_payment_2022 AS
+SELECT * FROM payment WHERE payment_date >= '2022-01-01';
+SELECT * FROM v_payment_2022 WHERE payment_date >= '2022-06-01';
+
+Partition Iterator  (cost=67.34..177.10 rows=4984 width=30) (actual time=5.268..12.363 rows=4988 loops=1)
+  Iterations: 2
+  ->  Partitioned Bitmap Heap Scan on payment  (cost=67.34..177.10 rows=4984 width=30) (actual time=7.684..10.483 rows=4988 loops=2)
+        Recheck Cond: ((payment_date >= '2022-01-01 00:00:00+00'::timestamp with time zone) AND (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone))
+        Heap Blocks: exact=38
+        Selected Partitions:  6..7
+        ->  Partitioned Bitmap Index Scan on payment_pkey  (cost=0.00..66.09 rows=4984 width=0) (actual time=7.514..7.514 rows=7642 loops=2)
+              Index Cond: ((payment_date >= '2022-01-01 00:00:00+00'::timestamp with time zone) AND (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone))
+              Selected Partitions:  6..7
+Total runtime: 13.771 ms

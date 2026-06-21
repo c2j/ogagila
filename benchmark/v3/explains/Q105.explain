@@ -1,0 +1,31 @@
+-- @id: Q105
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 同一查询多个 window partition
+SELECT
+    staff_id,
+    customer_id,
+    amount,
+    SUM(amount) OVER (PARTITION BY staff_id) AS staff_total,
+    SUM(amount) OVER (PARTITION BY customer_id) AS cust_total
+FROM payment
+WHERE payment_date >= '2022-06-01' AND payment_date < '2022-07-01';
+
+WindowAgg  (cost=436.74..483.21 rows=2655 width=14) (actual time=4.711..6.668 rows=2654 loops=1)
+  ->  Sort  (cost=436.74..443.38 rows=2655 width=14) (actual time=4.704..5.026 rows=2654 loops=1)
+        Sort Key: customer_id
+        Sort Method: quicksort  Memory: 304kB
+        ->  WindowAgg  (cost=239.29..285.75 rows=2655 width=14) (actual time=3.301..4.028 rows=2654 loops=1)
+              ->  Sort  (cost=239.29..245.92 rows=2655 width=14) (actual time=2.855..2.973 rows=2654 loops=1)
+                    Sort Key: staff_id
+                    Sort Method: quicksort  Memory: 221kB
+                    ->  Partition Iterator  (cost=31.46..88.29 rows=2655 width=14) (actual time=1.196..1.882 rows=2654 loops=1)
+                          Iterations: 1
+                          ->  Partitioned Bitmap Heap Scan on payment  (cost=31.46..88.29 rows=2655 width=14) (actual time=1.181..1.621 rows=2654 loops=1)
+                                Recheck Cond: ((payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone) AND (payment_date < '2022-07-01 00:00:00+00'::timestamp with time zone))
+                                Heap Blocks: exact=20
+                                Selected Partitions:  6
+                                ->  Partitioned Bitmap Index Scan on payment_pkey  (cost=0.00..30.80 rows=2655 width=0) (actual time=1.161..1.161 rows=2654 loops=1)
+                                      Index Cond: ((payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone) AND (payment_date < '2022-07-01 00:00:00+00'::timestamp with time zone))
+                                      Selected Partitions:  6
+Total runtime: 7.300 ms

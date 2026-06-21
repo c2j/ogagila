@@ -1,0 +1,21 @@
+-- @id: Q32
+-- @target: SORT-003
+-- @severity: warning
+-- @scenario: UNION + ORDER BY 触发两层 sort
+SELECT rental_id, customer_id FROM rental WHERE staff_id = 1
+UNION ALL
+SELECT rental_id, customer_id FROM rental WHERE staff_id = 2
+ORDER BY 1, 2;
+
+Sort  (cost=2038.20..2079.38 rows=16472 width=8) (actual time=72.181..72.655 rows=16044 loops=1)
+  Sort Key: public.rental.rental_id, public.rental.customer_id
+  Sort Method: quicksort  Memory: 1137kB
+  ->  Result  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.039..35.795 rows=16044 loops=1)
+        ->  Append  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.037..29.793 rows=16044 loops=1)
+              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.035..3.107 rows=8040 loops=1)
+                    Filter: (staff_id = 1)
+                    Rows Removed by Filter: 8004
+              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8218 width=8) (actual time=0.195..13.824 rows=8004 loops=1)
+                    Filter: (staff_id = 2)
+                    Rows Removed by Filter: 8040
+Total runtime: 73.857 ms

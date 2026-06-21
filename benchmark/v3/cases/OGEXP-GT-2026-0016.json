@@ -1,0 +1,69 @@
+{
+  "case_id": "OGEXP-GT-2026-0016",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.362714+00:00",
+  "updated_at": "2026-06-21T12:01:47.479093+00:00",
+  "status": "draft",
+  "source": {
+    "business_scenario": "rental ↔ inventory NL(staff_id 无索引时)",
+    "database_version": "openGauss 7.0.0-RC1",
+    "database_mode": "centralized",
+    "table_size_class": "medium",
+    "data_volume_rows": 16049,
+    "collection_date": "2026-06-20",
+    "collector_id": "ogagila-auto",
+    "anonymized": true,
+    "redaction_notes": "Synthetic Pagila schema; no real customer data"
+  },
+  "input": {
+    "sql": "SELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10",
+    "explain_output": "-- @id: Q16\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: rental ↔ inventory NL(staff_id 无索引时)\nSELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10;\n\nLimit  (cost=0.00..1.79 rows=10 width=12) (actual time=0.046..0.076 rows=10 loops=1)\n  ->  Merge Join  (cost=0.00..1477.10 rows=8254 width=12) (actual time=0.043..0.072 rows=10 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..209.97 rows=4581 width=12) (actual time=0.009..0.009 rows=6 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.021..0.047 rows=10 loops=1)\n              Filter: (staff_id = 1)\n              Rows Removed by Filter: 3\nTotal runtime: 0.149 ms\n",
+    "explain_format": "text",
+    "has_analyze": true,
+    "plan_actual_runtime_ms": 0,
+    "related_tables": [
+      "inventory",
+      "rental"
+    ]
+  },
+  "ground_truth": {
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
+    "root_causes": [
+      {
+        "cause_id": "RC-1",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Optimizer chose Merge Join, not Nested Loop — already optimal join strategy",
+        "evidence": "Filter: (staff_id = 1)\nRows Removed by Filter: 3",
+        "verification_method": "runtime_trace",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
+        "verified_by": [
+          "reclassified_per_issue_1"
+        ]
+      }
+    ],
+    "suggested_fixes": []
+  },
+  "annotations": [],
+  "validation": {
+    "consensus_reached": false,
+    "disputed_fields": [],
+    "arbiter_id": "pending",
+    "final_decision_at": null,
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Optimizer chose Merge Join, not Nested Loop — already optimal join strategy"
+  },
+  "tags": [
+    "JOIN-001",
+    "db-version:og7.0",
+    "schema:pagila",
+    "auto-generated"
+  ],
+  "_auto_eval": {
+    "target_rule_designed": "JOIN-001",
+    "actually_triggered": false,
+    "trigger_signal": "(no signal pattern matched)",
+    "run_warnings": []
+  }
+}

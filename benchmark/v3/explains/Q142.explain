@@ -1,0 +1,23 @@
+-- @id: Q142
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 时间序列日营收 dashboard
+SELECT
+    cast(payment_date as date) AS d,
+    COUNT(*) AS txn_count,
+    SUM(amount) AS revenue,
+    AVG(amount) AS avg_txn
+FROM payment
+GROUP BY cast(payment_date as date)
+ORDER BY d;
+
+GroupAggregate  (cost=1483.77..1965.24 rows=16049 width=86) (actual time=16.751..44.673 rows=16041 loops=1)
+  Group By Key: ((payment_date)::timestamp(0) without time zone)
+  ->  Sort  (cost=1483.77..1523.90 rows=16049 width=14) (actual time=16.703..21.935 rows=16049 loops=1)
+        Sort Key: ((payment_date)::timestamp(0) without time zone)
+        Sort Method: quicksort  Memory: 1137kB
+        ->  Partition Iterator  (cost=0.00..362.74 rows=16049 width=14) (actual time=0.128..11.012 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=14) (actual time=0.168..8.183 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+Total runtime: 47.540 ms

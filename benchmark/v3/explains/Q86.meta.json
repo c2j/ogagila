@@ -1,0 +1,12 @@
+{
+  "id": "Q86",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "language 表(6 行)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q86.explain"
+}

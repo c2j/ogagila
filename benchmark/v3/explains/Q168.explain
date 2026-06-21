@@ -1,0 +1,10 @@
+-- @id: Q168
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: HASH 函数索引(无索引)
+SELECT * FROM customer WHERE HASHTEXT(email) = 1234567890;
+
+Seq Scan on customer  (cost=0.00..35.97 rows=6 width=78) (actual time=0.206..0.206 rows=0 loops=1)
+  Filter: (hashtext(email) = 1234567890)
+  Rows Removed by Filter: 599
+Total runtime: 0.304 ms

@@ -1,0 +1,29 @@
+-- @id: Q115
+-- @target: SUBQ-001
+-- @severity: info
+-- @scenario: LATERAL 子查询聚合
+SELECT f.film_id, f.title, s.actor_count, s.rental_count
+FROM film f
+LEFT JOIN LATERAL (
+    SELECT
+        (SELECT COUNT(*) FROM film_actor fa WHERE fa.film_id = f.film_id) AS actor_count,
+        (SELECT COUNT(*) FROM inventory i WHERE i.film_id = f.film_id) AS rental_count
+) s ON TRUE
+ORDER BY f.film_id;
+
+Nested Loop Left Join  (cost=105.54..105666.62 rows=1000 width=35) (actual time=1.518..719.677 rows=1000 loops=1)
+  ->  Index Scan using film_pkey on film f  (cost=0.00..101.59 rows=1000 width=19) (actual time=0.053..5.864 rows=1000 loops=1)
+  ->  Result  (cost=105.54..105.55 rows=1 width=0) (actual time=709.595..709.748 rows=1000 loops=1000)
+        InitPlan 1 (returns $1)
+          ->  Aggregate  (cost=18.24..18.25 rows=1 width=8) (actual time=80.011..80.043 rows=1000 loops=1000)
+                ->  Bitmap Heap Scan on film_actor fa  (cost=4.29..18.23 rows=5 width=0) (actual time=42.232..63.741 rows=5462 loops=1000)
+                      Recheck Cond: (film_id = $0)
+                      Heap Blocks: exact=5075
+                      ->  Bitmap Index Scan on idx_fk_film_id  (cost=0.00..4.29 rows=5 width=0) (actual time=34.333..34.333 rows=5462 loops=1000)
+                            Index Cond: (film_id = $0)
+        InitPlan 2 (returns $2)
+          ->  Aggregate  (cost=87.28..87.29 rows=1 width=8) (actual time=620.985..621.270 rows=1000 loops=1000)
+                ->  Seq Scan on inventory i  (cost=0.00..87.26 rows=5 width=0) (actual time=325.484..614.223 rows=4581 loops=1000)
+                      Filter: (film_id = $0)
+                      Rows Removed by Filter: 4576419
+Total runtime: 720.973 ms

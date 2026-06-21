@@ -1,0 +1,12 @@
+{
+  "id": "Q179",
+  "target_rule": "PART-001",
+  "severity": "warning",
+  "scenario": "UPDATE 分区表(单分区操作)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.084,
+  "explain_file": "Q179.explain"
+}

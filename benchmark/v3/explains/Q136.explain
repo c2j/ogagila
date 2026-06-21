@@ -1,0 +1,9 @@
+-- @id: Q136
+-- @target: NONE
+-- @severity: info
+-- @scenario: 健康 - 单行 PK 查询
+SELECT * FROM film WHERE film_id = 1;
+
+Index Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.036..0.037 rows=1 loops=1)
+  Index Cond: (film_id = 1)
+Total runtime: 0.097 ms

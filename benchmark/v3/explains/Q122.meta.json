@@ -1,0 +1,12 @@
+{
+  "id": "Q122",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "相关子查询 in WHERE (EXISTS)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.009,
+  "explain_file": "Q122.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q153",
+  "target_rule": "SKEW-001",
+  "severity": "warning",
+  "scenario": "payment 表 customer_id 倾斜",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.032,
+  "explain_file": "Q153.explain"
+}

@@ -1,0 +1,41 @@
+-- @id: Q183
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE WITH RECURSIVE CTE
+WITH RECURSIVE chain AS (
+    SELECT customer_id, 1 AS depth
+    FROM customer
+    WHERE active = 1
+    UNION ALL
+    SELECT r.customer_id, c.depth + 1
+    FROM chain c
+    JOIN rental r ON r.customer_id = c.customer_id
+    WHERE c.depth < 3
+)
+UPDATE customer cu
+SET last_update = NOW()
+FROM chain ch
+WHERE cu.customer_id = ch.customer_id;
+
+Update on customer cu  (cost=100578.07..193385.68 rows=2560210 width=104) (actual time=1.200..1852.123 rows=584 loops=1)
+  CTE chain
+    ->  Recursive Union  (cost=0.00..100470.68 rows=2560210 width=8) (actual time=0.036..559.914 rows=450196 loops=1)
+          ->  Seq Scan on customer  (cost=0.00..78.78 rows=2790 width=4) (actual time=0.031..0.870 rows=584 loops=1)
+                Filter: (active = 1)
+                Rows Removed by Filter: 15
+          ->  Hash Join  (cost=524.62..4918.77 rows=255742 width=8) (actual time=84.241..253.454 rows=449612 loops=3)
+                Hash Cond: (c.customer_id = r.customer_id)
+                ->  WorkTable Scan on chain c  (cost=0.00..627.75 rows=9300 width=8) (actual time=76.903..86.037 rows=16224 loops=3)
+                      Filter: (depth < 3)
+                      Rows Removed by Filter: 433972
+                ->  Hash  (cost=318.72..318.72 rows=16472 width=4) (actual time=6.886..6.886 rows=16044 loops=1)
+                       Buckets: 32768  Batches: 1  Memory Usage: 821kB
+                      ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.047..3.184 rows=16044 loops=1)
+  ->  Hash Join  (cost=107.40..92915.01 rows=2560210 width=104) (actual time=0.859..1185.718 rows=450196 loops=1)
+        Hash Cond: (ch.customer_id = cu.customer_id)
+        ->  CTE Scan on chain ch  (cost=0.00..51204.20 rows=2560210 width=32) (actual time=0.051..945.193 rows=450196 loops=1)
+        ->  Hash  (cost=71.62..71.62 rows=2862 width=76) (actual time=0.558..0.558 rows=599 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 325kB
+              ->  Seq Scan on customer cu  (cost=0.00..71.62 rows=2862 width=76) (actual time=0.011..0.367 rows=599 loops=1)
+Trigger last_updated: time=5.475 calls=584
+Total runtime: 1997.466 ms

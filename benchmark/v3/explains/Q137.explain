@@ -1,0 +1,18 @@
+-- @id: Q137
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: DISTINCT ON 找每个客户最早一笔消费
+SELECT DISTINCT ON (customer_id)
+    customer_id, payment_date, amount
+FROM payment
+ORDER BY customer_id, payment_date;
+
+Unique  (cost=1403.53..1483.77 rows=599 width=18) (actual time=13.635..15.879 rows=599 loops=1)
+  ->  Sort  (cost=1403.53..1443.65 rows=16049 width=18) (actual time=13.626..14.562 rows=16049 loops=1)
+        Sort Key: customer_id, payment_date
+        Sort Method: quicksort  Memory: 1638kB
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.059..3.832 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.054..2.140 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+Total runtime: 16.259 ms

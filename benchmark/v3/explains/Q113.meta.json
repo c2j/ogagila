@@ -1,0 +1,12 @@
+{
+  "id": "Q113",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "CTE 链 + 多种聚合 + LEFT JOIN",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.073,
+  "explain_file": "Q113.explain"
+}

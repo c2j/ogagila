@@ -1,0 +1,27 @@
+-- @id: Q129
+-- @target: AGG-001
+-- @severity: info
+-- @scenario: ROLLUP 层级汇总
+SELECT
+    staff_id,
+    EXTRACT(MONTH FROM payment_date) AS m,
+    SUM(amount) AS total
+FROM payment
+GROUP BY ROLLUP (staff_id, m)
+ORDER BY staff_id NULLS LAST, m NULLS LAST;
+
+Sort  (cost=1604.95..1605.01 rows=23 width=50) (actual time=29.620..29.621 rows=17 loops=1)
+  Sort Key: staff_id, (date_part('month'::text, payment_date))
+  Sort Method: quicksort  Memory: 26kB
+  ->  GroupAggregate  (cost=1443.65..1604.43 rows=23 width=50) (actual time=19.055..29.308 rows=17 loops=1)
+        Group By Key: staff_id, (date_part('month'::text, payment_date))
+        Group By Key: staff_id
+        Group By Key: ()
+        ->  Sort  (cost=1443.65..1483.77 rows=16049 width=18) (actual time=18.847..21.091 rows=16049 loops=1)
+              Sort Key: staff_id, (date_part('month'::text, payment_date))
+              Sort Method: quicksort  Memory: 1638kB
+              ->  Partition Iterator  (cost=0.00..322.61 rows=16049 width=18) (actual time=0.036..13.236 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.089..10.667 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 29.866 ms

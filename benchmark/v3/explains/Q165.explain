@@ -1,0 +1,17 @@
+-- @id: Q165
+-- @target: PART-001
+-- @severity: info
+-- @scenario: 复合索引 leading column 命中
+CREATE INDEX IF NOT EXISTS idx_payment_cust_date ON payment (customer_id, payment_date);
+SELECT * FROM payment WHERE customer_id = 1 AND payment_date >= '2022-06-01' ORDER BY payment_date LIMIT 10;
+
+Limit  (cost=25.10..25.12 rows=8 width=30) (actual time=0.450..0.451 rows=10 loops=1)
+  ->  Sort  (cost=25.10..25.12 rows=8 width=30) (actual time=0.447..0.448 rows=10 loops=1)
+        Sort Key: payment_date
+        Sort Method: quicksort  Memory: 25kB
+        ->  Bitmap Heap Scan on payment  (cost=4.33..24.98 rows=8 width=30) (actual time=0.372..0.430 rows=12 loops=1)
+              Recheck Cond: ((customer_id = 1) AND (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone))
+              Heap Blocks: exact=5
+              ->  Bitmap Index Scan on idx_payment_cust_date  (cost=0.00..4.33 rows=8 width=0) (actual time=0.270..0.270 rows=12 loops=1)
+                    Index Cond: ((customer_id = 1) AND (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone))
+Total runtime: 0.567 ms

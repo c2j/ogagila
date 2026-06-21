@@ -1,0 +1,12 @@
+{
+  "id": "Q151",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "跨列相关子查询,无法提升",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.012,
+  "explain_file": "Q151.explain"
+}

@@ -1,0 +1,41 @@
+-- @id: Q21
+-- @target: JOIN-002
+-- @severity: warning
+-- @scenario: 三表 Hash Join 链 + 低内存
+SET work_mem = '128kB';
+SELECT p.payment_id, c.first_name, f.title
+FROM payment p
+INNER JOIN customer c ON p.customer_id = c.customer_id
+INNER JOIN rental r ON p.rental_id = r.rental_id
+INNER JOIN inventory i ON r.inventory_id = i.inventory_id
+INNER JOIN film f ON i.film_id = f.film_id
+WHERE p.amount > 5.00;
+RESET work_mem;
+
+Hash Join  (cost=718.13..2113.36 rows=3957 width=25) (actual time=8.841..25.813 rows=3957 loops=1)
+  Hash Cond: (i.film_id = f.film_id)
+  ->  Hash Join  (cost=627.63..1853.45 rows=3957 width=14) (actual time=7.822..22.789 rows=3957 loops=1)
+        Hash Cond: (r.inventory_id = i.inventory_id)
+        ->  Hash Join  (cost=453.55..1481.97 rows=3957 width=14) (actual time=6.319..18.296 rows=3957 loops=1)
+              Hash Cond: (p.customer_id = c.customer_id)
+              ->  Hash Join  (cost=423.08..1287.09 rows=3957 width=12) (actual time=5.837..15.386 rows=3957 loops=1)
+                    Hash Cond: (r.rental_id = p.rental_id)
+                    ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.008..2.379 rows=16044 loops=1)
+                    ->  Hash  (cost=322.61..322.61 rows=3957 width=12) (actual time=5.618..5.618 rows=3957 loops=1)
+                           Buckets: 4096  Batches: 2  Memory Usage: 117kB
+                          ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=12) (actual time=0.087..4.244 rows=3957 loops=1)
+                                Iterations: 7
+                                ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=3957 width=12) (actual time=0.146..3.371 rows=3957 loops=7)
+                                      Filter: (amount > 5.00)
+                                      Rows Removed by Filter: 12092
+                                      Selected Partitions:  1..7
+              ->  Hash  (cost=14.99..14.99 rows=599 width=10) (actual time=0.358..0.358 rows=599 loops=1)
+                     Buckets: 4096  Batches: 2  Memory Usage: 47kB
+                    ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=10) (actual time=0.007..0.091 rows=599 loops=1)
+        ->  Hash  (cost=75.81..75.81 rows=4581 width=8) (actual time=1.470..1.470 rows=4581 loops=1)
+               Buckets: 4096  Batches: 2  Memory Usage: 123kB
+              ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.005..0.568 rows=4581 loops=1)
+  ->  Hash  (cost=65.00..65.00 rows=1000 width=19) (actual time=0.777..0.777 rows=1000 loops=1)
+         Buckets: 2048  Batches: 2  Memory Usage: 44kB
+        ->  Seq Scan on film f  (cost=0.00..65.00 rows=1000 width=19) (actual time=0.006..0.403 rows=1000 loops=1)
+Total runtime: 26.455 ms

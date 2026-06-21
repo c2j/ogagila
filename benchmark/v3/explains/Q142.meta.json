@@ -1,0 +1,12 @@
+{
+  "id": "Q142",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "时间序列日营收 dashboard",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.058,
+  "explain_file": "Q142.explain"
+}

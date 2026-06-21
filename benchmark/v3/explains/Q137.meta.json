@@ -1,0 +1,12 @@
+{
+  "id": "Q137",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "DISTINCT ON 找每个客户最早一笔消费",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.025,
+  "explain_file": "Q137.explain"
+}

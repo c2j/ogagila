@@ -1,0 +1,12 @@
+{
+  "id": "Q116",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "LATERAL 取前 N 个 actor",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.207,
+  "explain_file": "Q116.explain"
+}

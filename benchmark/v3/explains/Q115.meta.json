@@ -1,0 +1,12 @@
+{
+  "id": "Q115",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "LATERAL 子查询聚合",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.731,
+  "explain_file": "Q115.explain"
+}

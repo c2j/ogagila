@@ -1,0 +1,12 @@
+{
+  "id": "Q138",
+  "target_rule": "JOIN-001",
+  "severity": "warning",
+  "scenario": "自连接 - 同地址客户配对(NL)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.013,
+  "explain_file": "Q138.explain"
+}

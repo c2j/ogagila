@@ -1,0 +1,12 @@
+{
+  "id": "Q84",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "category 表全表(16 行,绝对合理)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q84.explain"
+}

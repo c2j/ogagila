@@ -1,0 +1,1746 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-21T12:01:40.454902+00:00",
+  "total_cases": 193,
+  "skipped_due_to_missing_files": [],
+  "cases": [
+    {
+      "case_id": "OGEXP-GT-2026-0001",
+      "source_query_id": "Q01",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q01.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0001.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0002",
+      "source_query_id": "Q02",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q02.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0002.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0003",
+      "source_query_id": "Q03",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q03.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0003.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0004",
+      "source_query_id": "Q04",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q04.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0004.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0005",
+      "source_query_id": "Q05",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q05.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0005.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0006",
+      "source_query_id": "Q06",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q06.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0006.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0007",
+      "source_query_id": "Q07",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q07.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0007.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0008",
+      "source_query_id": "Q08",
+      "target_rule": "SCAN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q08.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0008.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0009",
+      "source_query_id": "Q09",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q09.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0009.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0010",
+      "source_query_id": "Q10",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q10.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0010.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0011",
+      "source_query_id": "Q11",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q11.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0011.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0012",
+      "source_query_id": "Q12",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q12.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0012.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0013",
+      "source_query_id": "Q13",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q13.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0013.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0014",
+      "source_query_id": "Q14",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q14.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0014.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0015",
+      "source_query_id": "Q15",
+      "target_rule": "JOIN-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q15.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0015.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0016",
+      "source_query_id": "Q16",
+      "target_rule": "JOIN-001",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q16.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0016.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0017",
+      "source_query_id": "Q17",
+      "target_rule": "JOIN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q17.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0017.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0018",
+      "source_query_id": "Q18",
+      "target_rule": "JOIN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q18.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0018.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0019",
+      "source_query_id": "Q19",
+      "target_rule": "JOIN-001",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q19.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0019.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0020",
+      "source_query_id": "Q20",
+      "target_rule": "JOIN-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q20.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0020.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0021",
+      "source_query_id": "Q21",
+      "target_rule": "JOIN-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q21.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0021.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0022",
+      "source_query_id": "Q22",
+      "target_rule": "JOIN-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q22.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0022.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0023",
+      "source_query_id": "Q23",
+      "target_rule": "JOIN-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q23.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0023.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0024",
+      "source_query_id": "Q24",
+      "target_rule": "MEM-001",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q24.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0024.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0025",
+      "source_query_id": "Q25",
+      "target_rule": "MEM-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q25.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0025.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0026",
+      "source_query_id": "Q26",
+      "target_rule": "MEM-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q26.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0026.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0027",
+      "source_query_id": "Q27",
+      "target_rule": "MEM-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q27.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0027.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0028",
+      "source_query_id": "Q28",
+      "target_rule": "MEM-004",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q28.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0028.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0029",
+      "source_query_id": "Q29",
+      "target_rule": "MEM-004",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q29.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0029.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0030",
+      "source_query_id": "Q30",
+      "target_rule": "MEM-004",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q30.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0030.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0031",
+      "source_query_id": "Q31",
+      "target_rule": "SORT-003",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q31.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0031.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0032",
+      "source_query_id": "Q32",
+      "target_rule": "SORT-003",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q32.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0032.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0033",
+      "source_query_id": "Q33",
+      "target_rule": "SORT-003",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q33.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0033.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0034",
+      "source_query_id": "Q34",
+      "target_rule": "NET-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q34.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0034.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0035",
+      "source_query_id": "Q35",
+      "target_rule": "NET-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q35.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0035.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0036",
+      "source_query_id": "Q36",
+      "target_rule": "NET-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q36.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0036.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0037",
+      "source_query_id": "Q37",
+      "target_rule": "EST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q37.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0037.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0038",
+      "source_query_id": "Q38",
+      "target_rule": "EST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q38.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0038.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0039",
+      "source_query_id": "Q39",
+      "target_rule": "EST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q39.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0039.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0040",
+      "source_query_id": "Q40",
+      "target_rule": "EST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q40.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0040.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0041",
+      "source_query_id": "Q41",
+      "target_rule": "EST-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q41.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0041.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0042",
+      "source_query_id": "Q42",
+      "target_rule": "EST-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q42.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0042.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0043",
+      "source_query_id": "Q43",
+      "target_rule": "EST-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q43.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0043.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0044",
+      "source_query_id": "Q44",
+      "target_rule": "TYPE-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q44.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0044.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0045",
+      "source_query_id": "Q45",
+      "target_rule": "TYPE-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q45.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0045.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0046",
+      "source_query_id": "Q46",
+      "target_rule": "TYPE-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q46.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0046.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0047",
+      "source_query_id": "Q47",
+      "target_rule": "TYPE-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q47.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0047.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0048",
+      "source_query_id": "Q48",
+      "target_rule": "TYPE-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q48.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0048.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0049",
+      "source_query_id": "Q49",
+      "target_rule": "TYPE-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q49.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0049.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0050",
+      "source_query_id": "Q50",
+      "target_rule": "TYPE-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q50.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0050.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0051",
+      "source_query_id": "Q51",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q51.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0051.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0052",
+      "source_query_id": "Q52",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q52.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0052.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0053",
+      "source_query_id": "Q53",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q53.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0053.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0054",
+      "source_query_id": "Q54",
+      "target_rule": "PUSH-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q54.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0054.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0055",
+      "source_query_id": "Q55",
+      "target_rule": "PUSH-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q55.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0055.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0056",
+      "source_query_id": "Q56",
+      "target_rule": "PUSH-002",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q56.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0056.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0057",
+      "source_query_id": "Q57",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q57.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0057.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0058",
+      "source_query_id": "Q58",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q58.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0058.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0059",
+      "source_query_id": "Q59",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q59.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0059.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0060",
+      "source_query_id": "Q60",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q60.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0060.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0061",
+      "source_query_id": "Q61",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q61.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0061.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0062",
+      "source_query_id": "Q62",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q62.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0062.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0063",
+      "source_query_id": "Q63",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q63.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0063.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0064",
+      "source_query_id": "Q64",
+      "target_rule": "SUBQ-006",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q64.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0064.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0065",
+      "source_query_id": "Q65",
+      "target_rule": "SUBQ-006",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q65.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0065.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0066",
+      "source_query_id": "Q66",
+      "target_rule": "REW-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q66.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0066.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0067",
+      "source_query_id": "Q67",
+      "target_rule": "REW-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q67.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0067.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0068",
+      "source_query_id": "Q68",
+      "target_rule": "VEC-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q68.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0068.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0069",
+      "source_query_id": "Q69",
+      "target_rule": "VEC-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q69.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0069.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0070",
+      "source_query_id": "Q70",
+      "target_rule": "VEC-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q70.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0070.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0071",
+      "source_query_id": "Q71",
+      "target_rule": "AGG-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q71.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0071.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0072",
+      "source_query_id": "Q72",
+      "target_rule": "AGG-001",
+      "is_healthy": true,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q72.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0072.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0073",
+      "source_query_id": "Q73",
+      "target_rule": "AGG-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q73.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0073.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0074",
+      "source_query_id": "Q74",
+      "target_rule": "AGG-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q74.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0074.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0075",
+      "source_query_id": "Q75",
+      "target_rule": "DIST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q75.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0075.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0076",
+      "source_query_id": "Q76",
+      "target_rule": "DIST-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q76.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0076.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0077",
+      "source_query_id": "Q77",
+      "target_rule": "SKEW-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q77.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0077.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0078",
+      "source_query_id": "Q78",
+      "target_rule": "SKEW-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q78.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0078.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0079",
+      "source_query_id": "Q79",
+      "target_rule": "STATS-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q79.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0079.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0080",
+      "source_query_id": "Q80",
+      "target_rule": "STATS-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q80.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0080.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0081",
+      "source_query_id": "Q81",
+      "target_rule": "GEN-001",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q81.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0081.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0082",
+      "source_query_id": "Q82",
+      "target_rule": "GEN-001",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q82.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0082.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0083",
+      "source_query_id": "Q83",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q83.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0083.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0084",
+      "source_query_id": "Q84",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q84.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0084.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0085",
+      "source_query_id": "Q85",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q85.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0085.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0086",
+      "source_query_id": "Q86",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q86.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0086.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0087",
+      "source_query_id": "Q87",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q87.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0087.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0088",
+      "source_query_id": "Q88",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q88.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0088.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0089",
+      "source_query_id": "Q89",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q89.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0089.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0090",
+      "source_query_id": "Q90",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q90.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0090.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0091",
+      "source_query_id": "Q91",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q91.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0091.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0092",
+      "source_query_id": "Q92",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q92.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0092.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0093",
+      "source_query_id": "Q93",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q93.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0093.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0094",
+      "source_query_id": "Q94",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q94.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0094.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0095",
+      "source_query_id": "Q95",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q95.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0095.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0096",
+      "source_query_id": "Q96",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q96.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0096.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0097",
+      "source_query_id": "Q97",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q97.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0097.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0098",
+      "source_query_id": "Q98",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q98.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0098.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0099",
+      "source_query_id": "Q99",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q99.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0099.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0100",
+      "source_query_id": "Q100",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q100.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0100.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0101",
+      "source_query_id": "Q101",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q101.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0101.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0102",
+      "source_query_id": "Q102",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q102.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0102.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0103",
+      "source_query_id": "Q103",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q103.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0103.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0104",
+      "source_query_id": "Q104",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q104.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0104.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0105",
+      "source_query_id": "Q105",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q105.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0105.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0106",
+      "source_query_id": "Q106",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q106.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0106.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0107",
+      "source_query_id": "Q107",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q107.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0107.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0108",
+      "source_query_id": "Q108",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q108.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0108.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0109",
+      "source_query_id": "Q109",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q109.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0109.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0110",
+      "source_query_id": "Q110",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q110.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0110.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0111",
+      "source_query_id": "Q111",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q111.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0111.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0112",
+      "source_query_id": "Q112",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q112.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0112.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0113",
+      "source_query_id": "Q113",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q113.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0113.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0114",
+      "source_query_id": "Q114",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q114.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0114.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0115",
+      "source_query_id": "Q115",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q115.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0115.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0116",
+      "source_query_id": "Q116",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q116.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0116.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0117",
+      "source_query_id": "Q117",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q117.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0117.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0118",
+      "source_query_id": "Q118",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q118.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0118.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0119",
+      "source_query_id": "Q119",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q119.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0119.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0120",
+      "source_query_id": "Q120",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q120.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0120.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0121",
+      "source_query_id": "Q121",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q121.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0121.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0122",
+      "source_query_id": "Q122",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q122.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0122.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0123",
+      "source_query_id": "Q123",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q123.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0123.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0124",
+      "source_query_id": "Q124",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q124.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0124.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0125",
+      "source_query_id": "Q125",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q125.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0125.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0126",
+      "source_query_id": "Q126",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q126.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0126.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0127",
+      "source_query_id": "Q127",
+      "target_rule": "AGG-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q127.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0127.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0128",
+      "source_query_id": "Q128",
+      "target_rule": "AGG-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q128.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0128.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0129",
+      "source_query_id": "Q129",
+      "target_rule": "AGG-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q129.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0129.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0130",
+      "source_query_id": "Q130",
+      "target_rule": "AGG-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q130.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0130.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0131",
+      "source_query_id": "Q131",
+      "target_rule": "AGG-002",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q131.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0131.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0132",
+      "source_query_id": "Q132",
+      "target_rule": "TYPE-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q132.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0132.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0133",
+      "source_query_id": "Q133",
+      "target_rule": "TYPE-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q133.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0133.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0134",
+      "source_query_id": "Q134",
+      "target_rule": "TYPE-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q134.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0134.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0135",
+      "source_query_id": "Q135",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q135.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0135.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0136",
+      "source_query_id": "Q136",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q136.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0136.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0137",
+      "source_query_id": "Q137",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q137.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0137.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0138",
+      "source_query_id": "Q138",
+      "target_rule": "JOIN-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q138.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0138.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0139",
+      "source_query_id": "Q139",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q139.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0139.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0140",
+      "source_query_id": "Q140",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q140.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0140.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0141",
+      "source_query_id": "Q141",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q141.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0141.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0142",
+      "source_query_id": "Q142",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q142.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0142.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0143",
+      "source_query_id": "Q143",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q143.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0143.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0144",
+      "source_query_id": "Q144",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q144.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0144.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0145",
+      "source_query_id": "Q145",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q145.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0145.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0146",
+      "source_query_id": "Q146",
+      "target_rule": "TYPE-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q146.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0146.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0147",
+      "source_query_id": "Q147",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q147.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0147.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0148",
+      "source_query_id": "Q148",
+      "target_rule": "MEM-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q148.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0148.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0149",
+      "source_query_id": "Q149",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q149.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0149.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0150",
+      "source_query_id": "Q150",
+      "target_rule": "SORT-003",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q150.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0150.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0151",
+      "source_query_id": "Q151",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q151.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0151.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0152",
+      "source_query_id": "Q152",
+      "target_rule": "VEC-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q152.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0152.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0153",
+      "source_query_id": "Q153",
+      "target_rule": "SKEW-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q153.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0153.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0154",
+      "source_query_id": "Q154",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q154.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0154.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0155",
+      "source_query_id": "Q155",
+      "target_rule": "PUSH-002",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q155.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0155.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0156",
+      "source_query_id": "Q156",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q156.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0156.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0157",
+      "source_query_id": "Q157",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q157.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0157.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0158",
+      "source_query_id": "Q158",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q158.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0158.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0159",
+      "source_query_id": "Q159",
+      "target_rule": "NONE",
+      "is_healthy": true,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q159.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0159.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0160",
+      "source_query_id": "Q160",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q160.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0160.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0161",
+      "source_query_id": "Q161",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q161.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0161.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0162",
+      "source_query_id": "Q162",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q162.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0162.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0163",
+      "source_query_id": "Q163",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q163.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0163.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0164",
+      "source_query_id": "Q164",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q164.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0164.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0165",
+      "source_query_id": "Q165",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q165.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0165.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0166",
+      "source_query_id": "Q166",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q166.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0166.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0167",
+      "source_query_id": "Q167",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q167.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0167.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0168",
+      "source_query_id": "Q168",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q168.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0168.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0169",
+      "source_query_id": "Q169",
+      "target_rule": "SCAN-004",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q169.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0169.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0170",
+      "source_query_id": "Q170",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q170.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0170.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0171",
+      "source_query_id": "Q171",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q171.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0171.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0172",
+      "source_query_id": "Q172",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q172.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0172.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0173",
+      "source_query_id": "Q173",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q173.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0173.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0174",
+      "source_query_id": "Q174",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q174.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0174.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0175",
+      "source_query_id": "Q175",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q175.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0175.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0176",
+      "source_query_id": "Q176",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q176.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0176.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0177",
+      "source_query_id": "Q177",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q177.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0177.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0178",
+      "source_query_id": "Q178",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q178.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0178.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0179",
+      "source_query_id": "Q179",
+      "target_rule": "PART-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q179.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0179.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0180",
+      "source_query_id": "Q180",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q180.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0180.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0181",
+      "source_query_id": "Q181",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q181.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0181.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0182",
+      "source_query_id": "Q182",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q182.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0182.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0183",
+      "source_query_id": "Q183",
+      "target_rule": "SUBQ-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q183.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0183.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0184",
+      "source_query_id": "Q184",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q184.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0184.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0185",
+      "source_query_id": "Q185",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q185.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0185.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0186",
+      "source_query_id": "Q186",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q186.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0186.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0187",
+      "source_query_id": "Q187",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": true,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q187.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0187.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0188",
+      "source_query_id": "Q188",
+      "target_rule": "GEN-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q188.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0188.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0189",
+      "source_query_id": "Q189",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q189.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0189.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0190",
+      "source_query_id": "Q190",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q190.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0190.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0191",
+      "source_query_id": "Q191",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q191.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0191.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0192",
+      "source_query_id": "Q192",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q192.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0192.json"
+    },
+    {
+      "case_id": "OGEXP-GT-2026-0193",
+      "source_query_id": "Q193",
+      "target_rule": "PUSH-001",
+      "is_healthy": false,
+      "actually_triggered": false,
+      "explain_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/explains/Q193.explain",
+      "case_file": "/Users/c2j/Projects/Desktop_Projects/DB/ogagila/benchmark/v3/cases/OGEXP-GT-2026-0193.json"
+    }
+  ],
+  "updated_at": "2026-06-21T12:01:47.489355+00:00"
+}

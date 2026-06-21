@@ -1,0 +1,25 @@
+-- @id: Q158
+-- @target: NONE
+-- @severity: info
+-- @scenario: 健康 - 索引等值连接
+SELECT f.title, c.name
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE c.name = 'Drama'
+LIMIT 20;
+
+Limit  (cost=0.00..10.98 rows=20 width=47) (actual time=0.245..0.608 rows=20 loops=1)
+  ->  Merge Join  (cost=0.00..487.47 rows=888 width=47) (actual time=0.241..0.601 rows=20 loops=1)
+        Merge Cond: (fc.film_id = f.film_id)
+        ->  Nested Loop  (cost=0.00..372.28 rows=888 width=36) (actual time=0.208..0.499 rows=20 loops=1)
+              Join Filter: (fc.category_id = c.category_id)
+              Rows Removed by Join Filter: 295
+              ->  Index Only Scan using film_category_pkey on film_category fc  (cost=0.00..135.43 rows=2367 width=8) (actual time=0.064..0.310 rows=315 loops=1)
+                    Heap Fetches: 315
+              ->  Materialize  (cost=0.00..23.83 rows=6 width=36) (actual time=0.077..0.092 rows=315 loops=315)
+                    ->  Seq Scan on category c  (cost=0.00..23.80 rows=6 width=36) (actual time=0.054..0.055 rows=1 loops=1)
+                          Filter: (name = 'Drama'::text)
+                          Rows Removed by Filter: 15
+        ->  Index Scan using film_pkey on film f  (cost=0.00..101.59 rows=1000 width=19) (actual time=0.009..0.066 rows=113 loops=1)
+Total runtime: 0.859 ms

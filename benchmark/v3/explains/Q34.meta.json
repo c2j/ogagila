@@ -1,0 +1,12 @@
+{
+  "id": "Q34",
+  "target_rule": "NET-001",
+  "severity": "warning",
+  "scenario": "强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.014,
+  "explain_file": "Q34.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q156",
+  "target_rule": "GEN-001",
+  "severity": "warning",
+  "scenario": "三表 LEFT JOIN + 多聚合",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.033,
+  "explain_file": "Q156.explain"
+}

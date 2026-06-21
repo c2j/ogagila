@@ -1,0 +1,13 @@
+-- @id: Q191
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图内 DISTINCT(反例: 谓词不下推)
+CREATE OR REPLACE VIEW v_distinct_customers AS
+SELECT DISTINCT customer_id, first_name FROM customer;
+SELECT * FROM v_distinct_customers WHERE customer_id <= 5;
+
+HashAggregate  (cost=8.88..9.16 rows=28 width=10) (actual time=0.036..0.036 rows=5 loops=1)
+  Group By Key: customer.customer_id, customer.first_name
+  ->  Index Scan using customer_pkey on customer  (cost=0.00..8.74 rows=28 width=10) (actual time=0.019..0.022 rows=5 loops=1)
+        Index Cond: (customer_id <= 5)
+Total runtime: 0.117 ms

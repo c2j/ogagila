@@ -1,0 +1,15 @@
+-- @id: Q182
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: UPDATE SET with CASE WHEN
+UPDATE customer
+SET active = CASE
+    WHEN customer_id <= 100 THEN 1
+    WHEN customer_id <= 300 THEN 0
+    ELSE 1
+END;
+
+Update on customer  (cost=0.00..67.94 rows=2263 width=80) (actual time=0.259..32.167 rows=599 loops=1)
+  ->  Seq Scan on customer  (cost=0.00..67.94 rows=2263 width=80) (actual time=0.036..0.932 rows=599 loops=1)
+Trigger last_updated: time=6.163 calls=599
+Total runtime: 32.856 ms

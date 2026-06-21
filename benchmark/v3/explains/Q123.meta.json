@@ -1,0 +1,12 @@
+{
+  "id": "Q123",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "NOT EXISTS 找从未租过碟的客户",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.022,
+  "explain_file": "Q123.explain"
+}

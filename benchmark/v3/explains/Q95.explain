@@ -1,0 +1,11 @@
+-- @id: Q95
+-- @target: NONE
+-- @severity: info
+-- @scenario: film 索引列范围查(language_id)
+SELECT COUNT(*) FROM film WHERE language_id = 1;
+
+Aggregate  (cost=39.30..39.31 rows=1 width=8) (actual time=0.717..0.717 rows=1 loops=1)
+  ->  Index Only Scan using idx_fk_language_id on film  (cost=0.00..37.84 rows=585 width=0) (actual time=0.227..0.654 rows=585 loops=1)
+        Index Cond: (language_id = 1)
+        Heap Fetches: 7
+Total runtime: 0.827 ms

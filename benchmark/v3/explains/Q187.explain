@@ -1,0 +1,33 @@
+-- @id: Q187
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图内层有 GROUP BY(反例: 谓词无法下推到聚合)
+CREATE OR REPLACE VIEW v_film_revenue AS
+SELECT f.film_id, f.title, SUM(p.amount) AS total_revenue
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+JOIN payment p ON r.rental_id = p.rental_id
+GROUP BY f.film_id, f.title;
+SELECT * FROM v_film_revenue WHERE film_id = 1;
+
+HashAggregate  (cost=697.05..697.06 rows=1 width=57) (actual time=32.902..32.903 rows=1 loops=1)
+  Group By Key: f.film_id, f.title
+  ->  Nested Loop  (cost=344.95..696.73 rows=42 width=25) (actual time=6.337..31.997 rows=23 loops=1)
+        ->  Index Scan using film_pkey on film f  (cost=0.00..8.27 rows=1 width=19) (actual time=0.085..0.123 rows=1 loops=1)
+              Index Cond: (film_id = 1)
+        ->  Hash Join  (cost=344.95..688.05 rows=42 width=10) (actual time=6.222..31.627 rows=23 loops=1)
+              Hash Cond: (p.rental_id = r.rental_id)
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.041..16.643 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.180..13.954 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+              ->  Hash  (cost=344.43..344.43 rows=42 width=8) (actual time=4.249..4.249 rows=23 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 257kB
+                    ->  Nested Loop  (cost=0.00..344.43 rows=42 width=8) (actual time=0.094..4.224 rows=23 loops=1)
+                          ->  Seq Scan on inventory i  (cost=0.00..127.99 rows=12 width=8) (actual time=0.068..4.112 rows=8 loops=1)
+                                Filter: (film_id = 1)
+                                Rows Removed by Filter: 4573
+                          ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..18.00 rows=4 width=8) (actual time=0.034..0.074 rows=23 loops=8)
+                                Index Cond: (inventory_id = i.inventory_id)
+Total runtime: 35.485 ms

@@ -1,0 +1,12 @@
+-- @id: Q166
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: 复合索引非 leading column(无法用上索引,全表扫)
+SELECT * FROM payment WHERE payment_date = '2022-06-15';
+
+Partition Iterator  (cost=0.00..8.27 rows=1 width=30) (actual time=0.166..0.166 rows=0 loops=1)
+  Iterations: 1
+  ->  Partitioned Index Scan using payment_pkey on payment  (cost=0.00..8.27 rows=1 width=30) (actual time=0.156..0.156 rows=0 loops=1)
+        Index Cond: (payment_date = '2022-06-15 00:00:00+00'::timestamp with time zone)
+        Selected Partitions:  6
+Total runtime: 0.316 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q168",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "HASH 函数索引(无索引,全表扫)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.015,
+  "explain_file": "Q168.explain"
+}

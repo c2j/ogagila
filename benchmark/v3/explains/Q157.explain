@@ -1,0 +1,14 @@
+-- @id: Q157
+-- @target: NONE
+-- @severity: info
+-- @scenario: 健康 - 简单聚合 + 索引列
+SELECT COUNT(*), AVG(amount) FROM payment WHERE staff_id = 1;
+
+Aggregate  (cost=362.90..362.91 rows=1 width=46) (actual time=7.808..7.808 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..322.61 rows=8057 width=6) (actual time=0.026..4.320 rows=8057 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=8057 width=6) (actual time=0.061..3.046 rows=8057 loops=7)
+              Filter: (staff_id = 1)
+              Rows Removed by Filter: 7992
+              Selected Partitions:  1..7
+Total runtime: 8.030 ms

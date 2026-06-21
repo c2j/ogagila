@@ -1,0 +1,37 @@
+-- @id: Q120
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 混合 UNION + EXCEPT
+SELECT actor_id FROM film_actor WHERE film_id = 1
+UNION
+SELECT actor_id FROM film_actor WHERE film_id = 2
+EXCEPT
+SELECT actor_id FROM film_actor WHERE film_id = 3
+ORDER BY actor_id;
+
+Sort  (cost=62.85..62.89 rows=15 width=4) (actual time=0.342..0.342 rows=13 loops=1)
+  Sort Key: public.film_actor.actor_id
+  Sort Method: quicksort  Memory: 25kB
+  ->  HashSetOp Except  (cost=44.08..62.56 rows=15 width=4) (actual time=0.322..0.324 rows=13 loops=1)
+        ->  Append  (cost=44.08..62.51 rows=20 width=4) (actual time=0.249..0.307 rows=19 loops=1)
+              ->  Result  (cost=44.08..44.23 rows=15 width=4) (actual time=0.248..0.255 rows=14 loops=1)
+                    ->  HashAggregate  (cost=44.08..44.23 rows=15 width=4) (actual time=0.246..0.247 rows=14 loops=1)
+                          Group By Key: public.film_actor.actor_id
+                          ->  Append  (cost=4.33..44.04 rows=15 width=4) (actual time=0.059..0.213 rows=14 loops=1)
+                                ->  Bitmap Heap Scan on film_actor  (cost=4.33..25.66 rows=10 width=4) (actual time=0.058..0.086 rows=10 loops=1)
+                                      Recheck Cond: (film_id = 1)
+                                      Heap Blocks: exact=10
+                                      ->  Bitmap Index Scan on idx_fk_film_id  (cost=0.00..4.33 rows=10 width=0) (actual time=0.043..0.043 rows=10 loops=1)
+                                            Index Cond: (film_id = 1)
+                                ->  Bitmap Heap Scan on film_actor  (cost=4.29..18.23 rows=5 width=4) (actual time=0.117..0.122 rows=4 loops=1)
+                                      Recheck Cond: (film_id = 2)
+                                      Heap Blocks: exact=3
+                                      ->  Bitmap Index Scan on idx_fk_film_id  (cost=0.00..4.29 rows=5 width=0) (actual time=0.109..0.109 rows=4 loops=1)
+                                            Index Cond: (film_id = 2)
+              ->  Subquery Scan on "*SELECT* 3"  (cost=4.29..18.28 rows=5 width=4) (actual time=0.028..0.039 rows=5 loops=1)
+                    ->  Bitmap Heap Scan on film_actor  (cost=4.29..18.23 rows=5 width=4) (actual time=0.026..0.036 rows=5 loops=1)
+                          Recheck Cond: (film_id = 3)
+                          Heap Blocks: exact=5
+                          ->  Bitmap Index Scan on idx_fk_film_id  (cost=0.00..4.29 rows=5 width=0) (actual time=0.023..0.023 rows=5 loops=1)
+                                Index Cond: (film_id = 3)
+Total runtime: 0.545 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q187",
+  "target_rule": "PUSH-001",
+  "severity": "warning",
+  "scenario": "视图内层有 GROUP BY(反例: 谓词无法下推)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.076,
+  "explain_file": "Q187.explain"
+}

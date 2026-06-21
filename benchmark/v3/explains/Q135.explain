@@ -1,0 +1,9 @@
+-- @id: Q135
+-- @target: NONE
+-- @severity: info
+-- @scenario: 健康 - 空结果集
+SELECT * FROM customer WHERE customer_id = -999;
+
+Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=78) (actual time=0.020..0.020 rows=0 loops=1)
+  Index Cond: (customer_id = (-999))
+Total runtime: 0.077 ms

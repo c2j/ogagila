@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0019",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.685960+00:00",
-  "updated_at": "2026-06-20T22:59:33.685968+00:00",
+  "updated_at": "2026-06-21T11:55:08.508466+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大表 customer→address NL(address_id 无高效索引时)",
@@ -27,35 +27,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "suboptimal_join_algorithm",
-        "ogexplain_rule_id": "JOIN-001",
-        "ogexplain_rule_category": "JOIN-",
-        "severity": "warning",
-        "description": "大表 customer→address NL(address_id 无高效索引时)",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Optimizer chose Merge Join, not Nested Loop — already optimal join strategy",
         "evidence": "Filter: (active = 1)\nRows Removed by Filter: 1",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for JOIN-001",
-        "sql_or_action": "enable_nestloop=off / 强制使用 Hash Join",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -63,7 +51,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Optimizer chose Merge Join, not Nested Loop — already optimal join strategy"
   },
   "tags": [
     "JOIN-001",

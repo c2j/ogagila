@@ -1,0 +1,38 @@
+-- @id: Q150
+-- @target: SORT-003
+-- @severity: warning
+-- @scenario: 重复排序(子查询 ORDER BY 后再 ORDER BY)
+SELECT t1.customer_id, t1.amount, t2.amount
+FROM (
+    SELECT customer_id, amount FROM payment ORDER BY amount DESC LIMIT 10
+) t1
+JOIN (
+    SELECT customer_id, amount FROM payment ORDER BY amount DESC LIMIT 10
+) t2 USING (customer_id)
+ORDER BY t1.amount DESC, t2.amount DESC;
+
+Sort  (cost=1259.04..1259.04 rows=1 width=16) (actual time=17.592..17.592 rows=10 loops=1)
+  Sort Key: public.payment.amount DESC, t2.amount DESC
+  Sort Method: quicksort  Memory: 25kB
+  ->  Hash Join  (cost=1258.86..1259.03 rows=1 width=16) (actual time=17.443..17.459 rows=10 loops=1)
+        Hash Cond: (public.payment.customer_id = t2.customer_id)
+        ->  Limit  (cost=629.30..629.33 rows=10 width=10) (actual time=9.585..9.590 rows=10 loops=1)
+              ->  Sort  (cost=629.30..669.43 rows=16049 width=10) (actual time=9.582..9.586 rows=10 loops=1)
+                    Sort Key: public.payment.amount DESC
+                    Sort Method: top-N heapsort  Memory: 25kB
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.016..5.029 rows=16049 loops=1)
+                          Iterations: 7
+                          ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.078..2.054 rows=16049 loops=7)
+                                Selected Partitions:  1..7
+        ->  Hash  (cost=629.43..629.43 rows=10 width=10) (actual time=7.425..7.425 rows=10 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 257kB
+              ->  Subquery Scan on t2  (cost=629.30..629.43 rows=10 width=10) (actual time=7.406..7.409 rows=10 loops=1)
+                    ->  Limit  (cost=629.30..629.33 rows=10 width=10) (actual time=7.403..7.405 rows=10 loops=1)
+                          ->  Sort  (cost=629.30..669.43 rows=16049 width=10) (actual time=7.398..7.398 rows=10 loops=1)
+                                Sort Key: public.payment.amount DESC
+                                Sort Method: top-N heapsort  Memory: 25kB
+                                ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.038..3.960 rows=16049 loops=1)
+                                      Iterations: 7
+                                      ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.040..2.300 rows=16049 loops=7)
+                                            Selected Partitions:  1..7
+Total runtime: 17.762 ms

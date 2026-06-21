@@ -1,0 +1,20 @@
+-- @id: Q173
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE SET 多字段 + 多个子查询
+UPDATE customer
+SET
+    address_id = (SELECT address_id FROM address ORDER BY address_id DESC LIMIT 1),
+    last_update = NOW()
+WHERE customer_id = 1;
+
+Update on customer  (cost=0.06..8.33 rows=1 width=72) (actual time=0.802..0.810 rows=1 loops=1)
+  InitPlan 1 (returns $0)
+    ->  Limit  (cost=0.00..0.06 rows=1 width=4) (actual time=0.079..0.079 rows=1 loops=1)
+          ->  Index Only Scan Backward using address_pkey on address  (cost=0.00..36.30 rows=603 width=4) (actual time=0.077..0.077 rows=1 loops=1)
+                Heap Fetches: 1
+  ->  Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=72) (actual time=0.124..0.128 rows=1 loops=1)
+        Index Cond: (customer_id = 1)
+Trigger for constraint customer_address_id_fkey: time=0.824 calls=1
+Trigger last_updated: time=0.214 calls=1
+Total runtime: 1.859 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q178",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "UPDATE WITH CTE",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.047,
+  "explain_file": "Q178.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q190",
+  "target_rule": "PUSH-001",
+  "severity": "warning",
+  "scenario": "视图套分区表 + 谓词(反例: 全分区扫)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.026,
+  "explain_file": "Q190.explain"
+}

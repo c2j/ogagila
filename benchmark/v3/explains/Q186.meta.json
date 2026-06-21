@@ -1,0 +1,12 @@
+{
+  "id": "Q186",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "3 层嵌套视图(深度测试)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.238,
+  "explain_file": "Q186.explain"
+}

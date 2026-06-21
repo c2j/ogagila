@@ -1,0 +1,33 @@
+-- @id: Q114
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: LATERAL Top-N per group(每个客户消费最高的 3 笔)
+SELECT c.customer_id, c.first_name, t.amount, t.payment_date
+FROM customer c
+CROSS JOIN LATERAL (
+    SELECT amount, payment_date
+    FROM payment
+    WHERE customer_id = c.customer_id
+    ORDER BY amount DESC
+    LIMIT 3
+) t
+WHERE c.active = 1
+ORDER BY c.customer_id, t.amount DESC;
+
+Sort  (cost=83473.65..83482.41 rows=3504 width=24) (actual time=46.225..46.325 rows=1752 loops=1)
+  Sort Key: c.customer_id, payment.amount DESC
+  Sort Method: quicksort  Memory: 185kB
+  ->  Nested Loop  (cost=71.19..83267.36 rows=3504 width=24) (actual time=0.262..45.207 rows=1752 loops=1)
+        ->  Seq Scan on customer c  (cost=0.00..32.98 rows=1168 width=10) (actual time=0.033..0.815 rows=584 loops=1)
+              Filter: (active = 1)
+              Rows Removed by Filter: 15
+        ->  Limit  (cost=71.19..71.20 rows=3 width=14) (actual time=43.237..43.507 rows=1752 loops=584)
+              ->  Sort  (cost=71.19..71.26 rows=27 width=14) (actual time=41.188..41.247 rows=1752 loops=584)
+                    Sort Key: payment.amount DESC
+                    Sort Method: top-N heapsort  Memory: 25kB
+                    ->  Bitmap Heap Scan on payment  (cost=4.46..70.85 rows=27 width=14) (actual time=15.184..31.538 rows=15644 loops=584)
+                          Recheck Cond: (customer_id = c.customer_id)
+                          Heap Blocks: exact=8918
+                          ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=10.804..10.804 rows=15644 loops=584)
+                                Index Cond: (customer_id = c.customer_id)
+Total runtime: 46.847 ms

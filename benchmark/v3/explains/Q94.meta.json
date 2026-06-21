@@ -1,0 +1,12 @@
+{
+  "id": "Q94",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "film 索引列范围查(rating)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q94.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q129",
+  "target_rule": "AGG-001",
+  "severity": "info",
+  "scenario": "ROLLUP 层级汇总",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.046,
+  "explain_file": "Q129.explain"
+}

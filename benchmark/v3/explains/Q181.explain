@@ -1,0 +1,14 @@
+-- @id: Q181
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: UPDATE ... RETURNING(返回修改行)
+UPDATE customer
+SET last_update = NOW()
+WHERE customer_id = 1
+RETURNING customer_id, first_name, last_update;
+
+Update on customer  (cost=0.00..8.27 rows=1 width=76) (actual time=0.011..0.453 rows=1 loops=1)
+  ->  Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=76) (actual time=0.040..0.050 rows=1 loops=1)
+        Index Cond: (customer_id = 1)
+Trigger last_updated: time=0.098 calls=1
+Total runtime: 0.642 ms

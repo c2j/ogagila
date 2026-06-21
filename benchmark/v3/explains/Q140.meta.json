@@ -1,0 +1,12 @@
+{
+  "id": "Q140",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "NULL 处理",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.015,
+  "explain_file": "Q140.explain"
+}

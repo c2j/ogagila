@@ -1,0 +1,23 @@
+-- @id: Q138
+-- @target: JOIN-001
+-- @severity: warning
+-- @scenario: 自连接 - 同地址客户配对(NL)
+SELECT c1.customer_id AS c1, c2.customer_id AS c2, c1.address_id
+FROM customer c1
+JOIN customer c2 ON c1.address_id = c2.address_id AND c1.customer_id < c2.customer_id
+ORDER BY c1.address_id, c1.customer_id
+LIMIT 20;
+
+Limit  (cost=105.02..105.07 rows=20 width=12) (actual time=1.648..1.648 rows=0 loops=1)
+  ->  Sort  (cost=105.02..106.02 rows=399 width=12) (actual time=1.646..1.646 rows=0 loops=1)
+        Sort Key: c1.address_id, c1.customer_id
+        Sort Method: quicksort  Memory: 25kB
+        ->  Hash Join  (cost=44.95..94.40 rows=399 width=12) (actual time=1.603..1.603 rows=0 loops=1)
+              Hash Cond: (c1.address_id = c2.address_id)
+              Join Filter: (c1.customer_id < c2.customer_id)
+              Rows Removed by Join Filter: 599
+              ->  Seq Scan on customer c1  (cost=0.00..29.98 rows=1198 width=8) (actual time=0.006..0.063 rows=599 loops=1)
+              ->  Hash  (cost=29.98..29.98 rows=1198 width=8) (actual time=0.242..0.242 rows=599 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 280kB
+                    ->  Seq Scan on customer c2  (cost=0.00..29.98 rows=1198 width=8) (actual time=0.016..0.121 rows=599 loops=1)
+Total runtime: 1.731 ms

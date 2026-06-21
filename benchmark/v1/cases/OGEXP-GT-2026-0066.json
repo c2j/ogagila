@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0066",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.767672+00:00",
-  "updated_at": "2026-06-20T22:59:33.767683+00:00",
+  "updated_at": "2026-06-21T11:55:08.515229+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film_id IN (...) 1000 个值",
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "REW-001",
-        "ogexplain_rule_category": "SUBQ-",
-        "severity": "warning",
-        "description": "film_id IN (...) 1000 个值",
+        "severity": "info",
+        "description": "IN list converted to =ANY(array) with Index Only Scan — optimizer already rewrote it",
         "evidence": "Index Cond: (film_id = ANY ('{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}'::integer[]))",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"IN list query present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for REW-001",
-        "sql_or_action": "大 IN 列表改写为临时表 JOIN",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): IN list converted to =ANY(array) with Index Only Scan — optimizer already rewrote it"
   },
   "tags": [
     "REW-001",

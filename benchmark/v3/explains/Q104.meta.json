@@ -1,0 +1,12 @@
+{
+  "id": "Q104",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "7 天移动平均,ROWS BETWEEN 6 PRECEDING AND CURRENT ROW",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q104.explain"
+}

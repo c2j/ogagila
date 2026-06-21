@@ -1,0 +1,12 @@
+{
+  "id": "Q106",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "单 CTE + JOIN,大表 CTE 全扫",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.017,
+  "explain_file": "Q106.explain"
+}

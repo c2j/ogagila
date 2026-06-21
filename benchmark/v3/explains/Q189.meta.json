@@ -1,0 +1,12 @@
+{
+  "id": "Q189",
+  "target_rule": "PUSH-001",
+  "severity": "warning",
+  "scenario": "视图内含标量子查询(反例: 外层谓词无法下推)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.017,
+  "explain_file": "Q189.explain"
+}

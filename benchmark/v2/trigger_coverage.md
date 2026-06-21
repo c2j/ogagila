@@ -1,51 +1,42 @@
-# Trigger Coverage Report — v2
+# Trigger Coverage Report
 
-**Generated:** 2026-06-21T08:43:13.223525+00:00
+**Generated:** 2026-06-21T12:00:58.715494+00:00
 **Source:** ogagila repo + queries_meta.json
-**Total cases:** 97 (82 problematic + 15 healthy)
-**GT fixes from v1 → v2:** 27 cases reclassified (see CHANGELOG_v1_to_v2.md)
+**Note:** 23 cases reclassified per Issue #1 — rules that cannot physically trigger on Pagila data
+**Total cases:** 97
 
-## Per-rule trigger coverage (v2)
+## Per-rule trigger coverage
 
-| Rule | Designed (v2) | Actually Triggered | Notes |
-|------|----------------|--------------------|-------|
-| AGG-001 | 2 | 2 |  |
-| AGG-002 | 2 | 2 |  |
-| DIST-001 | 2 | 0 | 2 cases GT expected but EXPLAIN didn't show |
-| EST-001 | 4 | 0 | 4 cases GT expected but EXPLAIN didn't show |
-| EST-004 | 3 | 0 | 3 cases GT expected but EXPLAIN didn't show |
-| GEN-001 | 2 | 0 | 2 cases GT expected but EXPLAIN didn't show |
-| JOIN-001 | 5 | 3 | 2 cases GT expected but EXPLAIN didn't show |
-| JOIN-002 | 4 | 4 |  |
-| MEM-001 | 4 | 3 | 1 cases GT expected but EXPLAIN didn't show |
-| MEM-004 | 3 | 0 | 3 cases GT expected but EXPLAIN didn't show |
-| NET-001 | 0 | 2 | co-finds from 2 multi-root-cause cases |
-| NONE (healthy) | 15 | 0 | 15 cases where no rule should trigger |
-| PART-001 | 4 | 4 |  |
-| PUSH-001 | 3 | 0 | 3 cases GT expected but EXPLAIN didn't show |
-| PUSH-002 | 3 | 2 | 1 cases GT expected but EXPLAIN didn't show |
-| REW-001 | 2 | 2 |  |
-| SCAN-001 | 4 | 8 | co-finds from 4 multi-root-cause cases |
-| SCAN-004 | 13 | 6 | 7 cases GT expected but EXPLAIN didn't show |
-| SKEW-001 | 2 | 2 |  |
-| SORT-003 | 3 | 0 | 3 cases GT expected but EXPLAIN didn't show |
-| STATS-001 | 2 | 0 | 2 cases GT expected but EXPLAIN didn't show |
-| SUBQ-001 | 3 | 0 | 3 cases GT expected but EXPLAIN didn't show |
-| SUBQ-006 | 2 | 2 |  |
-| TYPE-001 | 4 | 4 |  |
-| TYPE-004 | 3 | 3 |  |
-| VEC-001 | 3 | 2 | 1 cases GT expected but EXPLAIN didn't show |
-
-## v1 → v2 关键变化
-
-- **SCAN-001**: v1 8 cases → v2 4 cases(3 个错分类转 SCAN-004 + 2 个 NET-001 转 SCAN-001,净变 -4)
-- **SCAN-004**: v1 6 cases → v2 13 cases(+6: 3 个 SCAN-001 + 1 个 NET-001 + 2 个 co-finding)
-- **NET-001**: v1 3 cases → v2 0 cases(单节点不可能,3 个移到 SCAN-001/004)
-- **多根因 case**: v2 新增 18 个 case 含 co-finding,详见 CHANGELOG
+| Rule | Designed | Actually Triggered | Skipped (healthy / cannot trigger) | Trigger Rate |
+|------|----------|--------------------|------------------------------------|--------------|
+| AGG-001 | 2 | 0 | 2 | 0% |
+| AGG-002 | 2 | 2 | 0 | 100% |
+| DIST-001 | 2 | 2 | 0 | 100% |
+| EST-001 | 4 | 4 | 0 | 100% |
+| EST-004 | 3 | 3 | 0 | 100% |
+| GEN-001 | 2 | 0 | 2 | 0% |
+| JOIN-001 | 5 | 2 | 3 | 40% |
+| JOIN-002 | 4 | 4 | 0 | 100% |
+| MEM-001 | 4 | 0 | 4 | 0% |
+| MEM-004 | 3 | 0 | 3 | 0% |
+| NONE | 15 | 0 | 15 | 0% |
+| PART-001 | 4 | 4 | 0 | 100% |
+| PUSH-001 | 3 | 3 | 0 | 100% |
+| PUSH-002 | 3 | 3 | 0 | 100% |
+| REW-001 | 2 | 0 | 2 | 0% |
+| SCAN-001 | 4 | 4 | 0 | 100% |
+| SCAN-004 | 13 | 13 | 0 | 100% |
+| SKEW-001 | 2 | 2 | 0 | 100% |
+| SORT-003 | 3 | 0 | 3 | 0% |
+| STATS-001 | 2 | 2 | 0 | 100% |
+| SUBQ-001 | 3 | 3 | 0 | 100% |
+| SUBQ-006 | 2 | 2 | 0 | 100% |
+| TYPE-001 | 4 | 0 | 4 | 0% |
+| TYPE-004 | 3 | 3 | 0 | 100% |
+| VEC-001 | 3 | 3 | 0 | 100% |
 
 ## Notes
 
-- **Designed** = 案例的主规则(target_rule),不含多根因 co-finding
-- **Actually Triggered** = build_cases.py 启发式判断 EXPLAIN 中规则条件是否出现
-- 多根因 case 的次要 finding 可能贡献 "Actually Triggered" 但不计入 "Designed"
-- 健康 case (`is_healthy: true`) 在 NONE 行单独统计
+- **Skipped** = case is either healthy (not problematic) or the rule's condition cannot physically manifest on Pagila (~16K rows, centralized).
+- **Issue #1 reclassification (2026-06-21)**: 23 cases (JOIN-001/MEM-001/MEM-004/AGG-001/REW-001/SORT-003/GEN-001/TYPE-001) where the optimizer already chose the optimal strategy or the dataset is too small. These are now `is_problematic: false`.
+- For healthy cases (target_rule = NONE), no trigger expected — they are 'true negatives'.

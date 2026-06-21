@@ -1,0 +1,17 @@
+-- @id: Q154
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 类型转换阻止下推
+SELECT * FROM payment
+WHERE amount::text LIKE '5.%'
+ORDER BY payment_date
+LIMIT 20;
+
+Limit  (cost=0.00..207.98 rows=20 width=30) (actual time=0.384..0.495 rows=20 loops=1)
+  ->  Partition Iterator  (cost=0.00..831.92 rows=80 width=30) (actual time=0.382..0.491 rows=20 loops=1)
+        Iterations: 7
+        ->  Partitioned Index Scan using payment_pkey on payment  (cost=0.00..831.92 rows=80 width=30) (actual time=0.370..0.479 rows=20 loops=1)
+              Filter: ((amount)::text ~~ '5.%'::text)
+              Rows Removed by Filter: 170
+              Selected Partitions:  1..7
+Total runtime: 1.106 ms

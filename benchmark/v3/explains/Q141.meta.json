@@ -1,0 +1,12 @@
+{
+  "id": "Q141",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "N+1 反面教材 - 客户信息 + 多次子查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.123,
+  "explain_file": "Q141.explain"
+}

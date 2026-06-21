@@ -1,0 +1,12 @@
+{
+  "id": "Q127",
+  "target_rule": "AGG-001",
+  "severity": "info",
+  "scenario": "GROUPING SETS 多维度汇总",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.056,
+  "explain_file": "Q127.explain"
+}

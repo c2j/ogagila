@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0030",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.698092+00:00",
-  "updated_at": "2026-06-20T22:59:33.698099+00:00",
+  "updated_at": "2026-06-21T11:55:08.513639+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多表大 Hash Join",
@@ -29,35 +29,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "info",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "memory_pressure",
-        "ogexplain_rule_id": "MEM-004",
-        "ogexplain_rule_category": "MEM-",
+        "category": "no_real_problem",
         "severity": "info",
-        "description": "多表大 Hash Join",
+        "description": "Memory usage (883kB, 492kB, 308kB) far below MEM-004 threshold (102400kB) — Pagila dataset too small",
         "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.049..2.267 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 43ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 43ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for MEM-004",
-        "sql_or_action": "调小批次,或拆分 query",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -65,7 +53,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Memory usage (883kB, 492kB, 308kB) far below MEM-004 threshold (102400kB) — Pagila dataset too small"
   },
   "tags": [
     "MEM-004",

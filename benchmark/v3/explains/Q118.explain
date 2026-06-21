@@ -1,0 +1,22 @@
+-- @id: Q118
+-- @target: SUBQ-001
+-- @severity: info
+-- @scenario: INTERSECT 找消费高的活跃客户
+SELECT customer_id FROM customer WHERE active = 1
+INTERSECT
+SELECT customer_id FROM payment WHERE amount > 5;
+
+HashSetOp Intersect  (cost=0.00..419.65 rows=148 width=4) (actual time=12.997..13.024 rows=584 loops=1)
+  ->  Append  (cost=0.00..406.84 rows=5125 width=4) (actual time=0.078..11.941 rows=4541 loops=1)
+        ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..362.18 rows=3957 width=4) (actual time=0.077..11.316 rows=3957 loops=1)
+              ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=4) (actual time=0.073..10.798 rows=3957 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=3957 width=4) (actual time=0.165..10.242 rows=3957 loops=7)
+                          Filter: (amount > 5::numeric)
+                          Rows Removed by Filter: 12092
+                          Selected Partitions:  1..7
+        ->  Subquery Scan on "*SELECT* 1"  (cost=0.00..44.66 rows=1168 width=4) (actual time=0.028..0.264 rows=584 loops=1)
+              ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.025..0.189 rows=584 loops=1)
+                    Filter: (active = 1)
+                    Rows Removed by Filter: 15
+Total runtime: 13.720 ms

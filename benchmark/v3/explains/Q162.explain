@@ -1,0 +1,16 @@
+-- @id: Q162
+-- @target: SCAN-004
+-- @severity: info
+-- @scenario: Index-only scan(covering index)
+CREATE INDEX IF NOT EXISTS idx_payment_cust_amt_date ON payment (customer_id);
+SELECT customer_id, amount, payment_date FROM payment WHERE customer_id <= 5 ORDER BY payment_date;
+
+Sort  (cost=138.89..139.22 rows=131 width=18) (actual time=1.343..1.347 rows=145 loops=1)
+  Sort Key: payment_date
+  Sort Method: quicksort  Memory: 36kB
+  ->  Bitmap Heap Scan on payment  (cost=5.27..134.29 rows=131 width=18) (actual time=0.926..1.286 rows=145 loops=1)
+        Recheck Cond: (customer_id <= 5)
+        Heap Blocks: exact=25
+        ->  Bitmap Index Scan on idx_payment_cust_amt_date  (cost=0.00..5.23 rows=131 width=0) (actual time=0.796..0.796 rows=145 loops=1)
+              Index Cond: (customer_id <= 5)
+Total runtime: 1.509 ms

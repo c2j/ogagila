@@ -1,0 +1,12 @@
+{
+  "id": "Q150",
+  "target_rule": "SORT-003",
+  "severity": "warning",
+  "scenario": "重复排序(子查询 ORDER BY 后再 ORDER BY)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.027,
+  "explain_file": "Q150.explain"
+}

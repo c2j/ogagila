@@ -1,0 +1,42 @@
+-- @id: Q54
+-- @target: PUSH-002
+-- @severity: warning
+-- @scenario: 复杂查询产生多层 Streaming 节点
+SELECT f.title, COUNT(r.rental_id) AS cnt
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+JOIN payment p ON r.rental_id = p.rental_id
+WHERE f.rating = 'PG'
+GROUP BY f.title
+ORDER BY cnt DESC
+LIMIT 20;
+
+Limit  (cost=1035.82..1035.87 rows=20 width=27) (actual time=19.010..19.013 rows=20 loops=1)
+  ->  Sort  (cost=1035.82..1036.30 rows=194 width=27) (actual time=19.007..19.007 rows=20 loops=1)
+        Sort Key: (count(r.rental_id)) DESC
+        Sort Method: top-N heapsort  Memory: 27kB
+        ->  HashAggregate  (cost=1028.71..1030.65 rows=194 width=27) (actual time=18.945..18.959 rows=183 loops=1)
+              Group By Key: f.title
+              ->  Hash Join  (cost=637.26..1012.45 rows=3252 width=19) (actual time=10.510..17.948 rows=3212 loops=1)
+                    Hash Cond: (p.rental_id = r.rental_id)
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.019..3.321 rows=16049 loops=1)
+                          Iterations: 7
+                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.055..1.642 rows=16049 loops=7)
+                                Selected Partitions:  1..7
+                    ->  Hash  (cost=596.62..596.62 rows=3251 width=19) (actual time=10.265..10.265 rows=3212 loops=1)
+                           Buckets: 32768  Batches: 1  Memory Usage: 422kB
+                          ->  Hash Join  (cost=183.62..596.62 rows=3251 width=19) (actual time=2.359..9.158 rows=3212 loops=1)
+                                Hash Cond: (r.inventory_id = i.inventory_id)
+                                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.006..2.235 rows=16044 loops=1)
+                                ->  Hash  (cost=172.02..172.02 rows=928 width=19) (actual time=2.191..2.191 rows=924 loops=1)
+                                       Buckets: 32768  Batches: 1  Memory Usage: 304kB
+                                      ->  Hash Join  (cost=69.92..172.02 rows=928 width=19) (actual time=0.744..1.889 rows=924 loops=1)
+                                            Hash Cond: (i.film_id = f.film_id)
+                                            ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.002..0.363 rows=4581 loops=1)
+                                            ->  Hash  (cost=67.50..67.50 rows=194 width=19) (actual time=0.648..0.648 rows=194 loops=1)
+                                                   Buckets: 32768  Batches: 1  Memory Usage: 266kB
+                                                  ->  Seq Scan on film f  (cost=0.00..67.50 rows=194 width=19) (actual time=0.028..0.589 rows=194 loops=1)
+                                                        Filter: (rating = 'PG'::mpaa_rating)
+                                                        Rows Removed by Filter: 806
+Total runtime: 19.340 ms

@@ -1,0 +1,36 @@
+-- @id: Q148
+-- @target: MEM-004
+-- @severity: warning
+-- @scenario: 大 Hash 表 + 多表 JOIN
+SET work_mem = '64kB';
+SELECT /*+ HashJoin */ c.customer_id, c.first_name, c.last_name, COUNT(*) AS pay_count
+FROM customer c
+JOIN rental r ON c.customer_id = r.customer_id
+JOIN payment p ON r.rental_id = p.rental_id
+GROUP BY c.customer_id, c.first_name, c.last_name
+ORDER BY pay_count DESC
+LIMIT 10;
+RESET work_mem;
+
+Limit  (cost=2653.35..2653.37 rows=10 width=25) (actual time=74.392..74.393 rows=10 loops=1)
+  ->  Sort  (cost=2653.35..2656.34 rows=1198 width=25) (actual time=74.389..74.390 rows=10 loops=1)
+        Sort Key: (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        ->  HashAggregate  (cost=2510.48..2627.46 rows=1198 width=25) (actual time=68.264..74.179 rows=599 loops=1)
+              Group By Key: c.customer_id, c.first_name, c.last_name
+Temp File Num: 48
+              ->  Hash Join  (cost=730.58..2183.41 rows=16049 width=17) (actual time=13.326..56.389 rows=16049 loops=1)
+                    Hash Cond: (r.customer_id = c.customer_id)
+                    ->  Hash Join  (cost=669.62..1601.78 rows=16049 width=4) (actual time=11.756..40.057 rows=16049 loops=1)
+                          Hash Cond: (p.rental_id = r.rental_id)
+                          ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.031..6.760 rows=16049 loops=1)
+                                Iterations: 7
+                                ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.077..3.318 rows=16049 loops=7)
+                                      Selected Partitions:  1..7
+                          ->  Hash  (cost=318.72..318.72 rows=16472 width=8) (actual time=11.433..11.433 rows=16044 loops=1)
+                                 Buckets: 2048  Batches: 16  Memory Usage: 56kB
+                                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.008..4.047 rows=16044 loops=1)
+                    ->  Hash  (cost=29.98..29.98 rows=1198 width=17) (actual time=1.146..1.146 rows=599 loops=1)
+                           Buckets: 1024  Batches: 2  Memory Usage: 25kB
+                          ->  Seq Scan on customer c  (cost=0.00..29.98 rows=1198 width=17) (actual time=0.013..0.616 rows=599 loops=1)
+Total runtime: 75.038 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q55",
+  "target_rule": "PUSH-002",
+  "severity": "warning",
+  "scenario": "多层联接 + 子查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.036,
+  "explain_file": "Q55.explain"
+}

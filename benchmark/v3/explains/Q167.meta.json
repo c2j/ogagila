@@ -1,0 +1,12 @@
+{
+  "id": "Q167",
+  "target_rule": "SCAN-004",
+  "severity": "info",
+  "scenario": "部分索引(带 WHERE 谓词 amount > 5)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.044,
+  "explain_file": "Q167.explain"
+}

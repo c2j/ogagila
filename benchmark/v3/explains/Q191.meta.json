@@ -1,0 +1,12 @@
+{
+  "id": "Q191",
+  "target_rule": "PUSH-001",
+  "severity": "warning",
+  "scenario": "视图内 DISTINCT(反例: 谓词不下推)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.048,
+  "explain_file": "Q191.explain"
+}

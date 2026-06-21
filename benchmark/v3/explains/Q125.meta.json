@@ -1,0 +1,12 @@
+{
+  "id": "Q125",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "派生表 in FROM",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.017,
+  "explain_file": "Q125.explain"
+}

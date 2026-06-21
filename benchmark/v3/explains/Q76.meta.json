@@ -1,0 +1,12 @@
+{
+  "id": "Q76",
+  "target_rule": "DIST-001",
+  "severity": "info",
+  "scenario": "rental 无分布键提示",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.037,
+  "explain_file": "Q76.explain"
+}

@@ -1,0 +1,68 @@
+{
+  "case_id": "OGEXP-GT-2026-0067",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.402358+00:00",
+  "updated_at": "2026-06-21T12:01:47.484753+00:00",
+  "status": "draft",
+  "source": {
+    "business_scenario": "customer_id IN 大列表",
+    "database_version": "openGauss 7.0.0-RC1",
+    "database_mode": "centralized",
+    "table_size_class": "medium",
+    "data_volume_rows": 16049,
+    "collection_date": "2026-06-20",
+    "collector_id": "ogagila-auto",
+    "anonymized": true,
+    "redaction_notes": "Synthetic Pagila schema; no real customer data"
+  },
+  "input": {
+    "sql": "SELECT COUNT(*) FROM customer WHERE customer_id IN (\n  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,\n  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40\n)",
+    "explain_output": "-- @id: Q67\n-- @target: REW-001\n-- @severity: warning\n-- @scenario: customer_id IN 大列表\nSELECT COUNT(*) FROM customer WHERE customer_id IN (\n  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,\n  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40\n);\n\nAggregate  (cost=34.52..34.53 rows=1 width=8) (actual time=0.975..0.975 rows=1 loops=1)\n  ->  Hash Semi Join  (cost=1.00..34.41 rows=40 width=0) (actual time=0.669..0.960 rows=40 loops=1)\n        Hash Cond: (public.customer.customer_id = \"*VALUES*\".column1)\n        ->  Seq Scan on customer  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.018..0.148 rows=599 loops=1)\n        ->  Hash  (cost=0.50..0.50 rows=40 width=4) (actual time=0.031..0.031 rows=40 loops=1)\n               Buckets: 32768  Batches: 1  Memory Usage: 258kB\n              ->  Values Scan on \"*VALUES*\"  (cost=0.00..0.50 rows=40 width=4) (actual time=0.005..0.015 rows=40 loops=1)\nTotal runtime: 1.263 ms\n",
+    "explain_format": "text",
+    "has_analyze": true,
+    "plan_actual_runtime_ms": 1,
+    "related_tables": [
+      "customer"
+    ]
+  },
+  "ground_truth": {
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
+    "root_causes": [
+      {
+        "cause_id": "RC-1",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "IN list converted to Hash Semi Join with VALUES — optimizer already rewrote it",
+        "evidence": "->  Seq Scan on customer  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.018..0.148 rows=599 loops=1)",
+        "verification_method": "runtime_trace",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms",
+        "verified_by": [
+          "reclassified_per_issue_1"
+        ]
+      }
+    ],
+    "suggested_fixes": []
+  },
+  "annotations": [],
+  "validation": {
+    "consensus_reached": false,
+    "disputed_fields": [],
+    "arbiter_id": "pending",
+    "final_decision_at": null,
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): IN list converted to Hash Semi Join with VALUES — optimizer already rewrote it"
+  },
+  "tags": [
+    "REW-001",
+    "db-version:og7.0",
+    "schema:pagila",
+    "auto-generated"
+  ],
+  "_auto_eval": {
+    "target_rule_designed": "REW-001",
+    "actually_triggered": true,
+    "trigger_signal": "IN list query present",
+    "run_warnings": []
+  }
+}

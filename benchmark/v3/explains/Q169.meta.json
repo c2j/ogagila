@@ -1,0 +1,12 @@
+{
+  "id": "Q169",
+  "target_rule": "SCAN-004",
+  "severity": "info",
+  "scenario": "复合索引 (title, year, rate) 仅用 rate(无 leading)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.016,
+  "explain_file": "Q169.explain"
+}

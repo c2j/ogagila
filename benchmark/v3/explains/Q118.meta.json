@@ -1,0 +1,12 @@
+{
+  "id": "Q118",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "INTERSECT 找消费高的活跃客户",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.02,
+  "explain_file": "Q118.explain"
+}

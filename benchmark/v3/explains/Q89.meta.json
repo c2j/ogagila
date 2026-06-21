@@ -1,0 +1,12 @@
+{
+  "id": "Q89",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "actor 主键点查",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.009,
+  "explain_file": "Q89.explain"
+}

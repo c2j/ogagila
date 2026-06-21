@@ -1,0 +1,12 @@
+{
+  "id": "Q29",
+  "target_rule": "MEM-004",
+  "severity": "info",
+  "scenario": "全表 HashAggregate 内存峰值",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.018,
+  "explain_file": "Q29.explain"
+}

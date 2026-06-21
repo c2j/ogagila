@@ -1,0 +1,36 @@
+-- @id: Q82
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 多层 CTE 嵌套
+WITH t1 AS (SELECT customer_id FROM customer WHERE active = 1),
+     t2 AS (SELECT t1.customer_id, COUNT(*) AS cnt FROM t1 JOIN rental r ON t1.customer_id = r.customer_id GROUP BY t1.customer_id),
+     t3 AS (SELECT t2.customer_id, t2.cnt, COALESCE(p.total, 0) AS total FROM t2 LEFT JOIN (SELECT customer_id, SUM(amount) AS total FROM payment GROUP BY customer_id) p ON t2.customer_id = p.customer_id)
+SELECT * FROM t3 WHERE total > 20 LIMIT 10;
+
+Limit  (cost=1407.39..1408.48 rows=10 width=44) (actual time=26.572..26.584 rows=10 loops=1)
+  CTE t1
+    ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.062..0.377 rows=584 loops=1)
+          Filter: (active = 1)
+          Rows Removed by Filter: 15
+  CTE t2
+    ->  HashAggregate  (cost=1003.19..1005.19 rows=200 width=12) (actual time=15.194..15.296 rows=584 loops=1)
+          Group By Key: t1.customer_id
+          ->  Hash Join  (cost=37.96..842.59 rows=32119 width=4) (actual time=1.350..10.385 rows=15640 loops=1)
+                Hash Cond: (r.customer_id = t1.customer_id)
+                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.045..2.055 rows=16044 loops=1)
+                ->  Hash  (cost=23.36..23.36 rows=1168 width=4) (actual time=0.712..0.712 rows=584 loops=1)
+                       Buckets: 32768  Batches: 1  Memory Usage: 277kB
+                      ->  CTE Scan on t1  (cost=0.00..23.36 rows=1168 width=4) (actual time=0.070..0.520 rows=584 loops=1)
+  ->  Hash Right Join  (cost=369.24..390.95 rows=200 width=44) (actual time=26.568..26.579 rows=10 loops=1)
+        Hash Cond: (payment.customer_id = t2.customer_id)
+        Filter: (COALESCE((sum(payment.amount)), 0::numeric) > 20::numeric)
+        ->  HashAggregate  (cost=362.74..368.73 rows=599 width=42) (actual time=10.336..10.339 rows=10 loops=1)
+              Group By Key: payment.customer_id
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.072..4.320 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.081..2.467 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+        ->  Hash  (cost=4.00..4.00 rows=200 width=12) (actual time=15.797..15.797 rows=584 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 284kB
+              ->  CTE Scan on t2  (cost=0.00..4.00 rows=200 width=12) (actual time=15.223..15.512 rows=584 loops=1)
+Total runtime: 27.663 ms

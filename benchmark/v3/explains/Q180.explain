@@ -1,0 +1,21 @@
+-- @id: Q180
+-- @target: GEN-001
+-- @severity: warning
+-- @scenario: UPDATE 多字段 FROM JOIN
+UPDATE inventory i
+SET
+    store_id = s.store_id,
+    last_update = NOW()
+FROM staff s
+WHERE i.store_id = 1 AND s.staff_id = 1;
+
+Update on inventory i  (cost=0.00..123.91 rows=2270 width=24) (actual time=1.174..86.795 rows=2270 loops=1)
+  ->  Nested Loop  (cost=0.00..123.91 rows=2270 width=24) (actual time=0.092..3.143 rows=2270 loops=1)
+        ->  Index Scan using staff_pkey on staff s  (cost=0.00..8.27 rows=1 width=10) (actual time=0.066..0.072 rows=1 loops=1)
+              Index Cond: (staff_id = 1)
+        ->  Seq Scan on inventory i  (cost=0.00..87.26 rows=2270 width=14) (actual time=0.011..1.953 rows=2270 loops=1)
+              Filter: (store_id = 1)
+              Rows Removed by Filter: 2311
+Trigger for constraint inventory_store_id_fkey: time=37.922 calls=2270
+Trigger last_updated: time=28.865 calls=2270
+Total runtime: 125.883 ms

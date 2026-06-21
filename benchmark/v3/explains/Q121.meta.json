@@ -1,0 +1,12 @@
+{
+  "id": "Q121",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "标量子查询 in SELECT(N+1 反面教材)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.023,
+  "explain_file": "Q121.explain"
+}

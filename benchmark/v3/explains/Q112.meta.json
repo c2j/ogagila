@@ -1,0 +1,12 @@
+{
+  "id": "Q112",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "嵌套 CTE",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q112.explain"
+}

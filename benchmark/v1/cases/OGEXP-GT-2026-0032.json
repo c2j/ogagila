@@ -2,7 +2,7 @@
   "case_id": "OGEXP-GT-2026-0032",
   "version": "1.0",
   "created_at": "2026-06-20T22:59:33.700083+00:00",
-  "updated_at": "2026-06-20T22:59:33.700119+00:00",
+  "updated_at": "2026-06-21T11:55:08.516174+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "UNION + ORDER BY 触发两层 sort",
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "SORT-003",
-        "ogexplain_rule_category": "SORT-",
-        "severity": "warning",
-        "description": "UNION + ORDER BY 触发两层 sort",
+        "severity": "info",
+        "description": "Only 1 Sort node — UNION ALL does not produce duplicate sort",
         "evidence": "->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..3.541 rows=8040 loops=1)\nFilter: (staff_id = 1)\nRows Removed by Filter: 8004",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 19ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 19ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for SORT-003",
-        "sql_or_action": "去除冗余 ORDER BY",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Only 1 Sort node — UNION ALL does not produce duplicate sort"
   },
   "tags": [
     "SORT-003",

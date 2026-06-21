@@ -1,0 +1,12 @@
+{
+  "id": "Q166",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "复合索引非 leading column(只查 payment_date,无法用复合索引)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.011,
+  "explain_file": "Q166.explain"
+}

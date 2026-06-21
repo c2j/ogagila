@@ -1,0 +1,68 @@
+{
+  "case_id": "OGEXP-GT-2026-0033",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.378480+00:00",
+  "updated_at": "2026-06-21T12:01:47.486550+00:00",
+  "status": "draft",
+  "source": {
+    "business_scenario": "DISTINCT + ORDER BY 不同字段",
+    "database_version": "openGauss 7.0.0-RC1",
+    "database_mode": "centralized",
+    "table_size_class": "medium",
+    "data_volume_rows": 16049,
+    "collection_date": "2026-06-20",
+    "collector_id": "ogagila-auto",
+    "anonymized": true,
+    "redaction_notes": "Synthetic Pagila schema; no real customer data"
+  },
+  "input": {
+    "sql": "SELECT DISTINCT customer_id, rental_date FROM rental ORDER BY rental_date",
+    "explain_output": "-- @id: Q33\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: DISTINCT + ORDER BY 不同字段\nSELECT DISTINCT customer_id, rental_date FROM rental ORDER BY rental_date;\n\nUnique  (cost=1472.40..1595.94 rows=16472 width=12) (actual time=8.826..11.753 rows=16020 loops=1)\n  ->  Sort  (cost=1472.40..1513.58 rows=16472 width=12) (actual time=8.821..9.396 rows=16044 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: quicksort  Memory: 1137kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.034..2.856 rows=16044 loops=1)\nTotal runtime: 12.958 ms\n",
+    "explain_format": "text",
+    "has_analyze": true,
+    "plan_actual_runtime_ms": 12,
+    "related_tables": [
+      "rental"
+    ]
+  },
+  "ground_truth": {
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
+    "root_causes": [
+      {
+        "cause_id": "RC-1",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Only 1 Sort node — no parent-child duplicate sort key",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.034..2.856 rows=16044 loops=1)",
+        "verification_method": "runtime_trace",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 12ms",
+        "verified_by": [
+          "reclassified_per_issue_1"
+        ]
+      }
+    ],
+    "suggested_fixes": []
+  },
+  "annotations": [],
+  "validation": {
+    "consensus_reached": false,
+    "disputed_fields": [],
+    "arbiter_id": "pending",
+    "final_decision_at": null,
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Only 1 Sort node — no parent-child duplicate sort key"
+  },
+  "tags": [
+    "SORT-003",
+    "db-version:og7.0",
+    "schema:pagila",
+    "auto-generated"
+  ],
+  "_auto_eval": {
+    "target_rule_designed": "SORT-003",
+    "actually_triggered": false,
+    "trigger_signal": "(no signal pattern matched)",
+    "run_warnings": []
+  }
+}

@@ -1,0 +1,13 @@
+-- @id: Q163
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: Bitmap OR scan(多条件 OR)
+SELECT * FROM payment WHERE customer_id = 1 OR staff_id = 1;
+
+Partition Iterator  (cost=0.00..362.74 rows=8070 width=30) (actual time=0.039..20.431 rows=8072 loops=1)
+  Iterations: 7
+  ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=8070 width=30) (actual time=0.073..13.277 rows=8072 loops=7)
+        Filter: ((customer_id = 1) OR (staff_id = 1))
+        Rows Removed by Filter: 7977
+        Selected Partitions:  1..7
+Total runtime: 21.526 ms

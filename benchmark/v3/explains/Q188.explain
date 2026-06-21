@@ -1,0 +1,17 @@
+-- @id: Q188
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 视图内 UNION(正例: 谓词下推到每个分支)
+CREATE OR REPLACE VIEW v_people AS
+SELECT customer_id AS id, first_name, last_name, 'customer' AS type FROM customer
+UNION ALL
+SELECT staff_id, first_name, last_name, 'staff' FROM staff;
+SELECT * FROM v_people WHERE id = 1;
+
+Result  (cost=0.00..16.54 rows=2 width=49) (actual time=0.030..0.078 rows=2 loops=1)
+  ->  Append  (cost=0.00..16.54 rows=2 width=49) (actual time=0.024..0.072 rows=2 loops=1)
+        ->  Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=49) (actual time=0.022..0.024 rows=1 loops=1)
+              Index Cond: (customer_id = 1)
+        ->  Index Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=49) (actual time=0.044..0.045 rows=1 loops=1)
+              Index Cond: (staff_id = 1)
+Total runtime: 0.199 ms

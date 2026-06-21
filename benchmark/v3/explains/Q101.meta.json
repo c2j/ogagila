@@ -1,0 +1,12 @@
+{
+  "id": "Q101",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "RANK vs DENSE_RANK,排序 + 窗口",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.006,
+  "explain_file": "Q101.explain"
+}

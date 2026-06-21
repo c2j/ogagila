@@ -1,0 +1,12 @@
+{
+  "id": "Q132",
+  "target_rule": "TYPE-001",
+  "severity": "warning",
+  "scenario": "隐式 cast: payment_date 与 string 比较",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.009,
+  "explain_file": "Q132.explain"
+}

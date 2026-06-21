@@ -1,0 +1,34 @@
+-- @id: Q127
+-- @target: AGG-001
+-- @severity: info
+-- @scenario: GROUPING SETS 多维度汇总
+SELECT
+    staff_id,
+    EXTRACT(YEAR FROM payment_date) AS yr,
+    SUM(amount) AS total
+FROM payment
+GROUP BY GROUPING SETS (
+    (staff_id),
+    (yr),
+    (staff_id, yr),
+    ()
+)
+ORDER BY staff_id NULLS LAST, yr NULLS LAST;
+
+Sort  (cost=2847.20..2847.29 rows=33 width=50) (actual time=44.185..44.185 rows=6 loops=1)
+  Sort Key: staff_id, (date_part('year'::text, payment_date))
+  Sort Method: quicksort  Memory: 25kB
+  ->  GroupAggregate  (cost=1443.65..2846.37 rows=33 width=50) (actual time=30.358..43.820 rows=6 loops=1)
+        Group By Key: staff_id, (date_part('year'::text, payment_date))
+        Group By Key: staff_id
+        Group By Key: ()
+        Sort Key: (date_part('year'::text, payment_date))
+          Group By Key: (date_part('year'::text, payment_date))
+        ->  Sort  (cost=1443.65..1483.77 rows=16049 width=18) (actual time=19.291..20.753 rows=16049 loops=1)
+              Sort Key: staff_id, (date_part('year'::text, payment_date))
+              Sort Method: quicksort  Memory: 1638kB
+              ->  Partition Iterator  (cost=0.00..322.61 rows=16049 width=18) (actual time=0.067..8.673 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.110..6.835 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 44.619 ms
