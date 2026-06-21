@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0032",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.700083+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.374915+00:00",
+  "updated_at": "2026-06-21T12:01:47.486294+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "UNION + ORDER BY 触发两层 sort",
@@ -17,67 +17,32 @@
   },
   "input": {
     "sql": "SELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2",
-    "explain_output": "-- @id: Q32\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: UNION + ORDER BY 触发两层 sort\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2;\n\nSort  (cost=2038.20..2079.38 rows=16472 width=8) (actual time=16.730..17.705 rows=16044 loops=1)\n  Sort Key: public.rental.rental_id, public.rental.customer_id\n  Sort Method: quicksort  Memory: 1137kB\n  ->  Result  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.020..10.920 rows=16044 loops=1)\n        ->  Append  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.020..8.852 rows=16044 loops=1)\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..3.541 rows=8040 loops=1)\n                    Filter: (staff_id = 1)\n                    Rows Removed by Filter: 8004\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8218 width=8) (actual time=0.025..3.580 rows=8004 loops=1)\n                    Filter: (staff_id = 2)\n                    Rows Removed by Filter: 8040\nTotal runtime: 19.337 ms\n",
+    "explain_output": "-- @id: Q32\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: UNION + ORDER BY 触发两层 sort\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2;\n\nSort  (cost=2038.20..2079.38 rows=16472 width=8) (actual time=72.181..72.655 rows=16044 loops=1)\n  Sort Key: public.rental.rental_id, public.rental.customer_id\n  Sort Method: quicksort  Memory: 1137kB\n  ->  Result  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.039..35.795 rows=16044 loops=1)\n        ->  Append  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.037..29.793 rows=16044 loops=1)\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.035..3.107 rows=8040 loops=1)\n                    Filter: (staff_id = 1)\n                    Rows Removed by Filter: 8004\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8218 width=8) (actual time=0.195..13.824 rows=8004 loops=1)\n                    Filter: (staff_id = 2)\n                    Rows Removed by Filter: 8040\nTotal runtime: 73.857 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 19,
+    "plan_actual_runtime_ms": 73,
     "related_tables": [
       "rental"
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "SORT-003",
-        "ogexplain_rule_category": "SORT-",
-        "severity": "warning",
-        "description": "UNION + ORDER BY 触发两层 sort",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..3.541 rows=8040 loops=1)\nFilter: (staff_id = 1)\nRows Removed by Filter: 8004",
+        "severity": "info",
+        "description": "Only 1 Sort node — UNION ALL does not produce duplicate sort",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.035..3.107 rows=8040 loops=1)\nFilter: (staff_id = 1)\nRows Removed by Filter: 8004",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 19ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 73ms",
         "verified_by": [
-          "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "implicit_type_coercion",
-        "ogexplain_rule_id": "TYPE-001",
-        "ogexplain_rule_category": "TYPE-",
-        "severity": "warning",
-        "description": "UNION 子查询涉及隐式转换",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for SORT-003",
-        "sql_or_action": "去除冗余 ORDER BY",
-        "applied": false,
-        "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "rewrite_sql",
-        "description": "Default fix template for TYPE-001",
-        "sql_or_action": "将字面量转为目标列类型",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -86,7 +51,7 @@
     "arbiter_id": "pending",
     "final_decision_at": null,
     "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "UNION 子查询涉及隐式转换"
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Only 1 Sort node — UNION ALL does not produce duplicate sort"
   },
   "tags": [
     "SORT-003",

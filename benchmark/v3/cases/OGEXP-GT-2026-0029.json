@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0029",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.696874+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.373109+00:00",
+  "updated_at": "2026-06-21T12:01:47.482884+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "全表 HashAggregate 内存峰值",
@@ -17,67 +17,32 @@
   },
   "input": {
     "sql": "SELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id",
-    "explain_output": "-- @id: Q29\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 全表 HashAggregate 内存峰值\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id;\n\nHashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=22.163..22.539 rows=599 loops=1)\n  Group By Key: customer_id\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.025..5.875 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.066..2.843 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 22.878 ms\n",
+    "explain_output": "-- @id: Q29\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 全表 HashAggregate 内存峰值\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id;\n\nHashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=12.789..13.014 rows=599 loops=1)\n  Group By Key: customer_id\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.021..3.326 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.047..1.854 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 13.334 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 22,
+    "plan_actual_runtime_ms": 13,
     "related_tables": [
       "payment"
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "info",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "memory_pressure",
-        "ogexplain_rule_id": "MEM-004",
-        "ogexplain_rule_category": "MEM-",
-        "severity": "info",
-        "description": "全表 HashAggregate 内存峰值",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.066..2.843 rows=16049 loops=7)\nSelected Partitions:  1..7",
-        "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 22ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
-        "verified_by": [
-          "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "payment 16049 行 Seq Scan",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
+        "severity": "info",
+        "description": "Memory usage far below MEM-004 threshold (102400kB) — Pagila dataset too small",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.047..1.854 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "verification_method": "runtime_trace",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 13ms",
         "verified_by": [
-          "v2_review:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "tune_param",
-        "description": "Default fix template for MEM-004",
-        "sql_or_action": "调小批次,或拆分 query",
-        "applied": false,
-        "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-001",
-        "sql_or_action": "CREATE INDEX ON <table> (<column>);",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -86,7 +51,7 @@
     "arbiter_id": "pending",
     "final_decision_at": null,
     "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "payment 16049 行 Seq Scan"
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Memory usage far below MEM-004 threshold (102400kB) — Pagila dataset too small"
   },
   "tags": [
     "MEM-004",

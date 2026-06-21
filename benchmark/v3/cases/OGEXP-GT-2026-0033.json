@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0033",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.701620+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.378480+00:00",
+  "updated_at": "2026-06-21T12:01:47.486550+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "DISTINCT + ORDER BY 不同字段",
@@ -17,67 +17,32 @@
   },
   "input": {
     "sql": "SELECT DISTINCT customer_id, rental_date FROM rental ORDER BY rental_date",
-    "explain_output": "-- @id: Q33\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: DISTINCT + ORDER BY 不同字段\nSELECT DISTINCT customer_id, rental_date FROM rental ORDER BY rental_date;\n\nUnique  (cost=1472.40..1595.94 rows=16472 width=12) (actual time=5.799..9.442 rows=16020 loops=1)\n  ->  Sort  (cost=1472.40..1513.58 rows=16472 width=12) (actual time=5.795..6.568 rows=16044 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: quicksort  Memory: 1137kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.013..2.038 rows=16044 loops=1)\nTotal runtime: 10.785 ms\n",
+    "explain_output": "-- @id: Q33\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: DISTINCT + ORDER BY 不同字段\nSELECT DISTINCT customer_id, rental_date FROM rental ORDER BY rental_date;\n\nUnique  (cost=1472.40..1595.94 rows=16472 width=12) (actual time=8.826..11.753 rows=16020 loops=1)\n  ->  Sort  (cost=1472.40..1513.58 rows=16472 width=12) (actual time=8.821..9.396 rows=16044 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: quicksort  Memory: 1137kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.034..2.856 rows=16044 loops=1)\nTotal runtime: 12.958 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 10,
+    "plan_actual_runtime_ms": 12,
     "related_tables": [
       "rental"
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "warning",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
         "category": "no_real_problem",
-        "ogexplain_rule_id": "SORT-003",
-        "ogexplain_rule_category": "SORT-",
-        "severity": "warning",
-        "description": "DISTINCT + ORDER BY 不同字段",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.013..2.038 rows=16044 loops=1)",
+        "severity": "info",
+        "description": "Only 1 Sort node — no parent-child duplicate sort key",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.034..2.856 rows=16044 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 10ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 12ms",
         "verified_by": [
-          "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "DISTINCT 触发大表 Seq Scan",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for SORT-003",
-        "sql_or_action": "去除冗余 ORDER BY",
-        "applied": false,
-        "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-001",
-        "sql_or_action": "CREATE INDEX ON <table> (<column>);",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -86,7 +51,7 @@
     "arbiter_id": "pending",
     "final_decision_at": null,
     "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "DISTINCT 触发大表 Seq Scan"
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Only 1 Sort node — no parent-child duplicate sort key"
   },
   "tags": [
     "SORT-003",

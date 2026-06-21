@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0045",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.740577+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T12:01:40.388295+00:00",
+  "updated_at": "2026-06-21T12:01:47.487956+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "staff_id 与 '1' 字符串比较",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM staff WHERE staff_id = '1'",
-    "explain_output": "-- @id: Q45\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: staff_id 与 '1' 字符串比较\nSELECT * FROM staff WHERE staff_id = '1';\n\nIndex Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=153) (actual time=0.019..0.020 rows=1 loops=1)\n  Index Cond: (staff_id = 1)\nTotal runtime: 0.093 ms\n",
+    "explain_output": "-- @id: Q45\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: staff_id 与 '1' 字符串比较\nSELECT * FROM staff WHERE staff_id = '1';\n\nIndex Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=153) (actual time=0.022..0.023 rows=1 loops=1)\n  Index Cond: (staff_id = 1)\nTotal runtime: 0.071 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -26,35 +26,23 @@
     ]
   },
   "ground_truth": {
-    "is_problematic": true,
-    "expected_severity_if_problematic": "critical",
+    "is_problematic": false,
+    "expected_severity_if_problematic": null,
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "implicit_type_coercion",
-        "ogexplain_rule_id": "TYPE-001",
-        "ogexplain_rule_category": "TYPE-",
-        "severity": "critical",
-        "description": "staff_id 与 '1' 字符串比较",
+        "category": "no_real_problem",
+        "severity": "info",
+        "description": "Implicit cast handled correctly — optimizer used Index Scan",
         "evidence": "Index Cond: (staff_id = 1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"no obvious cast signal in EXPLAIN\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
-          "build_cases.py:auto"
+          "reclassified_per_issue_1"
         ]
       }
     ],
-    "suggested_fixes": [
-      {
-        "fix_id": "FIX-1",
-        "cause_id": "RC-1",
-        "type": "rewrite_sql",
-        "description": "Default fix template for TYPE-001",
-        "sql_or_action": "将字面量转为目标列类型",
-        "applied": false,
-        "effect_validated": false
-      }
-    ]
+    "suggested_fixes": []
   },
   "annotations": [],
   "validation": {
@@ -62,7 +50,8 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
+    "reclassification_note": "Issue #1 reclassification (2026-06-21): Implicit cast handled correctly — optimizer used Index Scan"
   },
   "tags": [
     "TYPE-001",
