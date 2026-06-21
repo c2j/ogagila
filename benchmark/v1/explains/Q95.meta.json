@@ -1,0 +1,12 @@
+{
+  "id": "Q95",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "film 索引列范围查(language_id)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.052,
+  "explain_file": "Q95.explain"
+}

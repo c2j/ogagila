@@ -1,0 +1,12 @@
+{
+  "id": "Q04",
+  "target_rule": "SCAN-001",
+  "severity": "warning",
+  "scenario": "rental 与 payment 笛卡尔积前的 payment Seq Scan",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.021,
+  "explain_file": "Q04.explain"
+}

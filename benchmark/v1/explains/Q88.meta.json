@@ -1,0 +1,12 @@
+{
+  "id": "Q88",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "customer 主键点查",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q88.explain"
+}

@@ -1,0 +1,17 @@
+-- @id: Q25
+-- @target: MEM-001
+-- @severity: warning
+-- @scenario: 大表 ORDER BY amount
+SET work_mem = '128kB';
+SELECT * FROM payment ORDER BY amount DESC LIMIT 50;
+RESET work_mem;
+
+Limit  (cost=815.63..815.75 rows=50 width=30) (actual time=10.915..10.922 rows=50 loops=1)
+  ->  Sort  (cost=815.63..855.75 rows=16049 width=30) (actual time=10.911..10.913 rows=50 loops=1)
+        Sort Key: amount DESC
+        Sort Method: top-N heapsort  Memory: 31kB
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.039..6.481 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=30) (actual time=0.063..3.775 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+Total runtime: 11.742 ms

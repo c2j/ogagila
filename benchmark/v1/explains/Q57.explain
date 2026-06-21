@@ -1,0 +1,14 @@
+-- @id: Q57
+-- @target: PART-001
+-- @severity: warning
+-- @scenario: payment_date 用函数包装,无法分区裁剪
+SELECT COUNT(*) FROM payment WHERE EXTRACT(MONTH FROM payment_date) = 3;
+
+Aggregate  (cost=362.94..362.94 rows=1 width=8) (actual time=4.694..4.695 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..362.74 rows=80 width=0) (actual time=0.845..4.357 rows=2713 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=80 width=0) (actual time=3.241..3.989 rows=2713 loops=7)
+              Filter: (date_part('month'::text, payment_date) = 3::double precision)
+              Rows Removed by Filter: 13336
+              Selected Partitions:  1..7
+Total runtime: 5.420 ms

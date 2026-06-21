@@ -1,0 +1,9 @@
+-- @id: Q47
+-- @target: TYPE-001
+-- @severity: warning
+-- @scenario: film_id 数字字符串混合比较
+SELECT * FROM film WHERE film_id = '999';
+
+Index Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.020..0.021 rows=1 loops=1)
+  Index Cond: (film_id = 999)
+Total runtime: 0.080 ms

@@ -1,0 +1,8 @@
+-- @id: Q86
+-- @target: NONE
+-- @severity: info
+-- @scenario: language 表(6 行)
+SELECT * FROM language;
+
+Seq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.025..0.026 rows=6 loops=1)
+Total runtime: 0.156 ms

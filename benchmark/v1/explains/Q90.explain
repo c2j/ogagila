@@ -1,0 +1,12 @@
+-- @id: Q90
+-- @target: NONE
+-- @severity: info
+-- @scenario: payment 主键点查(分区裁剪生效)
+SELECT * FROM payment WHERE payment_date = '2022-03-15 10:00:00+00' AND payment_id = 1;
+
+Partition Iterator  (cost=0.00..8.27 rows=1 width=30) (actual time=0.107..0.107 rows=0 loops=1)
+  Iterations: 1
+  ->  Partitioned Index Scan using payment_pkey on payment  (cost=0.00..8.27 rows=1 width=30) (actual time=0.081..0.081 rows=0 loops=1)
+        Index Cond: ((payment_date = '2022-03-15 10:00:00+00'::timestamp with time zone) AND (payment_id = 1))
+        Selected Partitions:  3
+Total runtime: 4.489 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q19",
+  "target_rule": "JOIN-001",
+  "severity": "warning",
+  "scenario": "大表 customer→address NL(address_id 无高效索引时)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.009,
+  "explain_file": "Q19.explain"
+}

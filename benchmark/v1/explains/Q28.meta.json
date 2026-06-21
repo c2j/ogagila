@@ -1,0 +1,12 @@
+{
+  "id": "Q28",
+  "target_rule": "MEM-004",
+  "severity": "info",
+  "scenario": "大表 Hash Join 峰值内存高",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.183,
+  "explain_file": "Q28.explain"
+}

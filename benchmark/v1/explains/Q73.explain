@@ -1,0 +1,18 @@
+-- @id: Q73
+-- @target: AGG-002
+-- @severity: warning
+-- @scenario: 大 GROUP BY + 低 work_mem
+SET work_mem = '128kB';
+SELECT customer_id, COUNT(*), SUM(amount), AVG(amount), MAX(amount), MIN(amount)
+FROM payment
+GROUP BY customer_id;
+RESET work_mem;
+
+HashAggregate  (cost=523.23..530.71 rows=599 width=146) (actual time=26.261..36.633 rows=599 loops=1)
+  Group By Key: customer_id
+Temp File Num: 48
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.018..4.181 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.052..2.422 rows=16049 loops=7)
+              Selected Partitions:  1..7
+Total runtime: 36.884 ms

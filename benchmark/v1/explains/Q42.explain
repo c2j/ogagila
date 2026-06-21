@@ -1,0 +1,18 @@
+-- @id: Q42
+-- @target: EST-004
+-- @severity: warning
+-- @scenario: 删 stats 后 rental-inventory 选 NL
+DELETE STATISTICS rental;
+SELECT r.rental_id, i.store_id
+FROM rental r, inventory i
+WHERE r.inventory_id = i.inventory_id;
+
+Hash Join  (cost=133.07..674.04 rows=16048 width=8) (actual time=2.355..10.159 rows=16044 loops=1)
+  Hash Cond: (r.inventory_id = i.inventory_id)
+  ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..1.856 rows=16044 loops=1)
+  ->  Hash  (cost=75.81..75.81 rows=4581 width=8) (actual time=1.838..1.838 rows=4581 loops=1)
+         Buckets: 32768  Batches: 1  Memory Usage: 435kB
+        ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.014..0.801 rows=4581 loops=1)
+Total runtime: 11.530 ms
+
+-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'

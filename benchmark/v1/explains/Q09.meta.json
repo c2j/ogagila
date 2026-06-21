@@ -1,0 +1,12 @@
+{
+  "id": "Q09",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "rental.return_date IS NULL(高频谓词,缺索引)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.106,
+  "explain_file": "Q09.explain"
+}

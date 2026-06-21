@@ -1,0 +1,12 @@
+{
+  "id": "Q81",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "7 层以上嵌套查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.029,
+  "explain_file": "Q81.explain"
+}

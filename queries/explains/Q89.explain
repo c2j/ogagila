@@ -1,9 +1,0 @@
--- @id: Q89
--- @target: NONE
--- @severity: info
--- @scenario: actor 主键点查
-SELECT * FROM actor WHERE actor_id = 25;
-
-Index Scan using actor_pkey on actor  (cost=0.00..8.27 rows=1 width=25) (actual time=0.017..0.017 rows=1 loops=1)
-  Index Cond: (actor_id = 25)
-Total runtime: 0.063 ms

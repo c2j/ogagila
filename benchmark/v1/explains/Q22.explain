@@ -1,0 +1,33 @@
+-- @id: Q22
+-- @target: JOIN-002
+-- @severity: warning
+-- @scenario: 4 表 Hash Join
+SET work_mem = '256kB';
+SELECT COUNT(*)
+FROM rental r
+JOIN payment p ON r.rental_id = p.rental_id
+JOIN customer c ON r.customer_id = c.customer_id
+JOIN staff s ON r.staff_id = s.staff_id;
+RESET work_mem;
+
+Aggregate  (cost=2908.48..2908.49 rows=1 width=8) (actual time=58.630..58.631 rows=1 loops=1)
+  ->  Hash Join  (cost=841.85..2868.36 rows=16049 width=0) (actual time=18.594..56.665 rows=16049 loops=1)
+        Hash Cond: (r.staff_id = s.staff_id)
+        ->  Hash Join  (cost=763.10..2270.93 rows=16049 width=4) (actual time=17.007..49.994 rows=16049 loops=1)
+              Hash Cond: (r.customer_id = c.customer_id)
+              ->  Hash Join  (cost=734.62..1731.78 rows=16049 width=8) (actual time=15.851..39.133 rows=16049 loops=1)
+                    Hash Cond: (p.rental_id = r.rental_id)
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..5.029 rows=16049 loops=1)
+                          Iterations: 7
+                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.053..3.149 rows=16049 loops=7)
+                                Selected Partitions:  1..7
+                    ->  Hash  (cost=318.72..318.72 rows=16472 width=12) (actual time=9.231..9.231 rows=16044 loops=1)
+                           Buckets: 8192  Batches: 8  Memory Usage: 147kB
+                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.006..3.128 rows=16044 loops=1)
+              ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=1.090..1.090 rows=599 loops=1)
+                     Buckets: 8192  Batches: 2  Memory Usage: 79kB
+                    ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.005..0.088 rows=599 loops=1)
+        ->  Hash  (cost=46.00..46.00 rows=1500 width=4) (actual time=1.522..1.522 rows=1500 loops=1)
+               Buckets: 8192  Batches: 2  Memory Usage: 91kB
+              ->  Seq Scan on staff s  (cost=0.00..46.00 rows=1500 width=4) (actual time=0.015..0.382 rows=1500 loops=1)
+Total runtime: 59.031 ms

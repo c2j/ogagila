@@ -1,0 +1,19 @@
+-- @id: Q35
+-- @target: NET-001
+-- @severity: warning
+-- @scenario: payment 与 customer 联接
+SELECT COUNT(*)
+FROM payment p, customer c
+WHERE p.customer_id = c.customer_id;
+
+Aggregate  (cost=565.76..565.77 rows=1 width=8) (actual time=11.724..11.724 rows=1 loops=1)
+  ->  Hash Join  (cost=22.48..525.64 rows=16049 width=0) (actual time=0.509..9.786 rows=16049 loops=1)
+        Hash Cond: (p.customer_id = c.customer_id)
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.079..3.808 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.057..1.828 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+        ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.235..0.235 rows=599 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 278kB
+              ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.007..0.093 rows=599 loops=1)
+Total runtime: 12.113 ms

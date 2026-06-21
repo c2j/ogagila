@@ -1,0 +1,20 @@
+-- @id: Q23
+-- @target: JOIN-002
+-- @severity: warning
+-- @scenario: 自连接 rental 触发大 Hash
+SET work_mem = '64kB';
+SELECT r1.rental_id, r2.rental_id
+FROM rental r1
+INNER JOIN rental r2 ON r1.customer_id = r2.customer_id
+WHERE r1.rental_date < r2.rental_date;
+RESET work_mem;
+
+Hash Join  (cost=734.62..8434.86 rows=153136 width=8) (actual time=36.965..164.485 rows=214628 loops=1)
+  Hash Cond: (r1.customer_id = r2.customer_id)
+  Join Filter: (r1.rental_date < r2.rental_date)
+  Rows Removed by Join Filter: 230722
+  ->  Seq Scan on rental r1  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.017..3.997 rows=16044 loops=1)
+  ->  Hash  (cost=318.72..318.72 rows=16472 width=16) (actual time=20.893..20.893 rows=16044 loops=1)
+         Buckets: 2048  Batches: 32  Memory Usage: 44kB
+        ->  Seq Scan on rental r2  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.003..3.038 rows=16044 loops=1)
+Total runtime: 181.121 ms

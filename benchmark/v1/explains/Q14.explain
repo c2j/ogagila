@@ -1,0 +1,11 @@
+-- @id: Q14
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: film.description 文本扫描
+SELECT COUNT(*) FROM film WHERE description LIKE '%Drama%';
+
+Aggregate  (cost=67.78..67.79 rows=1 width=8) (actual time=19.025..19.025 rows=1 loops=1)
+  ->  Seq Scan on film  (cost=0.00..67.50 rows=111 width=0) (actual time=1.138..18.974 rows=106 loops=1)
+        Filter: (description ~~ '%Drama%'::text)
+        Rows Removed by Filter: 894
+Total runtime: 21.281 ms

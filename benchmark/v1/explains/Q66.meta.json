@@ -1,0 +1,12 @@
+{
+  "id": "Q66",
+  "target_rule": "REW-001",
+  "severity": "warning",
+  "scenario": "film_id IN (...) 1000 个值",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q66.explain"
+}

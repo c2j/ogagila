@@ -1,0 +1,18 @@
+-- @id: Q74
+-- @target: AGG-002
+-- @severity: warning
+-- @scenario: 多列 GROUP BY
+SET work_mem = '64kB';
+SELECT customer_id, staff_id, COUNT(*), SUM(amount)
+FROM payment
+GROUP BY customer_id, staff_id;
+RESET work_mem;
+
+HashAggregate  (cost=565.50..665.48 rows=1198 width=54) (actual time=34.243..50.342 rows=1198 loops=1)
+  Group By Key: customer_id, staff_id
+Temp File Num: 48
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=14) (actual time=0.023..6.187 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=14) (actual time=0.057..3.881 rows=16049 loops=7)
+              Selected Partitions:  1..7
+Total runtime: 51.001 ms

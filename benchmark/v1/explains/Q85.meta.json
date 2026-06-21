@@ -1,0 +1,12 @@
+{
+  "id": "Q85",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "country 表(109 行,全表 OK)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.015,
+  "explain_file": "Q85.explain"
+}

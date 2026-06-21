@@ -5,7 +5,7 @@
 
 ## OVERVIEW
 
-Pagila — Sakila 示例数据库的 openGauss 移植版。从 PostgreSQL 迁移到 openGauss 7.0（Oracle 兼容模式）。Docker Compose 自动初始化 schema + 数据。纯 schema/data/Docker 项目，无应用代码。
+Pagila — Sakila 示例数据库的 openGauss 移植版。从 PostgreSQL 迁移到 openGauss 7.0（Oracle 兼容模式）。Docker Compose 自动初始化 schema + 数据。核心是 schema/data/Docker 项目，附带一套 openGauss EXPLAIN 评估套件（`benchmark/`：SQL 查询集 + EXPLAIN 物料 + ground-truth case + 工具脚本）用于评估 EXPLAIN 诊断工具。
 
 ## STRUCTURE
 
@@ -26,6 +26,20 @@ ogagila/
 │       ├── data.sql                # 业务数据（COPY 格式，payment 重定向到父表）
 │       ├── data-apt-jsonb.sql      # apt 包 JSONB 数据（纯 SQL，67109 行）
 │       └── data-yum-jsonb.sql      # yum 包 JSONB 数据（纯 SQL，84685 行）
+├── benchmark/                      # EXPLAIN 评估套件：SQL + EXPLAIN 物料 + ground-truth case + 工具
+│   ├── README.md                   # 唯一总文档（合并版）
+│   ├── scripts/                    # Python 工具
+│   │   ├── run_explain.py          # Stage A：跑 EXPLAIN ANALYZE，支持 --version 切换
+│   │   └── build_cases.py          # Stage B：合成 ground-truth case，支持 --version 切换
+│   ├── groundtruth.schema.json     # case JSON Schema (Draft 2020-12)
+│   └── v1/                         # 版本化（可扩展 v2/v3...）
+│       ├── queries.sql             # 97 条 query（含 -- @id/@target/@severity/@scenario 标记）
+│       ├── queries.md              # 该版本人类可读说明
+│       ├── queries_meta.json       # 机器可读元数据（target_rule / severity / scenario）
+│       ├── explains/               # Stage A 产物：Q*.explain + Q*.meta.json + index.json
+│       ├── cases/                  # Stage B 产物：OGEXP-GT-2026-0001.json ~ 0097.json
+│       ├── case_index.json         # 97 case 索引（evaluator 可直接消费）
+│       └── trigger_coverage.md     # 按规则维度的触发率报告
 ├── pagila-schema-diagram.png       # ER 图参考
 ├── pgadmin/                        # pgAdmin4 预配置
 │   ├── pgadmin_servers.json        # 服务器定义 → 容器 pagila，用户 gaussdb
@@ -47,6 +61,14 @@ ogagila/
 | 初始化顺序 | `docker-compose.yml` volumes | 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum |
 | pgAdmin 连接 | `pgadmin/pgadmin_servers.json` | Host=pagila, User=gaussdb, DB=pagila |
 | 分区定义 | `sqls/ddl/schema.sql` payment 表 | openGauss 内联 `VALUES LESS THAN` 语法 |
+| EXPLAIN 测试 query | `benchmark/v1/queries.sql` | 97 条 query，每条用 `-- @id`/`-- @target`/`-- @severity`/`-- @scenario` 标记 |
+| EXPLAIN 输出 | `benchmark/v1/explains/Q*.explain` | 真 EXPLAIN ANALYZE 输出 + `.meta.json`（含 warnings） |
+| query 元数据 | `benchmark/v1/queries_meta.json` | target_rule / severity / scenario / is_healthy 标签 |
+| 跑 EXPLAIN | `benchmark/scripts/run_explain.py` | 默认 v1，`--version v2` 切换版本，每条 query 在独立 BEGIN/ROLLBACK 内 |
+| ground-truth case | `benchmark/v1/cases/OGEXP-GT-*.json` | 97 case，遵循 `benchmark/groundtruth.schema.json` |
+| case 生成器 | `benchmark/scripts/build_cases.py` | 默认 v1，`--version v2` 联动读写 `benchmark/v2/` |
+| case JSON Schema | `benchmark/groundtruth.schema.json` | Draft 2020-12，定义 case_id/source/input/ground_truth 结构 |
+| 触发率报告 | `benchmark/v1/trigger_coverage.md` | 按规则维度统计 designed vs actually_triggered |
 
 ## CONVENTIONS
 
@@ -99,6 +121,17 @@ gsql -d pagila -f sqls/init_data/data.sql
 gsql -d pagila -f sqls/init_data/data-apt-jsonb.sql
 gsql -d pagila -f sqls/init_data/data-yum-jsonb.sql
 
+# === EXPLAIN ground-truth 物料 ===
+# 跑 EXPLAIN ANALYZE（需先启动 ogagila 容器）
+pip install psycopg2-binary
+python3 benchmark/scripts/run_explain.py --host localhost --port 5432 \
+    --db pagila --user gaussdb --password Enmo@123
+# 切换版本:--version v2
+
+# 生成 ground-truth case JSON
+python3 benchmark/scripts/build_cases.py
+# 切换版本:--version v2（自动读写 benchmark/v2/，与 v1 完全隔离）
+
 # 停止（保留数据卷）
 docker-compose down
 
@@ -117,3 +150,7 @@ docker-compose down -v
 - JSONB 数据文件较大（~49MB + ~54MB）— 纯 SQL 文本，无 Git LFS
 - Docker 初始化总耗时约 6 秒（不含镜像下载和 initdb）
 - `gsql-pagila` 包装脚本自动注入 gaussdb 用户名密码 — openGauss 安全插件要求非 omm 用户必须密码认证
+- **queries + benchmark 多版本机制**：`benchmark/` 整合了 SQL 查询集、EXPLAIN 物料、ground-truth case 和工具脚本。`scripts/run_explain.py` 和 `scripts/build_cases.py` 都支持 `--version <V>`，默认 v1。每个版本独立放在 `benchmark/<version>/` 子目录下，包含输入（`queries.*`）+ Stage A 产物（`explains/`）+ Stage B 产物（`cases/` + `case_index.json` + `trigger_coverage.md`）。新增版本只加一个 `benchmark/v2/` 目录，与 v1 完全隔离。
+- **queries 与 ogexplain-analyzer 的关系**：ogagila 的 benchmark 提供 ground-truth 数据集，评估 EXPLAIN 诊断工具（如 ogexplain-analyzer）的准确率。评估器（`evaluate.py`）不在本仓库 — 见 ogexplain-analyzer 项目。
+- **case JSON 的 `ogexplain_rule_id` 字段**：引用 ogexplain-analyzer 定义的 25 条诊断规则体系。该字段名是外部规则命名空间引用，不要重命名。
+- **不要直接 `gsql < benchmark/v1/queries.sql`** — 该文件含副作用语句（SET/DELETE STATISTICS/UPDATE），会污染后续 query 的执行环境。必须用 `scripts/run_explain.py`（每条 query 在独立 BEGIN/ROLLBACK 内）。

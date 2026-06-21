@@ -1,0 +1,12 @@
+{
+  "id": "Q78",
+  "target_rule": "SKEW-001",
+  "severity": "warning",
+  "scenario": "rental 按 staff_id 聚合(staff 数量少,数据偏斜)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.012,
+  "explain_file": "Q78.explain"
+}
