@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0023",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.690942+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.253710+00:00",
+  "updated_at": "2026-06-21T08:11:52.253737+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "自连接 rental 触发大 Hash",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SET work_mem = '64kB';\nSELECT r1.rental_id, r2.rental_id\nFROM rental r1\nINNER JOIN rental r2 ON r1.customer_id = r2.customer_id\nWHERE r1.rental_date < r2.rental_date;\nRESET work_mem",
-    "explain_output": "-- @id: Q23\n-- @target: JOIN-002\n-- @severity: warning\n-- @scenario: 自连接 rental 触发大 Hash\nSET work_mem = '64kB';\nSELECT r1.rental_id, r2.rental_id\nFROM rental r1\nINNER JOIN rental r2 ON r1.customer_id = r2.customer_id\nWHERE r1.rental_date < r2.rental_date;\nRESET work_mem;\n\nHash Join  (cost=734.62..8434.86 rows=153136 width=8) (actual time=16.210..132.044 rows=214628 loops=1)\n  Hash Cond: (r1.customer_id = r2.customer_id)\n  Join Filter: (r1.rental_date < r2.rental_date)\n  Rows Removed by Join Filter: 230722\n  ->  Seq Scan on rental r1  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.016..2.960 rows=16044 loops=1)\n  ->  Hash  (cost=318.72..318.72 rows=16472 width=16) (actual time=13.815..13.815 rows=16044 loops=1)\n         Buckets: 2048  Batches: 32  Memory Usage: 44kB\n        ->  Seq Scan on rental r2  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.003..3.312 rows=16044 loops=1)\nTotal runtime: 148.858 ms\n",
+    "explain_output": "-- @id: Q23\n-- @target: JOIN-002\n-- @severity: warning\n-- @scenario: 自连接 rental 触发大 Hash\nSET work_mem = '64kB';\nSELECT r1.rental_id, r2.rental_id\nFROM rental r1\nINNER JOIN rental r2 ON r1.customer_id = r2.customer_id\nWHERE r1.rental_date < r2.rental_date;\nRESET work_mem;\n\nHash Join  (cost=734.62..8434.86 rows=153136 width=8) (actual time=9.364..109.622 rows=214628 loops=1)\n  Hash Cond: (r1.customer_id = r2.customer_id)\n  Join Filter: (r1.rental_date < r2.rental_date)\n  Rows Removed by Join Filter: 230722\n  ->  Seq Scan on rental r1  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.012..2.348 rows=16044 loops=1)\n  ->  Hash  (cost=318.72..318.72 rows=16472 width=16) (actual time=8.405..8.405 rows=16044 loops=1)\n         Buckets: 2048  Batches: 32  Memory Usage: 44kB\n        ->  Seq Scan on rental r2  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.002..2.747 rows=16044 loops=1)\nTotal runtime: 124.033 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 148,
+    "plan_actual_runtime_ms": 124,
     "related_tables": [
       "rental"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "JOIN-",
         "severity": "warning",
         "description": "自连接 rental 触发大 Hash",
-        "evidence": "->  Seq Scan on rental r1  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.016..2.960 rows=16044 loops=1)\nJoin Filter: (r1.rental_date < r2.rental_date)",
+        "evidence": "->  Seq Scan on rental r1  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.012..2.348 rows=16044 loops=1)\nJoin Filter: (r1.rental_date < r2.rental_date)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 148ms; actually_triggered=True; signal=\"Hash Join present; Hash spill detected (JOIN-002)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 124ms; actually_triggered=True; signal=\"Hash Join present; Hash spill detected (JOIN-002)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0093",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.966167+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.506573+00:00",
+  "updated_at": "2026-06-21T08:11:52.506581+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "全文检索使用 GIN 索引",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT title FROM film WHERE fulltext @@ to_tsquery('fate&india')",
-    "explain_output": "-- @id: Q93\n-- @target: NONE\n-- @severity: info\n-- @scenario: 全文检索使用 GIN 索引\nSELECT title FROM film WHERE fulltext @@ to_tsquery('fate&india');\n\nBitmap Heap Scan on film  (cost=4.27..11.15 rows=2 width=15) (actual time=0.531..0.542 rows=3 loops=1)\n  Recheck Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)\n  Heap Blocks: exact=3\n  ->  Bitmap Index Scan on film_fulltext_idx  (cost=0.00..4.26 rows=2 width=0) (actual time=0.474..0.474 rows=3 loops=1)\n        Index Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)\nTotal runtime: 1.314 ms\n",
+    "explain_output": "-- @id: Q93\n-- @target: NONE\n-- @severity: info\n-- @scenario: 全文检索使用 GIN 索引\nSELECT title FROM film WHERE fulltext @@ to_tsquery('fate&india');\n\nBitmap Heap Scan on film  (cost=4.27..11.15 rows=2 width=15) (actual time=0.819..0.827 rows=3 loops=1)\n  Recheck Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)\n  Heap Blocks: exact=3\n  ->  Bitmap Index Scan on film_fulltext_idx  (cost=0.00..4.26 rows=2 width=0) (actual time=0.785..0.785 rows=3 loops=1)\n        Index Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)\nTotal runtime: 0.974 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 1,
+    "plan_actual_runtime_ms": 0,
     "related_tables": [
       "film",
       "film_fulltext_idx"
@@ -37,7 +37,7 @@
         "description": "No real performance problem; query is well-optimized.",
         "evidence": "Index Cond: (fulltext @@ '''fate'' & ''india'''::tsquery)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
           "build_cases.py:auto"
         ]

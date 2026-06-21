@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0072",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.777046+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.438002+00:00",
+  "updated_at": "2026-06-21T08:11:52.438023+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment GROUP BY 排序聚合",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SET enable_hashagg = off;\nSELECT staff_id, COUNT(*) FROM payment GROUP BY staff_id LIMIT 10;\nRESET enable_hashagg",
-    "explain_output": "-- @id: Q72\n-- @target: AGG-001\n-- @severity: warning\n-- @scenario: payment GROUP BY 排序聚合\nSET enable_hashagg = off;\nSELECT staff_id, COUNT(*) FROM payment GROUP BY staff_id LIMIT 10;\nRESET enable_hashagg;\n\nLimit  (cost=0.00..1137.51 rows=2 width=12) (actual time=8.382..15.177 rows=2 loops=1)\n  ->  GroupAggregate  (cost=0.00..1137.51 rows=2 width=12) (actual time=8.379..15.170 rows=2 loops=1)\n        Group By Key: staff_id\n        ->  Index Only Scan using idx_fk_payment_staff_id on payment  (cost=0.00..1057.24 rows=16049 width=4) (actual time=1.173..12.519 rows=16049 loops=1)\n              Heap Fetches: 16049\nTotal runtime: 15.304 ms\n",
+    "explain_output": "-- @id: Q72\n-- @target: AGG-001\n-- @severity: warning\n-- @scenario: payment GROUP BY 排序聚合\nSET enable_hashagg = off;\nSELECT staff_id, COUNT(*) FROM payment GROUP BY staff_id LIMIT 10;\nRESET enable_hashagg;\n\nLimit  (cost=0.00..1137.51 rows=2 width=12) (actual time=5.378..10.766 rows=2 loops=1)\n  ->  GroupAggregate  (cost=0.00..1137.51 rows=2 width=12) (actual time=5.376..10.761 rows=2 loops=1)\n        Group By Key: staff_id\n        ->  Index Only Scan using idx_fk_payment_staff_id on payment  (cost=0.00..1057.24 rows=16049 width=4) (actual time=0.111..8.756 rows=16049 loops=1)\n              Heap Fetches: 16049\nTotal runtime: 10.882 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 15,
+    "plan_actual_runtime_ms": 10,
     "related_tables": [
       "payment"
     ]
@@ -38,7 +38,7 @@
         "description": "payment GROUP BY 排序聚合",
         "evidence": "(no obvious signal)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 15ms; actually_triggered=True; signal=\"GroupAggregate present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 10ms; actually_triggered=True; signal=\"GroupAggregate present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

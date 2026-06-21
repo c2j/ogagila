@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0085",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.861042+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.481356+00:00",
+  "updated_at": "2026-06-21T08:11:52.481373+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "country 表(109 行,全表 OK)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM country WHERE country = 'United States'",
-    "explain_output": "-- @id: Q85\n-- @target: NONE\n-- @severity: info\n-- @scenario: country 表(109 行,全表 OK)\nSELECT * FROM country WHERE country = 'United States';\n\nSeq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.067..0.068 rows=1 loops=1)\n  Filter: (country = 'United States'::text)\n  Rows Removed by Filter: 108\nTotal runtime: 0.128 ms\n",
+    "explain_output": "-- @id: Q85\n-- @target: NONE\n-- @severity: info\n-- @scenario: country 表(109 行,全表 OK)\nSELECT * FROM country WHERE country = 'United States';\n\nSeq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.057..0.058 rows=1 loops=1)\n  Filter: (country = 'United States'::text)\n  Rows Removed by Filter: 108\nTotal runtime: 0.145 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -34,7 +34,7 @@
         "category": "no_real_problem",
         "severity": "info",
         "description": "No real performance problem; query is well-optimized.",
-        "evidence": "Seq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.067..0.068 rows=1 loops=1)\nFilter: (country = 'United States'::text)\nRows Removed by Filter: 108",
+        "evidence": "Seq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.057..0.058 rows=1 loops=1)\nFilter: (country = 'United States'::text)\nRows Removed by Filter: 108",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [

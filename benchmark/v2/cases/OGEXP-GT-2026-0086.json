@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0086",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.880050+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.487004+00:00",
+  "updated_at": "2026-06-21T08:11:52.487032+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "language 表(6 行)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM language",
-    "explain_output": "-- @id: Q86\n-- @target: NONE\n-- @severity: info\n-- @scenario: language 表(6 行)\nSELECT * FROM language;\n\nSeq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.016..0.018 rows=6 loops=1)\nTotal runtime: 0.131 ms\n",
+    "explain_output": "-- @id: Q86\n-- @target: NONE\n-- @severity: info\n-- @scenario: language 表(6 行)\nSELECT * FROM language;\n\nSeq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.009..0.010 rows=6 loops=1)\nTotal runtime: 0.062 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -34,7 +34,7 @@
         "category": "no_real_problem",
         "severity": "info",
         "description": "No real performance problem; query is well-optimized.",
-        "evidence": "Seq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.016..0.018 rows=6 loops=1)",
+        "evidence": "Seq Scan on language  (cost=0.00..16.48 rows=648 width=96) (actual time=0.009..0.010 rows=6 loops=1)",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [

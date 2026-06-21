@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0016",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.682202+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.246394+00:00",
+  "updated_at": "2026-06-21T08:11:52.246409+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental ↔ inventory NL(staff_id 无索引时)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10",
-    "explain_output": "-- @id: Q16\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: rental ↔ inventory NL(staff_id 无索引时)\nSELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10;\n\nLimit  (cost=0.00..1.73 rows=10 width=12) (actual time=0.568..0.609 rows=10 loops=1)\n  ->  Merge Join  (cost=0.00..1429.10 rows=8254 width=12) (actual time=0.566..0.606 rows=10 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=12) (actual time=0.021..0.024 rows=6 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.522..0.554 rows=10 loops=1)\n              Filter: (staff_id = 1)\n              Rows Removed by Filter: 3\nTotal runtime: 0.728 ms\n",
+    "explain_output": "-- @id: Q16\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: rental ↔ inventory NL(staff_id 无索引时)\nSELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10;\n\nLimit  (cost=0.00..1.73 rows=10 width=12) (actual time=0.037..0.067 rows=10 loops=1)\n  ->  Merge Join  (cost=0.00..1429.10 rows=8254 width=12) (actual time=0.036..0.065 rows=10 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=12) (actual time=0.008..0.009 rows=6 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.015..0.042 rows=10 loops=1)\n              Filter: (staff_id = 1)\n              Rows Removed by Filter: 3\nTotal runtime: 0.122 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -43,20 +43,6 @@
         "verified_by": [
           "build_cases.py:auto"
         ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "missing_index",
-        "ogexplain_rule_id": "SCAN-004",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "3 表 join + rental WHERE staff_id=1,JOIN-001 和 SCAN-004 都成立",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
-        ]
       }
     ],
     "suggested_fixes": [
@@ -68,15 +54,6 @@
         "sql_or_action": "enable_nestloop=off / 强制使用 Hash Join",
         "applied": false,
         "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-004",
-        "sql_or_action": "CREATE INDEX ON <table> (<filter_column>);",
-        "applied": false,
-        "effect_validated": false
       }
     ]
   },
@@ -86,8 +63,7 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "3 表 join + rental WHERE staff_id=1,JOIN-001 和 SCAN-004 都成立"
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
   },
   "tags": [
     "JOIN-001",

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0045",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.740577+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.316418+00:00",
+  "updated_at": "2026-06-21T08:11:52.316426+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "staff_id 与 '1' 字符串比较",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM staff WHERE staff_id = '1'",
-    "explain_output": "-- @id: Q45\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: staff_id 与 '1' 字符串比较\nSELECT * FROM staff WHERE staff_id = '1';\n\nIndex Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=153) (actual time=0.019..0.020 rows=1 loops=1)\n  Index Cond: (staff_id = 1)\nTotal runtime: 0.093 ms\n",
+    "explain_output": "-- @id: Q45\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: staff_id 与 '1' 字符串比较\nSELECT * FROM staff WHERE staff_id = '1';\n\nIndex Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=153) (actual time=0.016..0.017 rows=1 loops=1)\n  Index Cond: (staff_id = 1)\nTotal runtime: 0.052 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

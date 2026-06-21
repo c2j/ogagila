@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0064",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.765251+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.360018+00:00",
+  "updated_at": "2026-06-21T08:11:52.360031+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental.return_date 通过相关子查询自更新",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "UPDATE rental r\nSET return_date = (\n  SELECT MAX(payment_date)\n  FROM payment p\n  WHERE p.rental_id = r.rental_id\n)\nWHERE r.return_date IS NULL",
-    "explain_output": "-- @id: Q64\n-- @target: SUBQ-006\n-- @severity: critical\n-- @scenario: rental.return_date 通过相关子查询自更新\nUPDATE rental r\nSET return_date = (\n  SELECT MAX(payment_date)\n  FROM payment p\n  WHERE p.rental_id = r.rental_id\n)\nWHERE r.return_date IS NULL;\n\nUpdate on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.360..1.384 rows=0 loops=1)\n  ->  Seq Scan on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.349..1.349 rows=0 loops=1)\n        Filter: (return_date IS NULL)\n        Rows Removed by Filter: 16044\n        SubPlan 1\n          ->  Aggregate  (cost=322.62..322.62 rows=1 width=16) (Actual time: never executed)\n                ->  Partition Iterator  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)\n                      Iterations: 7\n                      ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)\n                            Filter: (rental_id = r.rental_id)\n                            Selected Partitions:  1..7\nTotal runtime: 2.432 ms\n",
+    "explain_output": "-- @id: Q64\n-- @target: SUBQ-006\n-- @severity: critical\n-- @scenario: rental.return_date 通过相关子查询自更新\nUPDATE rental r\nSET return_date = (\n  SELECT MAX(payment_date)\n  FROM payment p\n  WHERE p.rental_id = r.rental_id\n)\nWHERE r.return_date IS NULL;\n\nUpdate on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.567..1.591 rows=0 loops=1)\n  ->  Seq Scan on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.561..1.561 rows=0 loops=1)\n        Filter: (return_date IS NULL)\n        Rows Removed by Filter: 16044\n        SubPlan 1\n          ->  Aggregate  (cost=322.62..322.62 rows=1 width=16) (Actual time: never executed)\n                ->  Partition Iterator  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)\n                      Iterations: 7\n                      ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)\n                            Filter: (rental_id = r.rental_id)\n                            Selected Partitions:  1..7\nTotal runtime: 2.017 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 2,
@@ -37,7 +37,7 @@
         "ogexplain_rule_category": "SUBQ-",
         "severity": "critical",
         "description": "rental.return_date 通过相关子查询自更新",
-        "evidence": "->  Seq Scan on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.349..1.349 rows=0 loops=1)\nFilter: (return_date IS NULL)\nRows Removed by Filter: 16044",
+        "evidence": "->  Seq Scan on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.561..1.561 rows=0 loops=1)\nFilter: (return_date IS NULL)\nRows Removed by Filter: 16044",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 2ms; actually_triggered=True; signal=\"UPDATE with SubPlan present\"",
         "verified_by": [

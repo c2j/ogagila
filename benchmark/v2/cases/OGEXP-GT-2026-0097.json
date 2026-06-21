@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0097",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.983234+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.535354+00:00",
+  "updated_at": "2026-06-21T08:11:52.535364+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental 索引列精确查(inventory_id)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM rental WHERE inventory_id = 100",
-    "explain_output": "-- @id: Q97\n-- @target: NONE\n-- @severity: info\n-- @scenario: rental 索引列精确查(inventory_id)\nSELECT COUNT(*) FROM rental WHERE inventory_id = 100;\n\nAggregate  (cost=15.06..15.07 rows=1 width=8) (actual time=0.743..0.743 rows=1 loops=1)\n  ->  Bitmap Heap Scan on rental  (cost=4.27..15.05 rows=3 width=0) (actual time=0.584..0.691 rows=4 loops=1)\n        Recheck Cond: (inventory_id = 100)\n        Heap Blocks: exact=4\n        ->  Bitmap Index Scan on idx_fk_inventory_id  (cost=0.00..4.27 rows=3 width=0) (actual time=0.551..0.551 rows=4 loops=1)\n              Index Cond: (inventory_id = 100)\nTotal runtime: 0.844 ms\n",
+    "explain_output": "-- @id: Q97\n-- @target: NONE\n-- @severity: info\n-- @scenario: rental 索引列精确查(inventory_id)\nSELECT COUNT(*) FROM rental WHERE inventory_id = 100;\n\nAggregate  (cost=15.06..15.07 rows=1 width=8) (actual time=0.089..0.089 rows=1 loops=1)\n  ->  Bitmap Heap Scan on rental  (cost=4.27..15.05 rows=3 width=0) (actual time=0.056..0.081 rows=4 loops=1)\n        Recheck Cond: (inventory_id = 100)\n        Heap Blocks: exact=4\n        ->  Bitmap Index Scan on idx_fk_inventory_id  (cost=0.00..4.27 rows=3 width=0) (actual time=0.048..0.048 rows=4 loops=1)\n              Index Cond: (inventory_id = 100)\nTotal runtime: 0.180 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

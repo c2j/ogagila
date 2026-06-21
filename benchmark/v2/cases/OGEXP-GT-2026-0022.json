@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0022",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.689582+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.251573+00:00",
+  "updated_at": "2026-06-21T08:11:52.251579+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "4 表 Hash Join",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SET work_mem = '256kB';\nSELECT COUNT(*)\nFROM rental r\nJOIN payment p ON r.rental_id = p.rental_id\nJOIN customer c ON r.customer_id = c.customer_id\nJOIN staff s ON r.staff_id = s.staff_id;\nRESET work_mem",
-    "explain_output": "-- @id: Q22\n-- @target: JOIN-002\n-- @severity: warning\n-- @scenario: 4 表 Hash Join\nSET work_mem = '256kB';\nSELECT COUNT(*)\nFROM rental r\nJOIN payment p ON r.rental_id = p.rental_id\nJOIN customer c ON r.customer_id = c.customer_id\nJOIN staff s ON r.staff_id = s.staff_id;\nRESET work_mem;\n\nAggregate  (cost=2908.48..2908.49 rows=1 width=8) (actual time=49.466..49.466 rows=1 loops=1)\n  ->  Hash Join  (cost=841.85..2868.36 rows=16049 width=0) (actual time=11.010..47.200 rows=16049 loops=1)\n        Hash Cond: (r.staff_id = s.staff_id)\n        ->  Hash Join  (cost=763.10..2270.93 rows=16049 width=4) (actual time=10.316..41.181 rows=16049 loops=1)\n              Hash Cond: (r.customer_id = c.customer_id)\n              ->  Hash Join  (cost=734.62..1731.78 rows=16049 width=8) (actual time=9.990..31.937 rows=16049 loops=1)\n                    Hash Cond: (p.rental_id = r.rental_id)\n                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..4.718 rows=16049 loops=1)\n                          Iterations: 7\n                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.148..2.645 rows=16049 loops=7)\n                                Selected Partitions:  1..7\n                    ->  Hash  (cost=318.72..318.72 rows=16472 width=12) (actual time=7.834..7.834 rows=16044 loops=1)\n                           Buckets: 8192  Batches: 8  Memory Usage: 147kB\n                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.008..2.726 rows=16044 loops=1)\n              ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.289..0.289 rows=599 loops=1)\n                     Buckets: 8192  Batches: 2  Memory Usage: 79kB\n                    ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.007..0.085 rows=599 loops=1)\n        ->  Hash  (cost=46.00..46.00 rows=1500 width=4) (actual time=0.633..0.633 rows=1500 loops=1)\n               Buckets: 8192  Batches: 2  Memory Usage: 91kB\n              ->  Seq Scan on staff s  (cost=0.00..46.00 rows=1500 width=4) (actual time=0.016..0.245 rows=1500 loops=1)\nTotal runtime: 50.505 ms\n",
+    "explain_output": "-- @id: Q22\n-- @target: JOIN-002\n-- @severity: warning\n-- @scenario: 4 表 Hash Join\nSET work_mem = '256kB';\nSELECT COUNT(*)\nFROM rental r\nJOIN payment p ON r.rental_id = p.rental_id\nJOIN customer c ON r.customer_id = c.customer_id\nJOIN staff s ON r.staff_id = s.staff_id;\nRESET work_mem;\n\nAggregate  (cost=2908.48..2908.49 rows=1 width=8) (actual time=34.677..34.677 rows=1 loops=1)\n  ->  Hash Join  (cost=841.85..2868.36 rows=16049 width=0) (actual time=7.157..33.048 rows=16049 loops=1)\n        Hash Cond: (r.staff_id = s.staff_id)\n        ->  Hash Join  (cost=763.10..2270.93 rows=16049 width=4) (actual time=6.374..28.243 rows=16049 loops=1)\n              Hash Cond: (r.customer_id = c.customer_id)\n              ->  Hash Join  (cost=734.62..1731.78 rows=16049 width=8) (actual time=5.964..21.353 rows=16049 loops=1)\n                    Hash Cond: (p.rental_id = r.rental_id)\n                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..3.667 rows=16049 loops=1)\n                          Iterations: 7\n                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.043..2.131 rows=16049 loops=7)\n                                Selected Partitions:  1..7\n                    ->  Hash  (cost=318.72..318.72 rows=16472 width=12) (actual time=5.399..5.399 rows=16044 loops=1)\n                           Buckets: 8192  Batches: 8  Memory Usage: 147kB\n                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=12) (actual time=0.008..2.329 rows=16044 loops=1)\n              ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.311..0.311 rows=599 loops=1)\n                     Buckets: 8192  Batches: 2  Memory Usage: 79kB\n                    ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.007..0.095 rows=599 loops=1)\n        ->  Hash  (cost=46.00..46.00 rows=1500 width=4) (actual time=0.738..0.738 rows=1500 loops=1)\n               Buckets: 8192  Batches: 2  Memory Usage: 91kB\n              ->  Seq Scan on staff s  (cost=0.00..46.00 rows=1500 width=4) (actual time=0.014..0.309 rows=1500 loops=1)\nTotal runtime: 35.007 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 50,
+    "plan_actual_runtime_ms": 35,
     "related_tables": [
       "payment",
       "rental",
@@ -39,9 +39,9 @@
         "ogexplain_rule_category": "JOIN-",
         "severity": "warning",
         "description": "4 表 Hash Join",
-        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.148..2.645 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.043..2.131 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 50ms; actually_triggered=True; signal=\"Hash Join present; Hash spill detected (JOIN-002)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 35ms; actually_triggered=True; signal=\"Hash Join present; Hash spill detected (JOIN-002)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

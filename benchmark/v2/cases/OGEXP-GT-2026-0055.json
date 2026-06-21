@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0055",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.751953+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.324957+00:00",
+  "updated_at": "2026-06-21T08:11:52.324962+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多层联接 + 子查询",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10",
-    "explain_output": "-- @id: Q55\n-- @target: PUSH-002\n-- @severity: warning\n-- @scenario: 多层联接 + 子查询\nSELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10;\n\nLimit  (cost=0.00..4309.29 rows=10 width=10) (actual time=5.091..30.811 rows=10 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=5.088..30.793 rows=10 loops=1)\n        Filter: (active = 1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=26.053..26.059 rows=10 loops=10)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=0.912..25.849 rows=278 loops=10)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 160162\n        SubPlan 2\n          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=4.478..4.479 rows=10 loops=10)\n                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=0.649..4.090 rows=278 loops=10)\n                      Recheck Cond: (customer_id = c.customer_id)\n                      Heap Blocks: exact=164\n                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.304..0.304 rows=278 loops=10)\n                            Index Cond: (customer_id = c.customer_id)\nTotal runtime: 31.066 ms\n",
+    "explain_output": "-- @id: Q55\n-- @target: PUSH-002\n-- @severity: warning\n-- @scenario: 多层联接 + 子查询\nSELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10;\n\nLimit  (cost=0.00..4309.29 rows=10 width=10) (actual time=2.775..36.142 rows=10 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=2.773..36.089 rows=10 loops=1)\n        Filter: (active = 1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=33.576..33.577 rows=10 loops=10)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=0.867..33.204 rows=278 loops=10)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 160162\n        SubPlan 2\n          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=2.244..2.244 rows=10 loops=10)\n                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=0.812..1.845 rows=278 loops=10)\n                      Recheck Cond: (customer_id = c.customer_id)\n                      Heap Blocks: exact=164\n                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.399..0.399 rows=278 loops=10)\n                            Index Cond: (customer_id = c.customer_id)\nTotal runtime: 36.349 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 31,
+    "plan_actual_runtime_ms": 36,
     "related_tables": [
       "customer",
       "rental",
@@ -39,25 +39,11 @@
         "ogexplain_rule_category": "PUSH-",
         "severity": "warning",
         "description": "多层联接 + 子查询",
-        "evidence": "->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=5.088..30.793 rows=10 loops=1)\nIndex Cond: (customer_id = c.customer_id)\nFilter: (active = 1)",
+        "evidence": "->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=2.773..36.089 rows=10 loops=1)\nIndex Cond: (customer_id = c.customer_id)\nFilter: (active = 1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 31ms; actually_triggered=True; signal=\"large Rows Removed by Filter: 160162\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 36ms; actually_triggered=True; signal=\"large Rows Removed by Filter: 160162\"",
         "verified_by": [
           "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "missing_index",
-        "ogexplain_rule_id": "SCAN-004",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "CTE 中 customer WHERE active=1",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
         ]
       }
     ],
@@ -70,15 +56,6 @@
         "sql_or_action": "调整分布策略 / 表分布键",
         "applied": false,
         "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-004",
-        "sql_or_action": "CREATE INDEX ON <table> (<filter_column>);",
-        "applied": false,
-        "effect_validated": false
       }
     ]
   },
@@ -88,8 +65,7 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "CTE 中 customer WHERE active=1"
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
   },
   "tags": [
     "PUSH-002",

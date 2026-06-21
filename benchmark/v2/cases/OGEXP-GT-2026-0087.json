@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0087",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.886031+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.489528+00:00",
+  "updated_at": "2026-06-21T08:11:52.489536+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film 主键点查",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM film WHERE film_id = 100",
-    "explain_output": "-- @id: Q87\n-- @target: NONE\n-- @severity: info\n-- @scenario: film 主键点查\nSELECT * FROM film WHERE film_id = 100;\n\nIndex Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.030..0.032 rows=1 loops=1)\n  Index Cond: (film_id = 100)\nTotal runtime: 0.139 ms\n",
+    "explain_output": "-- @id: Q87\n-- @target: NONE\n-- @severity: info\n-- @scenario: film 主键点查\nSELECT * FROM film WHERE film_id = 100;\n\nIndex Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.020..0.021 rows=1 loops=1)\n  Index Cond: (film_id = 100)\nTotal runtime: 0.073 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

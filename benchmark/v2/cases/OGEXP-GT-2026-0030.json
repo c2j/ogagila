@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0030",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.698092+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.270294+00:00",
+  "updated_at": "2026-06-21T08:11:52.270320+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多表大 Hash Join",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT f.title, COUNT(r.rental_id)\nFROM film f\nJOIN inventory i ON f.film_id = i.film_id\nJOIN rental r ON i.inventory_id = r.inventory_id\nJOIN payment p ON r.rental_id = p.rental_id\nGROUP BY f.title\nLIMIT 30",
-    "explain_output": "-- @id: Q30\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 多表大 Hash Join\nSELECT f.title, COUNT(r.rental_id)\nFROM film f\nJOIN inventory i ON f.film_id = i.film_id\nJOIN rental r ON i.inventory_id = r.inventory_id\nJOIN payment p ON r.rental_id = p.rental_id\nGROUP BY f.title\nLIMIT 30;\n\nLimit  (cost=1602.28..1602.58 rows=30 width=27) (actual time=42.790..42.801 rows=30 loops=1)\n  ->  HashAggregate  (cost=1602.28..1612.28 rows=1000 width=27) (actual time=42.787..42.796 rows=30 loops=1)\n        Group By Key: f.title\n        ->  Hash Join  (cost=798.18..1522.02 rows=16053 width=19) (actual time=9.344..35.445 rows=16049 loops=1)\n              Hash Cond: (r.inventory_id = i.inventory_id)\n              ->  Hash Join  (cost=524.62..1027.78 rows=16049 width=8) (actual time=5.038..21.193 rows=16049 loops=1)\n                    Hash Cond: (p.rental_id = r.rental_id)\n                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.030..4.520 rows=16049 loops=1)\n                          Iterations: 7\n                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.049..2.267 rows=16049 loops=7)\n                                Selected Partitions:  1..7\n                    ->  Hash  (cost=318.72..318.72 rows=16472 width=8) (actual time=4.865..4.865 rows=16044 loops=1)\n                           Buckets: 32768  Batches: 1  Memory Usage: 883kB\n                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..2.209 rows=16044 loops=1)\n              ->  Hash  (cost=216.30..216.30 rows=4581 width=19) (actual time=4.172..4.172 rows=4581 loops=1)\n                     Buckets: 32768  Batches: 1  Memory Usage: 492kB\n                    ->  Hash Join  (cost=77.50..216.30 rows=4581 width=19) (actual time=0.722..2.926 rows=4581 loops=1)\n                          Hash Cond: (i.film_id = f.film_id)\n                          ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.011..0.625 rows=4581 loops=1)\n                          ->  Hash  (cost=65.00..65.00 rows=1000 width=19) (actual time=0.638..0.638 rows=1000 loops=1)\n                                 Buckets: 32768  Batches: 1  Memory Usage: 308kB\n                                ->  Seq Scan on film f  (cost=0.00..65.00 rows=1000 width=19) (actual time=0.006..0.345 rows=1000 loops=1)\nTotal runtime: 43.084 ms\n",
+    "explain_output": "-- @id: Q30\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 多表大 Hash Join\nSELECT f.title, COUNT(r.rental_id)\nFROM film f\nJOIN inventory i ON f.film_id = i.film_id\nJOIN rental r ON i.inventory_id = r.inventory_id\nJOIN payment p ON r.rental_id = p.rental_id\nGROUP BY f.title\nLIMIT 30;\n\nLimit  (cost=1602.28..1602.58 rows=30 width=27) (actual time=36.654..36.663 rows=30 loops=1)\n  ->  HashAggregate  (cost=1602.28..1612.28 rows=1000 width=27) (actual time=36.652..36.657 rows=30 loops=1)\n        Group By Key: f.title\n        ->  Hash Join  (cost=798.18..1522.02 rows=16053 width=19) (actual time=7.800..30.778 rows=16049 loops=1)\n              Hash Cond: (r.inventory_id = i.inventory_id)\n              ->  Hash Join  (cost=524.62..1027.78 rows=16049 width=8) (actual time=4.295..18.693 rows=16049 loops=1)\n                    Hash Cond: (p.rental_id = r.rental_id)\n                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.029..3.857 rows=16049 loops=1)\n                          Iterations: 7\n                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.051..1.898 rows=16049 loops=7)\n                                Selected Partitions:  1..7\n                    ->  Hash  (cost=318.72..318.72 rows=16472 width=8) (actual time=4.148..4.148 rows=16044 loops=1)\n                           Buckets: 32768  Batches: 1  Memory Usage: 883kB\n                          ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.007..1.835 rows=16044 loops=1)\n              ->  Hash  (cost=216.30..216.30 rows=4581 width=19) (actual time=3.350..3.350 rows=4581 loops=1)\n                     Buckets: 32768  Batches: 1  Memory Usage: 492kB\n                    ->  Hash Join  (cost=77.50..216.30 rows=4581 width=19) (actual time=0.595..2.323 rows=4581 loops=1)\n                          Hash Cond: (i.film_id = f.film_id)\n                          ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.008..0.400 rows=4581 loops=1)\n                          ->  Hash  (cost=65.00..65.00 rows=1000 width=19) (actual time=0.515..0.515 rows=1000 loops=1)\n                                 Buckets: 32768  Batches: 1  Memory Usage: 308kB\n                                ->  Seq Scan on film f  (cost=0.00..65.00 rows=1000 width=19) (actual time=0.004..0.284 rows=1000 loops=1)\nTotal runtime: 36.928 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 43,
+    "plan_actual_runtime_ms": 36,
     "related_tables": [
       "payment",
       "rental",
@@ -39,25 +39,11 @@
         "ogexplain_rule_category": "MEM-",
         "severity": "info",
         "description": "多表大 Hash Join",
-        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.049..2.267 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.051..1.898 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 43ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 36ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [
           "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "rental + payment 大表 Seq Scan",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
         ]
       }
     ],
@@ -70,15 +56,6 @@
         "sql_or_action": "调小批次,或拆分 query",
         "applied": false,
         "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-001",
-        "sql_or_action": "CREATE INDEX ON <table> (<column>);",
-        "applied": false,
-        "effect_validated": false
       }
     ]
   },
@@ -88,8 +65,7 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "rental + payment 大表 Seq Scan"
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
   },
   "tags": [
     "MEM-004",

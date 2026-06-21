@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0089",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.905859+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.492003+00:00",
+  "updated_at": "2026-06-21T08:11:52.492007+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "actor 主键点查",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM actor WHERE actor_id = 25",
-    "explain_output": "-- @id: Q89\n-- @target: NONE\n-- @severity: info\n-- @scenario: actor 主键点查\nSELECT * FROM actor WHERE actor_id = 25;\n\nIndex Scan using actor_pkey on actor  (cost=0.00..8.27 rows=1 width=25) (actual time=0.017..0.017 rows=1 loops=1)\n  Index Cond: (actor_id = 25)\nTotal runtime: 0.063 ms\n",
+    "explain_output": "-- @id: Q89\n-- @target: NONE\n-- @severity: info\n-- @scenario: actor 主键点查\nSELECT * FROM actor WHERE actor_id = 25;\n\nIndex Scan using actor_pkey on actor  (cost=0.00..8.27 rows=1 width=25) (actual time=0.018..0.020 rows=1 loops=1)\n  Index Cond: (actor_id = 25)\nTotal runtime: 0.072 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

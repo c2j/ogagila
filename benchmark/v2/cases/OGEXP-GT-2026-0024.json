@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0024",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.691887+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.258654+00:00",
+  "updated_at": "2026-06-21T08:11:52.258663+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大表 ORDER BY 无索引支撑 + 低内存",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SET work_mem = '64kB';\nSELECT * FROM rental ORDER BY rental_date LIMIT 100;\nRESET work_mem",
-    "explain_output": "-- @id: Q24\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 大表 ORDER BY 无索引支撑 + 低内存\nSET work_mem = '64kB';\nSELECT * FROM rental ORDER BY rental_date LIMIT 100;\nRESET work_mem;\n\nLimit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.057..0.103 rows=100 loops=1)\n  ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.055..0.100 rows=100 loops=1)\nTotal runtime: 0.159 ms\n",
+    "explain_output": "-- @id: Q24\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 大表 ORDER BY 无索引支撑 + 低内存\nSET work_mem = '64kB';\nSELECT * FROM rental ORDER BY rental_date LIMIT 100;\nRESET work_mem;\n\nLimit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.044..0.095 rows=100 loops=1)\n  ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.043..0.089 rows=100 loops=1)\nTotal runtime: 0.144 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

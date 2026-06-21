@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0017",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.683877+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.247261+00:00",
+  "updated_at": "2026-06-21T08:11:52.247271+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "强制 NL 提示(测试 NL 触发)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT /*+ nestloop(r p) */ r.rental_id, p.amount\nFROM rental r\nINNER JOIN payment p ON r.rental_id = p.rental_id\nWHERE r.customer_id BETWEEN 1 AND 10",
-    "explain_output": "-- @id: Q17\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: 强制 NL 提示(测试 NL 触发)\nSELECT /*+ nestloop(r p) */ r.rental_id, p.amount\nFROM rental r\nINNER JOIN payment p ON r.rental_id = p.rental_id\nWHERE r.customer_id BETWEEN 1 AND 10;\n\nNested Loop  (cost=0.00..5656.46 rows=267 width=10) (actual time=0.169..60.968 rows=278 loops=1)\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.014..4.598 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.045..2.360 rows=16049 loops=7)\n              Selected Partitions:  1..7\n  ->  Index Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=49.768..49.838 rows=278 loops=16049)\n        Index Cond: (rental_id = p.rental_id)\n        Filter: ((customer_id >= 1) AND (customer_id <= 10))\n        Rows Removed by Filter: 15771\nTotal runtime: 61.200 ms\n",
+    "explain_output": "-- @id: Q17\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: 强制 NL 提示(测试 NL 触发)\nSELECT /*+ nestloop(r p) */ r.rental_id, p.amount\nFROM rental r\nINNER JOIN payment p ON r.rental_id = p.rental_id\nWHERE r.customer_id BETWEEN 1 AND 10;\n\nNested Loop  (cost=0.00..5656.46 rows=267 width=10) (actual time=0.119..48.450 rows=278 loops=1)\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.012..3.526 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..1.738 rows=16049 loops=7)\n              Selected Partitions:  1..7\n  ->  Index Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=37.342..37.398 rows=278 loops=16049)\n        Index Cond: (rental_id = p.rental_id)\n        Filter: ((customer_id >= 1) AND (customer_id <= 10))\n        Rows Removed by Filter: 15771\nTotal runtime: 48.683 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 61,
+    "plan_actual_runtime_ms": 48,
     "related_tables": [
       "payment",
       "rental"
@@ -37,39 +37,11 @@
         "ogexplain_rule_category": "JOIN-",
         "severity": "warning",
         "description": "强制 NL 提示(测试 NL 触发)",
-        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.045..2.360 rows=16049 loops=7)\nIndex Cond: (rental_id = p.rental_id)\nFilter: ((customer_id >= 1) AND (customer_id <= 10))",
+        "evidence": "->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..1.738 rows=16049 loops=7)\nIndex Cond: (rental_id = p.rental_id)\nFilter: ((customer_id >= 1) AND (customer_id <= 10))",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 61ms; actually_triggered=True; signal=\"Nested Loop present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 48ms; actually_triggered=True; signal=\"Nested Loop present\"",
         "verified_by": [
           "build_cases.py:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-2",
-        "category": "no_real_problem",
-        "ogexplain_rule_id": "SCAN-001",
-        "ogexplain_rule_category": "SCAN-",
-        "severity": "warning",
-        "description": "5 表 join 强制 NL,JOIN-001 + SCAN-001 + EST-001 三根因共存",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
-        ]
-      },
-      {
-        "cause_id": "RC-3",
-        "category": "over_under_estimation",
-        "ogexplain_rule_id": "EST-001",
-        "ogexplain_rule_category": "EST-",
-        "severity": "warning",
-        "description": "5 表 join 强制 NL,JOIN-001 + SCAN-001 + EST-001 三根因共存",
-        "evidence": "(auto-added in v2; 详见 v2/CHANGELOG_v1_to_v2.md)",
-        "verification_method": "consensus_only",
-        "verification_detail": "Added in v2 based on ogexplain-analyzer live evaluation findings",
-        "verified_by": [
-          "v2_review:auto"
         ]
       }
     ],
@@ -82,24 +54,6 @@
         "sql_or_action": "enable_nestloop=off / 强制使用 Hash Join",
         "applied": false,
         "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-2",
-        "cause_id": "RC-2",
-        "type": "create_index",
-        "description": "Default fix template for SCAN-001",
-        "sql_or_action": "CREATE INDEX ON <table> (<column>);",
-        "applied": false,
-        "effect_validated": false
-      },
-      {
-        "fix_id": "FIX-3",
-        "cause_id": "RC-3",
-        "type": "update_stats",
-        "description": "Default fix template for EST-001",
-        "sql_or_action": "ANALYZE <table>;",
-        "applied": false,
-        "effect_validated": false
       }
     ]
   },
@@ -109,8 +63,7 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "5 表 join 强制 NL,JOIN-001 + SCAN-001 + EST-001 三根因共存"
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
   },
   "tags": [
     "JOIN-001",

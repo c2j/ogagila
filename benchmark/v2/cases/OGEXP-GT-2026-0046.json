@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0046",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.741426+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.318056+00:00",
+  "updated_at": "2026-06-21T08:11:52.318062+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "address_id 整数与字符串",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM address WHERE address_id = '5'",
-    "explain_output": "-- @id: Q46\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: address_id 整数与字符串\nSELECT * FROM address WHERE address_id = '5';\n\nIndex Scan using address_pkey on address  (cost=0.00..8.27 rows=1 width=94) (actual time=0.021..0.022 rows=1 loops=1)\n  Index Cond: (address_id = 5)\nTotal runtime: 0.076 ms\n",
+    "explain_output": "-- @id: Q46\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: address_id 整数与字符串\nSELECT * FROM address WHERE address_id = '5';\n\nIndex Scan using address_pkey on address  (cost=0.00..8.27 rows=1 width=94) (actual time=0.026..0.028 rows=1 loops=1)\n  Index Cond: (address_id = 5)\nTotal runtime: 0.075 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

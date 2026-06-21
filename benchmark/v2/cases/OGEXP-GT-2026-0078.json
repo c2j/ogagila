@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0078",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.790361+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.465554+00:00",
+  "updated_at": "2026-06-21T08:11:52.465573+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental 按 staff_id 聚合(staff 数量少,数据偏斜)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT staff_id, COUNT(*) AS rental_cnt\nFROM rental\nGROUP BY staff_id",
-    "explain_output": "-- @id: Q78\n-- @target: SKEW-001\n-- @severity: warning\n-- @scenario: rental 按 staff_id 聚合(staff 数量少,数据偏斜)\nSELECT staff_id, COUNT(*) AS rental_cnt\nFROM rental\nGROUP BY staff_id;\n\nHashAggregate  (cost=401.08..401.10 rows=2 width=12) (actual time=7.074..7.075 rows=2 loops=1)\n  Group By Key: staff_id\n  ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.018..2.878 rows=16044 loops=1)\nTotal runtime: 7.199 ms\n",
+    "explain_output": "-- @id: Q78\n-- @target: SKEW-001\n-- @severity: warning\n-- @scenario: rental 按 staff_id 聚合(staff 数量少,数据偏斜)\nSELECT staff_id, COUNT(*) AS rental_cnt\nFROM rental\nGROUP BY staff_id;\n\nHashAggregate  (cost=401.08..401.10 rows=2 width=12) (actual time=5.280..5.282 rows=2 loops=1)\n  Group By Key: staff_id\n  ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.012..2.168 rows=16044 loops=1)\nTotal runtime: 5.373 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 7,
+    "plan_actual_runtime_ms": 5,
     "related_tables": [
       "rental"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "DIST-",
         "severity": "warning",
         "description": "rental 按 staff_id 聚合(staff 数量少,数据偏斜)",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.018..2.878 rows=16044 loops=1)",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.012..2.168 rows=16044 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 7ms; actually_triggered=True; signal=\"actual time range present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 5ms; actually_triggered=True; signal=\"actual time range present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

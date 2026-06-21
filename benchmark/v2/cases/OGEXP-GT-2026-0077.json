@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0077",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.788394+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.461967+00:00",
+  "updated_at": "2026-06-21T08:11:52.461986+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "按 customer_id 聚合,数据分布不均(部分客户消费多)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT customer_id, COUNT(*) AS pay_cnt, SUM(amount) AS pay_total\nFROM payment\nGROUP BY customer_id\nHAVING SUM(amount) > 30\nLIMIT 10",
-    "explain_output": "-- @id: Q77\n-- @target: SKEW-001\n-- @severity: warning\n-- @scenario: 按 customer_id 聚合,数据分布不均(部分客户消费多)\nSELECT customer_id, COUNT(*) AS pay_cnt, SUM(amount) AS pay_total\nFROM payment\nGROUP BY customer_id\nHAVING SUM(amount) > 30\nLIMIT 10;\n\nLimit  (cost=0.00..23.38 rows=10 width=82) (actual time=0.231..0.512 rows=10 loops=1)\n  ->  GroupAggregate  (cost=0.00..1400.53 rows=599 width=82) (actual time=0.228..0.506 rows=10 loops=1)\n        Group By Key: customer_id\n        Filter: (sum(amount) > 30::numeric)\n        ->  Index Scan using idx_fk_payment_customer_id on payment  (cost=0.00..1232.55 rows=16049 width=10) (actual time=0.041..0.352 rows=279 loops=1)\nTotal runtime: 0.637 ms\n",
+    "explain_output": "-- @id: Q77\n-- @target: SKEW-001\n-- @severity: warning\n-- @scenario: 按 customer_id 聚合,数据分布不均(部分客户消费多)\nSELECT customer_id, COUNT(*) AS pay_cnt, SUM(amount) AS pay_total\nFROM payment\nGROUP BY customer_id\nHAVING SUM(amount) > 30\nLIMIT 10;\n\nLimit  (cost=0.00..23.38 rows=10 width=82) (actual time=0.112..0.293 rows=10 loops=1)\n  ->  GroupAggregate  (cost=0.00..1400.53 rows=599 width=82) (actual time=0.111..0.292 rows=10 loops=1)\n        Group By Key: customer_id\n        Filter: (sum(amount) > 30::numeric)\n        ->  Index Scan using idx_fk_payment_customer_id on payment  (cost=0.00..1232.55 rows=16049 width=10) (actual time=0.029..0.202 rows=279 loops=1)\nTotal runtime: 0.363 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0004",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.663459+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.216569+00:00",
+  "updated_at": "2026-06-21T08:11:52.216614+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental 与 payment 笛卡尔积前的 payment Seq Scan",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT r.rental_id, p.amount FROM rental r, payment p WHERE r.rental_id = p.rental_id LIMIT 5",
-    "explain_output": "-- @id: Q04\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: rental 与 payment 笛卡尔积前的 payment Seq Scan\nSELECT r.rental_id, p.amount FROM rental r, payment p WHERE r.rental_id = p.rental_id LIMIT 5;\n\nLimit  (cost=0.00..1.74 rows=5 width=10) (actual time=0.087..0.524 rows=5 loops=1)\n  ->  Nested Loop  (cost=0.00..5576.21 rows=16049 width=10) (actual time=0.085..0.521 rows=5 loops=1)\n        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.030..0.030 rows=5 loops=1)\n              Iterations: 7\n              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.018..0.018 rows=5 loops=1)\n                    Selected Partitions:  1..7\n        ->  Index Only Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=0.474..0.477 rows=5 loops=5)\n              Index Cond: (rental_id = p.rental_id)\n              Heap Fetches: 5\nTotal runtime: 0.808 ms\n",
+    "explain_output": "-- @id: Q04\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: rental 与 payment 笛卡尔积前的 payment Seq Scan\nSELECT r.rental_id, p.amount FROM rental r, payment p WHERE r.rental_id = p.rental_id LIMIT 5;\n\nLimit  (cost=0.00..1.74 rows=5 width=10) (actual time=0.070..0.143 rows=5 loops=1)\n  ->  Nested Loop  (cost=0.00..5576.21 rows=16049 width=10) (actual time=0.068..0.139 rows=5 loops=1)\n        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.024..0.026 rows=5 loops=1)\n              Iterations: 7\n              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.008..0.009 rows=5 loops=1)\n                    Selected Partitions:  1..7\n        ->  Index Only Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=0.100..0.101 rows=5 loops=5)\n              Index Cond: (rental_id = p.rental_id)\n              Heap Fetches: 5\nTotal runtime: 0.310 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -32,11 +32,11 @@
     "root_causes": [
       {
         "cause_id": "RC-1",
-        "category": "missing_index",
-        "ogexplain_rule_id": "SCAN-004",
+        "category": "no_real_problem",
+        "ogexplain_rule_id": "SCAN-001",
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
-        "description": "v2 fix: 由 SCAN-001 改分类为 SCAN-004(rental-payment 笛卡尔积带 WHERE join,应归 SCAN-004)",
+        "description": "rental 与 payment 笛卡尔积前的 payment Seq Scan",
         "evidence": "-- @scenario: rental 与 payment 笛卡尔积前的 payment Seq Scan\nIndex Cond: (rental_id = p.rental_id)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"Seq Scan present\"",
@@ -63,8 +63,7 @@
     "disputed_fields": [],
     "arbiter_id": "pending",
     "final_decision_at": null,
-    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review.",
-    "v2_change_note": "rental-payment 笛卡尔积带 WHERE join,应归 SCAN-004"
+    "arbiter_notes": "Auto-generated from queries.sql + ogagila EXPLAIN ANALYZE; needs DBA review."
   },
   "tags": [
     "SCAN-001",
@@ -73,7 +72,7 @@
     "auto-generated"
   ],
   "_auto_eval": {
-    "target_rule_designed": "SCAN-004",
+    "target_rule_designed": "SCAN-001",
     "actually_triggered": true,
     "trigger_signal": "Seq Scan present",
     "run_warnings": []

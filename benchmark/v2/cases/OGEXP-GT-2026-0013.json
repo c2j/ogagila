@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0013",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.676541+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.236854+00:00",
+  "updated_at": "2026-06-21T08:11:52.236870+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "city.city 名精确查(无索引)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT city_id, country_id FROM city WHERE city = 'London'",
-    "explain_output": "-- @id: Q13\n-- @target: SCAN-004\n-- @severity: warning\n-- @scenario: city.city 名精确查(无索引)\nSELECT city_id, country_id FROM city WHERE city = 'London';\n\nSeq Scan on city  (cost=0.00..12.50 rows=2 width=8) (actual time=0.947..1.581 rows=2 loops=1)\n  Filter: (city = 'London'::text)\n  Rows Removed by Filter: 598\nTotal runtime: 1.662 ms\n",
+    "explain_output": "-- @id: Q13\n-- @target: SCAN-004\n-- @severity: warning\n-- @scenario: city.city 名精确查(无索引)\nSELECT city_id, country_id FROM city WHERE city = 'London';\n\nSeq Scan on city  (cost=0.00..12.50 rows=2 width=8) (actual time=0.474..0.515 rows=2 loops=1)\n  Filter: (city = 'London'::text)\n  Rows Removed by Filter: 598\nTotal runtime: 0.569 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 1,
+    "plan_actual_runtime_ms": 0,
     "related_tables": [
       "city"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
         "description": "city.city 名精确查(无索引)",
-        "evidence": "Seq Scan on city  (cost=0.00..12.50 rows=2 width=8) (actual time=0.947..1.581 rows=2 loops=1)\nFilter: (city = 'London'::text)\nRows Removed by Filter: 598",
+        "evidence": "Seq Scan on city  (cost=0.00..12.50 rows=2 width=8) (actual time=0.474..0.515 rows=2 loops=1)\nFilter: (city = 'London'::text)\nRows Removed by Filter: 598",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=True; signal=\"Seq Scan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"Seq Scan present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

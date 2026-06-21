@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0031",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.699023+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.272752+00:00",
+  "updated_at": "2026-06-21T08:11:52.272771+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "嵌套 ORDER BY(外层 + 内层各排一次)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM (\n  SELECT * FROM rental ORDER BY rental_date LIMIT 100\n) t\nORDER BY customer_id",
-    "explain_output": "-- @id: Q31\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: 嵌套 ORDER BY(外层 + 内层各排一次)\nSELECT * FROM (\n  SELECT * FROM rental ORDER BY rental_date LIMIT 100\n) t\nORDER BY customer_id;\n\nSort  (cost=9.73..9.98 rows=100 width=40) (actual time=0.127..0.132 rows=100 loops=1)\n  Sort Key: rental.customer_id\n  Sort Method: quicksort  Memory: 32kB\n  ->  Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.023..0.094 rows=100 loops=1)\n        ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.022..0.083 rows=100 loops=1)\nTotal runtime: 0.190 ms\n",
+    "explain_output": "-- @id: Q31\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: 嵌套 ORDER BY(外层 + 内层各排一次)\nSELECT * FROM (\n  SELECT * FROM rental ORDER BY rental_date LIMIT 100\n) t\nORDER BY customer_id;\n\nSort  (cost=9.73..9.98 rows=100 width=40) (actual time=0.077..0.078 rows=100 loops=1)\n  Sort Key: rental.customer_id\n  Sort Method: quicksort  Memory: 32kB\n  ->  Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.021..0.053 rows=100 loops=1)\n        ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.020..0.047 rows=100 loops=1)\nTotal runtime: 0.130 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

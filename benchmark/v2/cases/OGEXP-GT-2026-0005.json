@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0005",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.664860+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.220805+00:00",
+  "updated_at": "2026-06-21T08:11:52.220814+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM film_actor",
-    "explain_output": "-- @id: Q05\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)\nSELECT COUNT(*) FROM film_actor;\n\nAggregate  (cost=98.28..98.29 rows=1 width=8) (actual time=8.866..8.866 rows=1 loops=1)\n  ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.416..8.273 rows=5462 loops=1)\nTotal runtime: 9.290 ms\n",
+    "explain_output": "-- @id: Q05\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)\nSELECT COUNT(*) FROM film_actor;\n\nAggregate  (cost=98.28..98.29 rows=1 width=8) (actual time=1.301..1.302 rows=1 loops=1)\n  ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.036..0.832 rows=5462 loops=1)\nTotal runtime: 1.426 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 9,
+    "plan_actual_runtime_ms": 1,
     "related_tables": [
       "film_actor"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
         "description": "film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)",
-        "evidence": "->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.416..8.273 rows=5462 loops=1)",
+        "evidence": "->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.036..0.832 rows=5462 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 9ms; actually_triggered=True; signal=\"Seq Scan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=True; signal=\"Seq Scan present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

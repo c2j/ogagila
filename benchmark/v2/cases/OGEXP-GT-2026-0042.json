@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0042",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.723398+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.295576+00:00",
+  "updated_at": "2026-06-21T08:11:52.295599+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "删 stats 后 rental-inventory 选 NL",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "DELETE STATISTICS rental;\nSELECT r.rental_id, i.store_id\nFROM rental r, inventory i\nWHERE r.inventory_id = i.inventory_id",
-    "explain_output": "-- @id: Q42\n-- @target: EST-004\n-- @severity: warning\n-- @scenario: 删 stats 后 rental-inventory 选 NL\nDELETE STATISTICS rental;\nSELECT r.rental_id, i.store_id\nFROM rental r, inventory i\nWHERE r.inventory_id = i.inventory_id;\n\nHash Join  (cost=133.07..674.04 rows=16048 width=8) (actual time=2.325..12.127 rows=16044 loops=1)\n  Hash Cond: (r.inventory_id = i.inventory_id)\n  ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..2.025 rows=16044 loops=1)\n  ->  Hash  (cost=75.81..75.81 rows=4581 width=8) (actual time=2.053..2.053 rows=4581 loops=1)\n         Buckets: 32768  Batches: 1  Memory Usage: 435kB\n        ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.011..0.884 rows=4581 loops=1)\nTotal runtime: 13.525 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'\n",
+    "explain_output": "-- @id: Q42\n-- @target: EST-004\n-- @severity: warning\n-- @scenario: 删 stats 后 rental-inventory 选 NL\nDELETE STATISTICS rental;\nSELECT r.rental_id, i.store_id\nFROM rental r, inventory i\nWHERE r.inventory_id = i.inventory_id;\n\nHash Join  (cost=133.07..674.04 rows=16048 width=8) (actual time=1.820..10.674 rows=16044 loops=1)\n  Hash Cond: (r.inventory_id = i.inventory_id)\n  ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.009..1.788 rows=16044 loops=1)\n  ->  Hash  (cost=75.81..75.81 rows=4581 width=8) (actual time=1.587..1.587 rows=4581 loops=1)\n         Buckets: 32768  Batches: 1  Memory Usage: 435kB\n        ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.012..0.610 rows=4581 loops=1)\nTotal runtime: 11.881 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 13,
+    "plan_actual_runtime_ms": 11,
     "related_tables": [
       "rental",
       "inventory"
@@ -37,9 +37,9 @@
         "ogexplain_rule_category": "EST-",
         "severity": "warning",
         "description": "删 stats 后 rental-inventory 选 NL",
-        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..2.025 rows=16044 loops=1)",
+        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.009..1.788 rows=16044 loops=1)",
         "verification_method": "consensus_only",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 13ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 11ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

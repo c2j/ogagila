@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0027",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.694824+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.263483+00:00",
+  "updated_at": "2026-06-21T08:11:52.263497+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多列 ORDER BY 触发 external sort",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SET work_mem = '64kB';\nSELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem",
-    "explain_output": "-- @id: Q27\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 多列 ORDER BY 触发 external sort\nSET work_mem = '64kB';\nSELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem;\n\nLimit  (cost=1030.63..1031.13 rows=200 width=16) (actual time=5.993..6.013 rows=200 loops=1)\n  ->  Sort  (cost=1030.63..1071.81 rows=16472 width=16) (actual time=5.990..5.991 rows=200 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: top-N heapsort  Memory: 34kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.016..2.893 rows=16044 loops=1)\nTotal runtime: 6.189 ms\n",
+    "explain_output": "-- @id: Q27\n-- @target: MEM-001\n-- @severity: warning\n-- @scenario: 多列 ORDER BY 触发 external sort\nSET work_mem = '64kB';\nSELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem;\n\nLimit  (cost=1030.63..1031.13 rows=200 width=16) (actual time=4.097..4.122 rows=200 loops=1)\n  ->  Sort  (cost=1030.63..1071.81 rows=16472 width=16) (actual time=4.094..4.103 rows=200 loops=1)\n        Sort Key: rental_date, customer_id\n        Sort Method: top-N heapsort  Memory: 34kB\n        ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.014..2.085 rows=16044 loops=1)\nTotal runtime: 4.246 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 6,
+    "plan_actual_runtime_ms": 4,
     "related_tables": [
       "rental"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "MEM-",
         "severity": "warning",
         "description": "多列 ORDER BY 触发 external sort",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.016..2.893 rows=16044 loops=1)",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=16) (actual time=0.014..2.085 rows=16044 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 6ms; actually_triggered=True; signal=\"Sort Method: top-N heapsort  Memory: 34kB\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 4ms; actually_triggered=True; signal=\"Sort Method: top-N heapsort  Memory: 34kB\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

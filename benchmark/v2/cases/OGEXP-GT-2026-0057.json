@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0057",
-  "version": "2.0",
-  "created_at": "2026-06-20T22:59:33.755960+00:00",
-  "updated_at": "2026-06-20T23:13:46.135336+00:00",
+  "version": "1.0",
+  "created_at": "2026-06-21T08:11:52.326614+00:00",
+  "updated_at": "2026-06-21T08:11:52.326620+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment_date 用函数包装,无法分区裁剪",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM payment WHERE EXTRACT(MONTH FROM payment_date) = 3",
-    "explain_output": "-- @id: Q57\n-- @target: PART-001\n-- @severity: warning\n-- @scenario: payment_date 用函数包装,无法分区裁剪\nSELECT COUNT(*) FROM payment WHERE EXTRACT(MONTH FROM payment_date) = 3;\n\nAggregate  (cost=362.94..362.94 rows=1 width=8) (actual time=7.144..7.144 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=80 width=0) (actual time=1.121..6.698 rows=2713 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=80 width=0) (actual time=5.036..6.207 rows=2713 loops=7)\n              Filter: (date_part('month'::text, payment_date) = 3::double precision)\n              Rows Removed by Filter: 13336\n              Selected Partitions:  1..7\nTotal runtime: 7.320 ms\n",
+    "explain_output": "-- @id: Q57\n-- @target: PART-001\n-- @severity: warning\n-- @scenario: payment_date 用函数包装,无法分区裁剪\nSELECT COUNT(*) FROM payment WHERE EXTRACT(MONTH FROM payment_date) = 3;\n\nAggregate  (cost=362.94..362.94 rows=1 width=8) (actual time=4.276..4.276 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=80 width=0) (actual time=1.045..4.006 rows=2713 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=80 width=0) (actual time=2.818..3.700 rows=2713 loops=7)\n              Filter: (date_part('month'::text, payment_date) = 3::double precision)\n              Rows Removed by Filter: 13336\n              Selected Partitions:  1..7\nTotal runtime: 4.479 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 7,
+    "plan_actual_runtime_ms": 4,
     "related_tables": [
       "payment"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "PART-",
         "severity": "warning",
         "description": "payment_date 用函数包装,无法分区裁剪",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=80 width=0) (actual time=5.036..6.207 rows=2713 loops=7)\nFilter: (date_part('month'::text, payment_date) = 3::double precision)\nRows Removed by Filter: 13336",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=80 width=0) (actual time=2.818..3.700 rows=2713 loops=7)\nFilter: (date_part('month'::text, payment_date) = 3::double precision)\nRows Removed by Filter: 13336",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 7ms; actually_triggered=True; signal=\"Selected Partitions: 1..7\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 4ms; actually_triggered=True; signal=\"Selected Partitions: 1..7\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
