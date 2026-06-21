@@ -184,6 +184,7 @@ def detect_actually_triggered(explain_text: str, target_rule: str, warnings: lis
         if explain_text.lstrip().startswith('Limit'):
             signals.append('LIMIT present (may suppress large-cost signal)')
     elif target_rule.startswith('TYPE-004'):
+        # TYPE-004 必须比 TYPE- 更靠前,否则会被 TYPE- 通用分支吞掉
         if '~~' in explain_text and 'Filter' in explain_text:
             signals.append('LIKE ~~ with Filter (leading wildcard)')
         else:
@@ -296,19 +297,8 @@ def detect_actually_triggered(explain_text: str, target_rule: str, warnings: lis
         if 'IN (' in explain_text:
             signals.append('IN list query present')
 
-    # 判断 actually_triggered: 用精确 non-trigger pattern 列表，不用粗疏 'NOT' 子串
-    # (否则 SUBQ-001 的 "correlated subquery NOT lifted" 会被误判为未触发)
-    _NON_TRIGGER_MARKERS = [
-        '(no signal pattern matched)',
-        '(no obvious signal)',
-        'no obvious ',
-        'subquery was lifted to join',
-    ]
-    triggered = len(signals) > 0 and not any(
-        marker in ' '.join(signals) for marker in _NON_TRIGGER_MARKERS
-    )
     return {
-        'actually_triggered': triggered,
+        'actually_triggered': len(signals) > 0 and '(no signal pattern matched)' not in ' '.join(signals),
         'signal': '; '.join(signals) if signals else '(no signal pattern matched)',
     }
 
@@ -453,7 +443,6 @@ def build_case(q: dict, explain_text: str, run_meta: dict) -> dict:
 
 
 def main():
-
     p = argparse.ArgumentParser(description='Build ground-truth case JSON from ogagila EXPLAIN outputs')
     p.add_argument('--version', '-V', default='v1',
                    help='Query set version dir under benchmark/ (default: v1). '
@@ -594,10 +583,8 @@ def main():
     # 触发率总览
     triggered = sum(1 for c in case_index if c['actually_triggered'])
     not_triggered = sum(1 for c in case_index if not c['actually_triggered'])
-    total = triggered + not_triggered
-    rate_str = f"{triggered / total:.1%}" if total else "N/A (no cases)"
     print(f"\n[stats] triggered={triggered}, not_triggered={not_triggered}")
-    print(f"[stats] trigger_rate = {rate_str}")
+    print(f"[stats] trigger_rate = {triggered/(triggered+not_triggered):.1%}")
 
 
 if __name__ == '__main__':

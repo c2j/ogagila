@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0029",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.520979+00:00",
-  "updated_at": "2026-06-20T23:59:19.520993+00:00",
+  "created_at": "2026-06-20T22:59:33.696874+00:00",
+  "updated_at": "2026-06-20T22:59:33.696879+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "全表 HashAggregate 内存峰值",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id",
-    "explain_output": "-- @id: Q29\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 全表 HashAggregate 内存峰值\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id;\n\nHashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=14.242..14.506 rows=599 loops=1)\n  Group By Key: customer_id\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.024..3.843 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..2.182 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 15.561 ms\n",
+    "explain_output": "-- @id: Q29\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 全表 HashAggregate 内存峰值\nSELECT customer_id, COUNT(*), SUM(amount), AVG(amount)\nFROM payment\nGROUP BY customer_id;\n\nHashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=22.163..22.539 rows=599 loops=1)\n  Group By Key: customer_id\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.025..5.875 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.066..2.843 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 22.878 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 15,
+    "plan_actual_runtime_ms": 22,
     "related_tables": [
       "payment"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "MEM-",
         "severity": "info",
         "description": "全表 HashAggregate 内存峰值",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..2.182 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.066..2.843 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 15ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 22ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

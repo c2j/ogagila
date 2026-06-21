@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0046",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.552234+00:00",
-  "updated_at": "2026-06-20T23:59:19.552246+00:00",
+  "created_at": "2026-06-20T22:59:33.741426+00:00",
+  "updated_at": "2026-06-20T22:59:33.741434+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "address_id 整数与字符串",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM address WHERE address_id = '5'",
-    "explain_output": "-- @id: Q46\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: address_id 整数与字符串\nSELECT * FROM address WHERE address_id = '5';\n\nIndex Scan using address_pkey on address  (cost=0.00..8.27 rows=1 width=94) (actual time=0.041..0.043 rows=1 loops=1)\n  Index Cond: (address_id = 5)\nTotal runtime: 0.103 ms\n",
+    "explain_output": "-- @id: Q46\n-- @target: TYPE-001\n-- @severity: critical\n-- @scenario: address_id 整数与字符串\nSELECT * FROM address WHERE address_id = '5';\n\nIndex Scan using address_pkey on address  (cost=0.00..8.27 rows=1 width=94) (actual time=0.021..0.022 rows=1 loops=1)\n  Index Cond: (address_id = 5)\nTotal runtime: 0.076 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -38,7 +38,7 @@
         "description": "address_id 整数与字符串",
         "evidence": "Index Cond: (address_id = 5)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"no obvious cast signal in EXPLAIN\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"no obvious cast signal in EXPLAIN\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -72,7 +72,7 @@
   ],
   "_auto_eval": {
     "target_rule_designed": "TYPE-001",
-    "actually_triggered": false,
+    "actually_triggered": true,
     "trigger_signal": "no obvious cast signal in EXPLAIN",
     "run_warnings": []
   }

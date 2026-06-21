@@ -16,23 +16,23 @@ WHERE rental.return_date IS NULL
 ORDER BY title
 LIMIT 5;
 
-Limit  (cost=362.25..448.21 rows=5 width=40) (actual time=4.764..4.764 rows=0 loops=1)
-  ->  Nested Loop  (cost=362.25..3594.42 rows=188 width=40) (actual time=4.760..4.760 rows=0 loops=1)
-        ->  Nested Loop  (cost=362.25..3533.78 rows=188 width=32) (actual time=4.757..4.757 rows=0 loops=1)
-              ->  Nested Loop  (cost=362.25..3381.14 rows=188 width=19) (actual time=4.753..4.753 rows=0 loops=1)
+Limit  (cost=362.25..448.21 rows=5 width=40) (actual time=17.021..17.021 rows=0 loops=1)
+  ->  Nested Loop  (cost=362.25..3594.42 rows=188 width=40) (actual time=17.017..17.017 rows=0 loops=1)
+        ->  Nested Loop  (cost=362.25..3533.78 rows=188 width=32) (actual time=17.014..17.014 rows=0 loops=1)
+              ->  Nested Loop  (cost=362.25..3381.14 rows=188 width=19) (actual time=17.013..17.013 rows=0 loops=1)
                     Join Filter: (inventory.film_id = film.film_id)
-                    ->  Index Scan using idx_title on film  (cost=0.00..101.59 rows=1000 width=19) (actual time=0.463..2.124 rows=1000 loops=1)
-                    ->  Materialize  (cost=362.25..460.01 rows=188 width=8) (actual time=2.370..2.370 rows=0 loops=1000)
-                          ->  Hash Join  (cost=362.25..459.07 rows=188 width=8) (actual time=2.309..2.309 rows=0 loops=1)
+                    ->  Index Scan using idx_title on film  (cost=0.00..101.59 rows=1000 width=19) (actual time=0.081..5.574 rows=1000 loops=1)
+                    ->  Materialize  (cost=362.25..460.01 rows=188 width=8) (actual time=11.147..11.147 rows=0 loops=1000)
+                          ->  Hash Join  (cost=362.25..459.07 rows=188 width=8) (actual time=11.076..11.076 rows=0 loops=1)
                                 Hash Cond: (inventory.inventory_id = rental.inventory_id)
-                                ->  Seq Scan on inventory  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.011..0.011 rows=1 loops=1)
-                                ->  Hash  (cost=359.90..359.90 rows=188 width=8) (actual time=1.852..1.852 rows=0 loops=1)
+                                ->  Seq Scan on inventory  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.012..0.012 rows=1 loops=1)
+                                ->  Hash  (cost=359.90..359.90 rows=188 width=8) (actual time=4.719..4.719 rows=0 loops=1)
                                        Buckets: 32768  Batches: 1  Memory Usage: 256kB
-                                      ->  Seq Scan on rental  (cost=0.00..359.90 rows=188 width=8) (actual time=1.846..1.846 rows=0 loops=1)
-                                            Filter: ((return_date IS NULL) AND (rental_date < '2026-06-20'::date))
+                                      ->  Seq Scan on rental  (cost=0.00..359.90 rows=188 width=8) (actual time=4.711..4.711 rows=0 loops=1)
+                                            Filter: ((return_date IS NULL) AND (rental_date < '2026-06-21'::date))
                                             Rows Removed by Filter: 16044
               ->  Index Scan using customer_pkey on customer  (cost=0.00..0.80 rows=1 width=21) (Actual time: never executed)
                     Index Cond: (customer_id = rental.customer_id)
         ->  Index Scan using address_pkey on address  (cost=0.00..0.31 rows=1 width=16) (Actual time: never executed)
               Index Cond: (address_id = customer.address_id)
-Total runtime: 5.288 ms
+Total runtime: 19.349 ms

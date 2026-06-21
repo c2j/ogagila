@@ -7,30 +7,30 @@ WITH t1 AS (SELECT customer_id FROM customer WHERE active = 1),
      t3 AS (SELECT t2.customer_id, t2.cnt, COALESCE(p.total, 0) AS total FROM t2 LEFT JOIN (SELECT customer_id, SUM(amount) AS total FROM payment GROUP BY customer_id) p ON t2.customer_id = p.customer_id)
 SELECT * FROM t3 WHERE total > 20 LIMIT 10;
 
-Limit  (cost=1407.39..1408.48 rows=10 width=44) (actual time=50.047..50.097 rows=10 loops=1)
+Limit  (cost=1407.39..1408.48 rows=10 width=44) (actual time=85.172..85.187 rows=10 loops=1)
   CTE t1
-    ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.062..0.380 rows=584 loops=1)
+    ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.096..0.534 rows=584 loops=1)
           Filter: (active = 1)
           Rows Removed by Filter: 15
   CTE t2
-    ->  HashAggregate  (cost=1003.19..1005.19 rows=200 width=12) (actual time=26.360..27.824 rows=584 loops=1)
+    ->  HashAggregate  (cost=1003.19..1005.19 rows=200 width=12) (actual time=57.356..58.079 rows=584 loops=1)
           Group By Key: t1.customer_id
-          ->  Hash Join  (cost=37.96..842.59 rows=32119 width=4) (actual time=1.986..13.795 rows=15640 loops=1)
+          ->  Hash Join  (cost=37.96..842.59 rows=32119 width=4) (actual time=4.860..34.874 rows=15640 loops=1)
                 Hash Cond: (r.customer_id = t1.customer_id)
-                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.051..2.889 rows=16044 loops=1)
-                ->  Hash  (cost=23.36..23.36 rows=1168 width=4) (actual time=0.854..0.854 rows=584 loops=1)
+                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.028..5.943 rows=16044 loops=1)
+                ->  Hash  (cost=23.36..23.36 rows=1168 width=4) (actual time=0.951..0.951 rows=584 loops=1)
                        Buckets: 32768  Batches: 1  Memory Usage: 277kB
-                      ->  CTE Scan on t1  (cost=0.00..23.36 rows=1168 width=4) (actual time=0.074..0.619 rows=584 loops=1)
-  ->  Hash Right Join  (cost=369.24..390.95 rows=200 width=44) (actual time=50.042..50.075 rows=10 loops=1)
+                      ->  CTE Scan on t1  (cost=0.00..23.36 rows=1168 width=4) (actual time=0.110..0.723 rows=584 loops=1)
+  ->  Hash Right Join  (cost=369.24..390.95 rows=200 width=44) (actual time=85.155..85.167 rows=10 loops=1)
         Hash Cond: (payment.customer_id = t2.customer_id)
         Filter: (COALESCE((sum(payment.amount)), 0::numeric) > 20::numeric)
-        ->  HashAggregate  (cost=362.74..368.73 rows=599 width=42) (actual time=20.082..20.103 rows=10 loops=1)
+        ->  HashAggregate  (cost=362.74..368.73 rows=599 width=42) (actual time=25.226..25.230 rows=10 loops=1)
               Group By Key: payment.customer_id
-              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.052..6.224 rows=16049 loops=1)
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.070..13.011 rows=16049 loops=1)
                     Iterations: 7
-                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.099..3.398 rows=16049 loops=7)
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.210..9.211 rows=16049 loops=7)
                           Selected Partitions:  1..7
-        ->  Hash  (cost=4.00..4.00 rows=200 width=12) (actual time=29.639..29.639 rows=584 loops=1)
+        ->  Hash  (cost=4.00..4.00 rows=200 width=12) (actual time=59.448..59.448 rows=584 loops=1)
                Buckets: 32768  Batches: 1  Memory Usage: 284kB
-              ->  CTE Scan on t2  (cost=0.00..4.00 rows=200 width=12) (actual time=26.374..28.603 rows=584 loops=1)
-Total runtime: 50.739 ms
+              ->  CTE Scan on t2  (cost=0.00..4.00 rows=200 width=12) (actual time=57.380..58.944 rows=584 loops=1)
+Total runtime: 86.348 ms

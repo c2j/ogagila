@@ -1,0 +1,15 @@
+-- @id: Q66
+-- @target: REW-001
+-- @severity: warning
+-- @scenario: film_id IN (...) 1000 个值
+SELECT COUNT(*) FROM film WHERE film_id IN (
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+  41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60
+);
+
+Aggregate  (cost=43.67..43.68 rows=1 width=8) (actual time=0.153..0.154 rows=1 loops=1)
+  ->  Index Only Scan using film_pkey on film  (cost=0.15..43.52 rows=60 width=0) (actual time=0.055..0.140 rows=60 loops=1)
+        Index Cond: (film_id = ANY ('{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}'::integer[]))
+        Heap Fetches: 60
+Total runtime: 0.242 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q32",
+  "target_rule": "SORT-003",
+  "severity": "warning",
+  "scenario": "UNION + ORDER BY 触发两层 sort",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.017,
+  "explain_file": "Q32.explain"
+}

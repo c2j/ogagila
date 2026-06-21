@@ -1,0 +1,10 @@
+-- @id: Q13
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: city.city 名精确查(无索引)
+SELECT city_id, country_id FROM city WHERE city = 'London';
+
+Seq Scan on city  (cost=0.00..12.50 rows=2 width=8) (actual time=0.474..0.515 rows=2 loops=1)
+  Filter: (city = 'London'::text)
+  Rows Removed by Filter: 598
+Total runtime: 0.569 ms

@@ -1,0 +1,19 @@
+-- @id: Q17
+-- @target: JOIN-001
+-- @severity: warning
+-- @scenario: 强制 NL 提示(测试 NL 触发)
+SELECT /*+ nestloop(r p) */ r.rental_id, p.amount
+FROM rental r
+INNER JOIN payment p ON r.rental_id = p.rental_id
+WHERE r.customer_id BETWEEN 1 AND 10;
+
+Nested Loop  (cost=0.00..5656.46 rows=267 width=10) (actual time=0.119..48.450 rows=278 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.012..3.526 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..1.738 rows=16049 loops=7)
+              Selected Partitions:  1..7
+  ->  Index Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=37.342..37.398 rows=278 loops=16049)
+        Index Cond: (rental_id = p.rental_id)
+        Filter: ((customer_id >= 1) AND (customer_id <= 10))
+        Rows Removed by Filter: 15771
+Total runtime: 48.683 ms

@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0018",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.501987+00:00",
-  "updated_at": "2026-06-20T23:59:19.502011+00:00",
+  "created_at": "2026-06-20T22:59:33.684986+00:00",
+  "updated_at": "2026-06-20T22:59:33.684996+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film→film_actor→actor 三表链",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT f.title, a.first_name, a.last_name\nFROM film f\nINNER JOIN film_actor fa ON f.film_id = fa.film_id\nINNER JOIN actor a ON fa.actor_id = a.actor_id\nWHERE f.rating = 'PG-13'\nLIMIT 20",
-    "explain_output": "-- @id: Q18\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: film→film_actor→actor 三表链\nSELECT f.title, a.first_name, a.last_name\nFROM film f\nINNER JOIN film_actor fa ON f.film_id = fa.film_id\nINNER JOIN actor a ON fa.actor_id = a.actor_id\nWHERE f.rating = 'PG-13'\nLIMIT 20;\n\nLimit  (cost=0.00..11.63 rows=20 width=28) (actual time=0.045..0.177 rows=20 loops=1)\n  ->  Nested Loop  (cost=0.00..710.44 rows=1222 width=28) (actual time=0.044..0.172 rows=20 loops=1)\n        ->  Nested Loop  (cost=0.00..364.70 rows=1222 width=19) (actual time=0.038..0.136 rows=20 loops=1)\n              ->  Seq Scan on film f  (cost=0.00..67.50 rows=223 width=19) (actual time=0.014..0.022 rows=4 loops=1)\n                    Filter: (rating = 'PG-13'::mpaa_rating)\n                    Rows Removed by Filter: 25\n              ->  Index Scan using idx_fk_film_id on film_actor fa  (cost=0.00..1.28 rows=5 width=8) (actual time=0.030..0.103 rows=20 loops=4)\n                    Index Cond: (film_id = f.film_id)\n        ->  Index Scan using actor_pkey on actor a  (cost=0.00..0.27 rows=1 width=17) (actual time=0.026..0.027 rows=20 loops=20)\n              Index Cond: (actor_id = fa.actor_id)\nTotal runtime: 0.317 ms\n",
+    "explain_output": "-- @id: Q18\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: film→film_actor→actor 三表链\nSELECT f.title, a.first_name, a.last_name\nFROM film f\nINNER JOIN film_actor fa ON f.film_id = fa.film_id\nINNER JOIN actor a ON fa.actor_id = a.actor_id\nWHERE f.rating = 'PG-13'\nLIMIT 20;\n\nLimit  (cost=0.00..11.63 rows=20 width=28) (actual time=0.032..0.122 rows=20 loops=1)\n  ->  Nested Loop  (cost=0.00..710.44 rows=1222 width=28) (actual time=0.031..0.119 rows=20 loops=1)\n        ->  Nested Loop  (cost=0.00..364.70 rows=1222 width=19) (actual time=0.029..0.084 rows=20 loops=1)\n              ->  Seq Scan on film f  (cost=0.00..67.50 rows=223 width=19) (actual time=0.015..0.023 rows=4 loops=1)\n                    Filter: (rating = 'PG-13'::mpaa_rating)\n                    Rows Removed by Filter: 25\n              ->  Index Scan using idx_fk_film_id on film_actor fa  (cost=0.00..1.28 rows=5 width=8) (actual time=0.020..0.051 rows=20 loops=4)\n                    Index Cond: (film_id = f.film_id)\n        ->  Index Scan using actor_pkey on actor a  (cost=0.00..0.27 rows=1 width=17) (actual time=0.024..0.032 rows=20 loops=20)\n              Index Cond: (actor_id = fa.actor_id)\nTotal runtime: 0.284 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -38,7 +38,7 @@
         "ogexplain_rule_category": "JOIN-",
         "severity": "warning",
         "description": "film→film_actor→actor 三表链",
-        "evidence": "->  Seq Scan on film f  (cost=0.00..67.50 rows=223 width=19) (actual time=0.014..0.022 rows=4 loops=1)\nIndex Cond: (film_id = f.film_id)\nFilter: (rating = 'PG-13'::mpaa_rating)",
+        "evidence": "->  Seq Scan on film f  (cost=0.00..67.50 rows=223 width=19) (actual time=0.015..0.023 rows=4 loops=1)\nIndex Cond: (film_id = f.film_id)\nFilter: (rating = 'PG-13'::mpaa_rating)",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"Nested Loop present\"",
         "verified_by": [

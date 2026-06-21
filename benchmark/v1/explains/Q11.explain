@@ -4,11 +4,11 @@
 -- @scenario: payment.amount 范围(无索引,导致 Seq Scan + Filter)
 SELECT * FROM payment WHERE amount BETWEEN 5.00 AND 8.00 LIMIT 10;
 
-Limit  (cost=0.00..1.17 rows=10 width=30) (actual time=0.070..0.081 rows=10 loops=1)
-  ->  Partition Iterator  (cost=0.00..362.74 rows=3096 width=30) (actual time=0.067..0.075 rows=10 loops=1)
+Limit  (cost=0.00..1.17 rows=10 width=30) (actual time=0.043..0.053 rows=10 loops=1)
+  ->  Partition Iterator  (cost=0.00..362.74 rows=3096 width=30) (actual time=0.041..0.049 rows=10 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=3096 width=30) (actual time=0.040..0.048 rows=10 loops=1)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=3096 width=30) (actual time=0.034..0.041 rows=10 loops=1)
               Filter: ((amount >= 5.00) AND (amount <= 8.00))
               Rows Removed by Filter: 36
               Selected Partitions:  1..7
-Total runtime: 0.540 ms
+Total runtime: 0.252 ms

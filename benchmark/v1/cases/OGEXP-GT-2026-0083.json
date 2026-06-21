@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0083",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.603616+00:00",
-  "updated_at": "2026-06-20T23:59:19.603637+00:00",
+  "created_at": "2026-06-20T22:59:33.821681+00:00",
+  "updated_at": "2026-06-20T22:59:33.821701+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "小表 Seq Scan 是合理的(actor 200 行)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM actor WHERE last_name = 'GUINESS'",
-    "explain_output": "-- @id: Q83\n-- @target: NONE\n-- @severity: info\n-- @scenario: 小表 Seq Scan 是合理的(actor 200 行)\nSELECT * FROM actor WHERE last_name = 'GUINESS';\n\nSeq Scan on actor  (cost=0.00..4.50 rows=3 width=25) (actual time=0.029..0.055 rows=3 loops=1)\n  Filter: (last_name = 'GUINESS'::text)\n  Rows Removed by Filter: 197\nTotal runtime: 0.218 ms\n",
+    "explain_output": "-- @id: Q83\n-- @target: NONE\n-- @severity: info\n-- @scenario: 小表 Seq Scan 是合理的(actor 200 行)\nSELECT * FROM actor WHERE last_name = 'GUINESS';\n\nSeq Scan on actor  (cost=0.00..4.50 rows=3 width=25) (actual time=0.033..0.099 rows=3 loops=1)\n  Filter: (last_name = 'GUINESS'::text)\n  Rows Removed by Filter: 197\nTotal runtime: 0.343 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

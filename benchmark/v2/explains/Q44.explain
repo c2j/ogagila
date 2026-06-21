@@ -1,0 +1,9 @@
+-- @id: Q44
+-- @target: TYPE-001
+-- @severity: critical
+-- @scenario: customer_id integer 字段用字符串比较
+SELECT * FROM customer WHERE customer_id = '42';
+
+Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=78) (actual time=0.014..0.015 rows=1 loops=1)
+  Index Cond: (customer_id = 42)
+Total runtime: 0.057 ms

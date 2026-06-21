@@ -1,0 +1,24 @@
+-- @id: Q64
+-- @target: SUBQ-006
+-- @severity: critical
+-- @scenario: rental.return_date 通过相关子查询自更新
+UPDATE rental r
+SET return_date = (
+  SELECT MAX(payment_date)
+  FROM payment p
+  WHERE p.rental_id = r.rental_id
+)
+WHERE r.return_date IS NULL;
+
+Update on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.567..1.591 rows=0 loops=1)
+  ->  Seq Scan on rental r  (cost=0.00..60972.22 rows=188 width=38) (actual time=1.561..1.561 rows=0 loops=1)
+        Filter: (return_date IS NULL)
+        Rows Removed by Filter: 16044
+        SubPlan 1
+          ->  Aggregate  (cost=322.62..322.62 rows=1 width=16) (Actual time: never executed)
+                ->  Partition Iterator  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)
+                      Iterations: 7
+                      ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=1 width=8) (Actual time: never executed)
+                            Filter: (rental_id = r.rental_id)
+                            Selected Partitions:  1..7
+Total runtime: 2.017 ms

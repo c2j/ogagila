@@ -4,13 +4,13 @@
 -- @scenario: rental 与 payment 笛卡尔积前的 payment Seq Scan
 SELECT r.rental_id, p.amount FROM rental r, payment p WHERE r.rental_id = p.rental_id LIMIT 5;
 
-Limit  (cost=0.00..1.74 rows=5 width=10) (actual time=0.450..1.753 rows=5 loops=1)
-  ->  Nested Loop  (cost=0.00..5576.21 rows=16049 width=10) (actual time=0.448..1.749 rows=5 loops=1)
-        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.040..0.041 rows=5 loops=1)
+Limit  (cost=0.00..1.74 rows=5 width=10) (actual time=0.287..1.391 rows=5 loops=1)
+  ->  Nested Loop  (cost=0.00..5576.21 rows=16049 width=10) (actual time=0.284..1.387 rows=5 loops=1)
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.155..0.157 rows=5 loops=1)
               Iterations: 7
-              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.013..0.014 rows=5 loops=1)
+              ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.019..0.021 rows=5 loops=1)
                     Selected Partitions:  1..7
-        ->  Index Only Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=1.682..1.685 rows=5 loops=5)
+        ->  Index Only Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=1.170..1.173 rows=5 loops=5)
               Index Cond: (rental_id = p.rental_id)
               Heap Fetches: 5
-Total runtime: 2.650 ms
+Total runtime: 2.956 ms

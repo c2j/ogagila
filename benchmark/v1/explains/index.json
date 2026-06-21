@@ -4,237 +4,237 @@
   "ok": 97,
   "fail": 0,
   "warn": 9,
-  "elapsed_sec": 4.77,
+  "elapsed_sec": 10.85,
   "queries": [
     {
       "id": "Q01",
-      "target_rule": "SCAN-001",
-      "status": "OK",
-      "elapsed_sec": 0.111,
-      "warnings": []
-    },
-    {
-      "id": "Q02",
       "target_rule": "SCAN-001",
       "status": "OK",
       "elapsed_sec": 0.036,
       "warnings": []
     },
     {
-      "id": "Q03",
+      "id": "Q02",
       "target_rule": "SCAN-001",
       "status": "OK",
       "elapsed_sec": 0.041,
       "warnings": []
     },
     {
+      "id": "Q03",
+      "target_rule": "SCAN-001",
+      "status": "OK",
+      "elapsed_sec": 0.066,
+      "warnings": []
+    },
+    {
       "id": "Q04",
       "target_rule": "SCAN-001",
       "status": "OK",
-      "elapsed_sec": 0.021,
+      "elapsed_sec": 0.091,
       "warnings": []
     },
     {
       "id": "Q05",
       "target_rule": "SCAN-001",
       "status": "OK",
-      "elapsed_sec": 0.027,
+      "elapsed_sec": 0.122,
       "warnings": []
     },
     {
       "id": "Q06",
       "target_rule": "SCAN-001",
       "status": "OK",
-      "elapsed_sec": 0.017,
+      "elapsed_sec": 0.051,
       "warnings": []
     },
     {
       "id": "Q07",
       "target_rule": "SCAN-001",
       "status": "OK",
-      "elapsed_sec": 0.016,
+      "elapsed_sec": 0.033,
       "warnings": []
     },
     {
       "id": "Q08",
       "target_rule": "SCAN-001",
       "status": "OK",
-      "elapsed_sec": 0.05,
+      "elapsed_sec": 0.06,
       "warnings": []
     },
     {
       "id": "Q09",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.106,
+      "elapsed_sec": 0.093,
       "warnings": []
     },
     {
       "id": "Q10",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.014,
+      "elapsed_sec": 0.018,
       "warnings": []
     },
     {
       "id": "Q11",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.007,
+      "elapsed_sec": 0.014,
       "warnings": []
     },
     {
       "id": "Q12",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.061,
+      "elapsed_sec": 0.026,
       "warnings": []
     },
     {
       "id": "Q13",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.016,
+      "elapsed_sec": 0.028,
       "warnings": []
     },
     {
       "id": "Q14",
       "target_rule": "SCAN-004",
       "status": "OK",
-      "elapsed_sec": 0.057,
+      "elapsed_sec": 0.051,
       "warnings": []
     },
     {
       "id": "Q15",
       "target_rule": "JOIN-001",
       "status": "OK",
-      "elapsed_sec": 0.134,
+      "elapsed_sec": 0.123,
       "warnings": []
     },
     {
       "id": "Q16",
       "target_rule": "JOIN-001",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.006,
       "warnings": []
     },
     {
       "id": "Q17",
       "target_rule": "JOIN-001",
       "status": "OK",
-      "elapsed_sec": 0.082,
+      "elapsed_sec": 0.094,
       "warnings": []
     },
     {
       "id": "Q18",
       "target_rule": "JOIN-001",
       "status": "OK",
-      "elapsed_sec": 0.02,
+      "elapsed_sec": 0.035,
       "warnings": []
     },
     {
       "id": "Q19",
       "target_rule": "JOIN-001",
       "status": "OK",
-      "elapsed_sec": 0.009,
+      "elapsed_sec": 0.03,
       "warnings": []
     },
     {
       "id": "Q20",
       "target_rule": "JOIN-002",
       "status": "OK",
-      "elapsed_sec": 0.035,
+      "elapsed_sec": 0.041,
       "warnings": []
     },
     {
       "id": "Q21",
       "target_rule": "JOIN-002",
       "status": "OK",
-      "elapsed_sec": 0.048,
+      "elapsed_sec": 0.059,
       "warnings": []
     },
     {
       "id": "Q22",
       "target_rule": "JOIN-002",
       "status": "OK",
-      "elapsed_sec": 0.068,
+      "elapsed_sec": 0.074,
       "warnings": []
     },
     {
       "id": "Q23",
       "target_rule": "JOIN-002",
       "status": "OK",
-      "elapsed_sec": 0.195,
+      "elapsed_sec": 0.322,
       "warnings": []
     },
     {
       "id": "Q24",
       "target_rule": "MEM-001",
       "status": "OK",
-      "elapsed_sec": 0.019,
+      "elapsed_sec": 0.06,
       "warnings": []
     },
     {
       "id": "Q25",
       "target_rule": "MEM-001",
       "status": "OK",
-      "elapsed_sec": 0.024,
+      "elapsed_sec": 0.053,
       "warnings": []
     },
     {
       "id": "Q26",
       "target_rule": "MEM-001",
       "status": "OK",
-      "elapsed_sec": 0.022,
+      "elapsed_sec": 0.07,
       "warnings": []
     },
     {
       "id": "Q27",
       "target_rule": "MEM-001",
       "status": "OK",
-      "elapsed_sec": 0.01,
+      "elapsed_sec": 0.04,
       "warnings": []
     },
     {
       "id": "Q28",
       "target_rule": "MEM-004",
       "status": "OK",
-      "elapsed_sec": 0.183,
+      "elapsed_sec": 0.336,
       "warnings": []
     },
     {
       "id": "Q29",
       "target_rule": "MEM-004",
       "status": "OK",
-      "elapsed_sec": 0.02,
+      "elapsed_sec": 0.036,
       "warnings": []
     },
     {
       "id": "Q30",
       "target_rule": "MEM-004",
       "status": "OK",
-      "elapsed_sec": 0.057,
+      "elapsed_sec": 0.072,
       "warnings": []
     },
     {
       "id": "Q31",
       "target_rule": "SORT-003",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.018,
       "warnings": []
     },
     {
       "id": "Q32",
       "target_rule": "SORT-003",
       "status": "OK",
-      "elapsed_sec": 0.025,
+      "elapsed_sec": 0.07,
       "warnings": []
     },
     {
       "id": "Q33",
       "target_rule": "SORT-003",
       "status": "OK",
-      "elapsed_sec": 0.019,
+      "elapsed_sec": 0.02,
       "warnings": []
     },
     {
@@ -248,21 +248,21 @@
       "id": "Q35",
       "target_rule": "NET-001",
       "status": "OK",
-      "elapsed_sec": 0.019,
+      "elapsed_sec": 0.025,
       "warnings": []
     },
     {
       "id": "Q36",
       "target_rule": "NET-001",
       "status": "OK",
-      "elapsed_sec": 0.107,
+      "elapsed_sec": 0.122,
       "warnings": []
     },
     {
       "id": "Q37",
       "target_rule": "EST-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.012,
+      "elapsed_sec": 0.014,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
       ]
@@ -271,7 +271,7 @@
       "id": "Q38",
       "target_rule": "EST-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.006,
+      "elapsed_sec": 0.013,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS rental'"
       ]
@@ -280,7 +280,7 @@
       "id": "Q39",
       "target_rule": "EST-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.003,
+      "elapsed_sec": 0.02,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS customer'"
       ]
@@ -289,7 +289,7 @@
       "id": "Q40",
       "target_rule": "EST-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.027,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS inventory'"
       ]
@@ -298,7 +298,7 @@
       "id": "Q41",
       "target_rule": "EST-004",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.071,
+      "elapsed_sec": 0.106,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
       ]
@@ -307,7 +307,7 @@
       "id": "Q42",
       "target_rule": "EST-004",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.02,
+      "elapsed_sec": 0.072,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS rental'"
       ]
@@ -316,7 +316,7 @@
       "id": "Q43",
       "target_rule": "EST-004",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.006,
+      "elapsed_sec": 0.048,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS film_actor'"
       ]
@@ -325,252 +325,252 @@
       "id": "Q44",
       "target_rule": "TYPE-001",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.011,
       "warnings": []
     },
     {
       "id": "Q45",
       "target_rule": "TYPE-001",
       "status": "OK",
-      "elapsed_sec": 0.003,
+      "elapsed_sec": 0.021,
       "warnings": []
     },
     {
       "id": "Q46",
       "target_rule": "TYPE-001",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.015,
       "warnings": []
     },
     {
       "id": "Q47",
       "target_rule": "TYPE-001",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.04,
       "warnings": []
     },
     {
       "id": "Q48",
       "target_rule": "TYPE-004",
       "status": "OK",
-      "elapsed_sec": 0.014,
+      "elapsed_sec": 0.013,
       "warnings": []
     },
     {
       "id": "Q49",
       "target_rule": "TYPE-004",
       "status": "OK",
-      "elapsed_sec": 0.01,
+      "elapsed_sec": 0.007,
       "warnings": []
     },
     {
       "id": "Q50",
       "target_rule": "TYPE-004",
       "status": "OK",
-      "elapsed_sec": 0.008,
+      "elapsed_sec": 0.015,
       "warnings": []
     },
     {
       "id": "Q51",
       "target_rule": "PUSH-001",
       "status": "OK",
-      "elapsed_sec": 0.011,
+      "elapsed_sec": 0.012,
       "warnings": []
     },
     {
       "id": "Q52",
       "target_rule": "PUSH-001",
       "status": "OK",
-      "elapsed_sec": 0.014,
+      "elapsed_sec": 0.021,
       "warnings": []
     },
     {
       "id": "Q53",
       "target_rule": "PUSH-001",
       "status": "OK",
-      "elapsed_sec": 0.017,
+      "elapsed_sec": 0.025,
       "warnings": []
     },
     {
       "id": "Q54",
       "target_rule": "PUSH-002",
       "status": "OK",
-      "elapsed_sec": 0.138,
+      "elapsed_sec": 0.034,
       "warnings": []
     },
     {
       "id": "Q55",
       "target_rule": "PUSH-002",
       "status": "OK",
-      "elapsed_sec": 0.053,
+      "elapsed_sec": 0.056,
       "warnings": []
     },
     {
       "id": "Q56",
       "target_rule": "PUSH-002",
       "status": "OK",
-      "elapsed_sec": 0.018,
+      "elapsed_sec": 0.026,
       "warnings": []
     },
     {
       "id": "Q57",
       "target_rule": "PART-001",
       "status": "OK",
-      "elapsed_sec": 0.011,
+      "elapsed_sec": 0.022,
       "warnings": []
     },
     {
       "id": "Q58",
       "target_rule": "PART-001",
       "status": "OK",
-      "elapsed_sec": 0.003,
+      "elapsed_sec": 0.023,
       "warnings": []
     },
     {
       "id": "Q59",
       "target_rule": "PART-001",
       "status": "OK",
-      "elapsed_sec": 0.011,
+      "elapsed_sec": 0.024,
       "warnings": []
     },
     {
       "id": "Q60",
       "target_rule": "PART-001",
       "status": "OK",
-      "elapsed_sec": 0.009,
+      "elapsed_sec": 0.015,
       "warnings": []
     },
     {
       "id": "Q61",
       "target_rule": "SUBQ-001",
       "status": "OK",
-      "elapsed_sec": 0.117,
+      "elapsed_sec": 0.096,
       "warnings": []
     },
     {
       "id": "Q62",
       "target_rule": "SUBQ-001",
       "status": "OK",
-      "elapsed_sec": 0.009,
+      "elapsed_sec": 0.017,
       "warnings": []
     },
     {
       "id": "Q63",
       "target_rule": "SUBQ-001",
       "status": "OK",
-      "elapsed_sec": 0.01,
+      "elapsed_sec": 0.037,
       "warnings": []
     },
     {
       "id": "Q64",
       "target_rule": "SUBQ-006",
       "status": "OK",
-      "elapsed_sec": 0.007,
+      "elapsed_sec": 0.014,
       "warnings": []
     },
     {
       "id": "Q65",
       "target_rule": "SUBQ-006",
       "status": "OK",
-      "elapsed_sec": 1.583,
+      "elapsed_sec": 4.808,
       "warnings": []
     },
     {
       "id": "Q66",
       "target_rule": "REW-001",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.054,
       "warnings": []
     },
     {
       "id": "Q67",
       "target_rule": "REW-001",
       "status": "OK",
-      "elapsed_sec": 0.006,
+      "elapsed_sec": 0.028,
       "warnings": []
     },
     {
       "id": "Q68",
       "target_rule": "VEC-001",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.011,
       "warnings": []
     },
     {
       "id": "Q69",
       "target_rule": "VEC-001",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.027,
       "warnings": []
     },
     {
       "id": "Q70",
       "target_rule": "VEC-001",
       "status": "OK",
-      "elapsed_sec": 0.012,
+      "elapsed_sec": 0.037,
       "warnings": []
     },
     {
       "id": "Q71",
       "target_rule": "AGG-001",
       "status": "OK",
-      "elapsed_sec": 0.014,
+      "elapsed_sec": 0.208,
       "warnings": []
     },
     {
       "id": "Q72",
       "target_rule": "AGG-001",
       "status": "OK",
-      "elapsed_sec": 0.021,
+      "elapsed_sec": 0.158,
       "warnings": []
     },
     {
       "id": "Q73",
       "target_rule": "AGG-002",
       "status": "OK",
-      "elapsed_sec": 0.041,
+      "elapsed_sec": 0.135,
       "warnings": []
     },
     {
       "id": "Q74",
       "target_rule": "AGG-002",
       "status": "OK",
-      "elapsed_sec": 0.057,
+      "elapsed_sec": 0.079,
       "warnings": []
     },
     {
       "id": "Q75",
       "target_rule": "DIST-001",
       "status": "OK",
-      "elapsed_sec": 0.007,
+      "elapsed_sec": 0.027,
       "warnings": []
     },
     {
       "id": "Q76",
       "target_rule": "DIST-001",
       "status": "OK",
-      "elapsed_sec": 0.011,
+      "elapsed_sec": 0.046,
       "warnings": []
     },
     {
       "id": "Q77",
       "target_rule": "SKEW-001",
       "status": "OK",
-      "elapsed_sec": 0.013,
+      "elapsed_sec": 0.151,
       "warnings": []
     },
     {
       "id": "Q78",
       "target_rule": "SKEW-001",
       "status": "OK",
-      "elapsed_sec": 0.012,
+      "elapsed_sec": 0.103,
       "warnings": []
     },
     {
       "id": "Q79",
       "target_rule": "STATS-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.012,
+      "elapsed_sec": 0.045,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
       ]
@@ -579,7 +579,7 @@
       "id": "Q80",
       "target_rule": "STATS-001",
       "status": "OK (with 1 warning)",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.049,
       "warnings": [
         "skipped unsupported in openGauss: 'DELETE STATISTICS rental'"
       ]
@@ -588,28 +588,28 @@
       "id": "Q81",
       "target_rule": "GEN-001",
       "status": "OK",
-      "elapsed_sec": 0.029,
+      "elapsed_sec": 0.192,
       "warnings": []
     },
     {
       "id": "Q82",
       "target_rule": "GEN-001",
       "status": "OK",
-      "elapsed_sec": 0.058,
+      "elapsed_sec": 0.11,
       "warnings": []
     },
     {
       "id": "Q83",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.019,
+      "elapsed_sec": 0.015,
       "warnings": []
     },
     {
       "id": "Q84",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.045,
+      "elapsed_sec": 0.037,
       "warnings": []
     },
     {
@@ -623,84 +623,84 @@
       "id": "Q86",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.005,
+      "elapsed_sec": 0.047,
       "warnings": []
     },
     {
       "id": "Q87",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.023,
       "warnings": []
     },
     {
       "id": "Q88",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.023,
       "warnings": []
     },
     {
       "id": "Q89",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.004,
+      "elapsed_sec": 0.031,
       "warnings": []
     },
     {
       "id": "Q90",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.011,
+      "elapsed_sec": 0.029,
       "warnings": []
     },
     {
       "id": "Q91",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.021,
+      "elapsed_sec": 0.094,
       "warnings": []
     },
     {
       "id": "Q92",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.009,
+      "elapsed_sec": 0.068,
       "warnings": []
     },
     {
       "id": "Q93",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.048,
+      "elapsed_sec": 0.02,
       "warnings": []
     },
     {
       "id": "Q94",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.008,
+      "elapsed_sec": 0.046,
       "warnings": []
     },
     {
       "id": "Q95",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.052,
+      "elapsed_sec": 0.051,
       "warnings": []
     },
     {
       "id": "Q96",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.037,
+      "elapsed_sec": 0.066,
       "warnings": []
     },
     {
       "id": "Q97",
       "target_rule": "NONE",
       "status": "OK",
-      "elapsed_sec": 0.117,
+      "elapsed_sec": 0.309,
       "warnings": []
     }
   ]

@@ -1,0 +1,12 @@
+{
+  "id": "Q58",
+  "target_rule": "PART-001",
+  "severity": "warning",
+  "scenario": "payment_date IS NULL 不会裁剪",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.002,
+  "explain_file": "Q58.explain"
+}

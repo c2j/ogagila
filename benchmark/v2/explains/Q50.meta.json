@@ -1,0 +1,12 @@
+{
+  "id": "Q50",
+  "target_rule": "TYPE-004",
+  "severity": "warning",
+  "scenario": "customer.email 前导通配符",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q50.explain"
+}

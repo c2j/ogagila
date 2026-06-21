@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0028",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.518644+00:00",
-  "updated_at": "2026-06-20T23:59:19.518659+00:00",
+  "created_at": "2026-06-20T22:59:33.696112+00:00",
+  "updated_at": "2026-06-20T22:59:33.696119+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "大表 Hash Join 峰值内存高",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT COUNT(*)\nFROM rental r\nINNER JOIN payment p ON r.customer_id = p.customer_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id",
-    "explain_output": "-- @id: Q28\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 大表 Hash Join 峰值内存高\nSELECT COUNT(*)\nFROM rental r\nINNER JOIN payment p ON r.customer_id = p.customer_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id;\n\nAggregate  (cost=7599.86..7599.87 rows=1 width=8) (actual time=179.161..179.162 rows=1 loops=1)\n  ->  Hash Join  (cost=616.17..6480.85 rows=447604 width=0) (actual time=9.240..128.683 rows=445483 loops=1)\n        Hash Cond: (r.customer_id = p.customer_id)\n        ->  Hash Join  (cost=133.07..674.04 rows=16048 width=4) (actual time=1.758..19.077 rows=16044 loops=1)\n              Hash Cond: (r.inventory_id = i.inventory_id)\n              ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..3.536 rows=16044 loops=1)\n              ->  Hash  (cost=75.81..75.81 rows=4581 width=4) (actual time=1.612..1.612 rows=4581 loops=1)\n                     Buckets: 32768  Batches: 1  Memory Usage: 418kB\n                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=4) (actual time=0.007..0.656 rows=4581 loops=1)\n        ->  Hash  (cost=282.49..282.49 rows=16049 width=4) (actual time=7.347..7.347 rows=16049 loops=1)\n               Buckets: 32768  Batches: 1  Memory Usage: 821kB\n              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.037..4.516 rows=16049 loops=1)\n                    Iterations: 7\n                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.067..2.621 rows=16049 loops=7)\n                          Selected Partitions:  1..7\nTotal runtime: 179.410 ms\n",
+    "explain_output": "-- @id: Q28\n-- @target: MEM-004\n-- @severity: info\n-- @scenario: 大表 Hash Join 峰值内存高\nSELECT COUNT(*)\nFROM rental r\nINNER JOIN payment p ON r.customer_id = p.customer_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id;\n\nAggregate  (cost=7599.86..7599.87 rows=1 width=8) (actual time=201.181..201.181 rows=1 loops=1)\n  ->  Hash Join  (cost=616.17..6480.85 rows=447604 width=0) (actual time=10.604..145.647 rows=445483 loops=1)\n        Hash Cond: (r.customer_id = p.customer_id)\n        ->  Hash Join  (cost=133.07..674.04 rows=16048 width=4) (actual time=2.216..19.499 rows=16044 loops=1)\n              Hash Cond: (r.inventory_id = i.inventory_id)\n              ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.017..4.333 rows=16044 loops=1)\n              ->  Hash  (cost=75.81..75.81 rows=4581 width=4) (actual time=1.944..1.944 rows=4581 loops=1)\n                     Buckets: 32768  Batches: 1  Memory Usage: 418kB\n                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=4) (actual time=0.014..0.774 rows=4581 loops=1)\n        ->  Hash  (cost=282.49..282.49 rows=16049 width=4) (actual time=8.258..8.258 rows=16049 loops=1)\n               Buckets: 32768  Batches: 1  Memory Usage: 821kB\n              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.039..5.169 rows=16049 loops=1)\n                    Iterations: 7\n                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.077..2.889 rows=16049 loops=7)\n                          Selected Partitions:  1..7\nTotal runtime: 201.732 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 179,
+    "plan_actual_runtime_ms": 201,
     "related_tables": [
       "rental",
       "inventory",
@@ -38,9 +38,9 @@
         "ogexplain_rule_category": "MEM-",
         "severity": "info",
         "description": "大表 Hash Join 峰值内存高",
-        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.010..3.536 rows=16044 loops=1)\nSelected Partitions:  1..7",
+        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.017..4.333 rows=16044 loops=1)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 179ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 201ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

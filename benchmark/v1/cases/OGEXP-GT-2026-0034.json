@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0034",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.526343+00:00",
-  "updated_at": "2026-06-20T23:59:19.526422+00:00",
+  "created_at": "2026-06-20T22:59:33.702656+00:00",
+  "updated_at": "2026-06-20T22:59:33.702670+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT /*+ hashjoin(r c) */ COUNT(*)\nFROM rental r, customer c\nWHERE r.customer_id = c.customer_id",
-    "explain_output": "-- @id: Q34\n-- @target: NET-001\n-- @severity: warning\n-- @scenario: 强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute\nSELECT /*+ hashjoin(r c) */ COUNT(*)\nFROM rental r, customer c\nWHERE r.customer_id = c.customer_id;\n\nAggregate  (cost=608.87..608.88 rows=1 width=8) (actual time=11.535..11.536 rows=1 loops=1)\n  ->  Hash Join  (cost=22.48..567.69 rows=16472 width=0) (actual time=0.609..8.961 rows=16044 loops=1)\n        Hash Cond: (r.customer_id = c.customer_id)\n        ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.011..2.350 rows=16044 loops=1)\n        ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.392..0.392 rows=599 loops=1)\n               Buckets: 32768  Batches: 1  Memory Usage: 278kB\n              ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.006..0.238 rows=599 loops=1)\nTotal runtime: 11.918 ms\n",
+    "explain_output": "-- @id: Q34\n-- @target: NET-001\n-- @severity: warning\n-- @scenario: 强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute\nSELECT /*+ hashjoin(r c) */ COUNT(*)\nFROM rental r, customer c\nWHERE r.customer_id = c.customer_id;\n\nAggregate  (cost=608.87..608.88 rows=1 width=8) (actual time=12.242..12.243 rows=1 loops=1)\n  ->  Hash Join  (cost=22.48..567.69 rows=16472 width=0) (actual time=0.413..10.095 rows=16044 loops=1)\n        Hash Cond: (r.customer_id = c.customer_id)\n        ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.012..2.477 rows=16044 loops=1)\n        ->  Hash  (cost=14.99..14.99 rows=599 width=4) (actual time=0.292..0.292 rows=599 loops=1)\n               Buckets: 32768  Batches: 1  Memory Usage: 278kB\n              ->  Seq Scan on customer c  (cost=0.00..14.99 rows=599 width=4) (actual time=0.004..0.165 rows=599 loops=1)\nTotal runtime: 12.468 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 11,
+    "plan_actual_runtime_ms": 12,
     "related_tables": [
       "rental",
       "customer"
@@ -37,9 +37,9 @@
         "ogexplain_rule_category": "NET-",
         "severity": "warning",
         "description": "强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute",
-        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.011..2.350 rows=16044 loops=1)",
+        "evidence": "->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.012..2.477 rows=16044 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 11ms; actually_triggered=True; signal=\"Streaming node present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 12ms; actually_triggered=True; signal=\"Streaming node present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

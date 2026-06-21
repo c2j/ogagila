@@ -1,0 +1,12 @@
+{
+  "id": "Q52",
+  "target_rule": "PUSH-001",
+  "severity": "warning",
+  "scenario": "函数包裹索引列,阻止下推",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q52.explain"
+}

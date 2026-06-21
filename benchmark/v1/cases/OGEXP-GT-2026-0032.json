@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0032",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.523423+00:00",
-  "updated_at": "2026-06-20T23:59:19.523427+00:00",
+  "created_at": "2026-06-20T22:59:33.700083+00:00",
+  "updated_at": "2026-06-20T22:59:33.700119+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "UNION + ORDER BY 触发两层 sort",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2",
-    "explain_output": "-- @id: Q32\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: UNION + ORDER BY 触发两层 sort\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2;\n\nSort  (cost=2038.20..2079.38 rows=16472 width=8) (actual time=19.524..20.318 rows=16044 loops=1)\n  Sort Key: public.rental.rental_id, public.rental.customer_id\n  Sort Method: quicksort  Memory: 1137kB\n  ->  Result  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.021..8.809 rows=16044 loops=1)\n        ->  Append  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.019..6.762 rows=16044 loops=1)\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..2.525 rows=8040 loops=1)\n                    Filter: (staff_id = 1)\n                    Rows Removed by Filter: 8004\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8218 width=8) (actual time=0.024..2.617 rows=8004 loops=1)\n                    Filter: (staff_id = 2)\n                    Rows Removed by Filter: 8040\nTotal runtime: 21.979 ms\n",
+    "explain_output": "-- @id: Q32\n-- @target: SORT-003\n-- @severity: warning\n-- @scenario: UNION + ORDER BY 触发两层 sort\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 1\nUNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2;\n\nSort  (cost=2038.20..2079.38 rows=16472 width=8) (actual time=16.730..17.705 rows=16044 loops=1)\n  Sort Key: public.rental.rental_id, public.rental.customer_id\n  Sort Method: quicksort  Memory: 1137kB\n  ->  Result  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.020..10.920 rows=16044 loops=1)\n        ->  Append  (cost=0.00..884.52 rows=16472 width=8) (actual time=0.020..8.852 rows=16044 loops=1)\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..3.541 rows=8040 loops=1)\n                    Filter: (staff_id = 1)\n                    Rows Removed by Filter: 8004\n              ->  Seq Scan on rental  (cost=0.00..359.90 rows=8218 width=8) (actual time=0.025..3.580 rows=8004 loops=1)\n                    Filter: (staff_id = 2)\n                    Rows Removed by Filter: 8040\nTotal runtime: 19.337 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 21,
+    "plan_actual_runtime_ms": 19,
     "related_tables": [
       "rental"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "SORT-",
         "severity": "warning",
         "description": "UNION + ORDER BY 触发两层 sort",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..2.525 rows=8040 loops=1)\nFilter: (staff_id = 1)\nRows Removed by Filter: 8004",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..359.90 rows=8254 width=8) (actual time=0.019..3.541 rows=8040 loops=1)\nFilter: (staff_id = 1)\nRows Removed by Filter: 8004",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 21ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 19ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

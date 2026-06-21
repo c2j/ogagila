@@ -1,0 +1,10 @@
+-- @id: Q83
+-- @target: NONE
+-- @severity: info
+-- @scenario: 小表 Seq Scan 是合理的(actor 200 行)
+SELECT * FROM actor WHERE last_name = 'GUINESS';
+
+Seq Scan on actor  (cost=0.00..4.50 rows=3 width=25) (actual time=0.020..0.043 rows=3 loops=1)
+  Filter: (last_name = 'GUINESS'::text)
+  Rows Removed by Filter: 197
+Total runtime: 0.088 ms

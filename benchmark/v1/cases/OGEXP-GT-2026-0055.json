@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0055",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.563269+00:00",
-  "updated_at": "2026-06-20T23:59:19.563276+00:00",
+  "created_at": "2026-06-20T22:59:33.751953+00:00",
+  "updated_at": "2026-06-20T22:59:33.751963+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "多层联接 + 子查询",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10",
-    "explain_output": "-- @id: Q55\n-- @target: PUSH-002\n-- @severity: warning\n-- @scenario: 多层联接 + 子查询\nSELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10;\n\nLimit  (cost=0.00..4309.29 rows=10 width=10) (actual time=10.877..37.913 rows=10 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=10.873..37.894 rows=10 loops=1)\n        Filter: (active = 1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=26.586..26.590 rows=10 loops=10)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=1.005..26.312 rows=278 loops=10)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 160162\n        SubPlan 2\n          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=10.879..10.879 rows=10 loops=10)\n                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=1.574..10.374 rows=278 loops=10)\n                      Recheck Cond: (customer_id = c.customer_id)\n                      Heap Blocks: exact=164\n                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=1.208..1.208 rows=278 loops=10)\n                            Index Cond: (customer_id = c.customer_id)\nTotal runtime: 39.160 ms\n",
+    "explain_output": "-- @id: Q55\n-- @target: PUSH-002\n-- @severity: warning\n-- @scenario: 多层联接 + 子查询\nSELECT c.customer_id, c.first_name,\n       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10;\n\nLimit  (cost=0.00..4309.29 rows=10 width=10) (actual time=5.091..30.811 rows=10 loops=1)\n  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=5.088..30.793 rows=10 loops=1)\n        Filter: (active = 1)\n        SubPlan 1\n          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=26.053..26.059 rows=10 loops=10)\n                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=0.912..25.849 rows=278 loops=10)\n                      Filter: (customer_id = c.customer_id)\n                      Rows Removed by Filter: 160162\n        SubPlan 2\n          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=4.478..4.479 rows=10 loops=10)\n                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=0.649..4.090 rows=278 loops=10)\n                      Recheck Cond: (customer_id = c.customer_id)\n                      Heap Blocks: exact=164\n                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.304..0.304 rows=278 loops=10)\n                            Index Cond: (customer_id = c.customer_id)\nTotal runtime: 31.066 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 39,
+    "plan_actual_runtime_ms": 31,
     "related_tables": [
       "customer",
       "rental",
@@ -39,9 +39,9 @@
         "ogexplain_rule_category": "PUSH-",
         "severity": "warning",
         "description": "多层联接 + 子查询",
-        "evidence": "->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=10.873..37.894 rows=10 loops=1)\nIndex Cond: (customer_id = c.customer_id)\nFilter: (active = 1)",
+        "evidence": "->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=5.088..30.793 rows=10 loops=1)\nIndex Cond: (customer_id = c.customer_id)\nFilter: (active = 1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 39ms; actually_triggered=True; signal=\"large Rows Removed by Filter: 160162\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 31ms; actually_triggered=True; signal=\"large Rows Removed by Filter: 160162\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

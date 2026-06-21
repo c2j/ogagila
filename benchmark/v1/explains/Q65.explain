@@ -9,12 +9,12 @@ SET active = (
   WHERE r.customer_id = c.customer_id
 );
 
-Update on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=20.417..1577.214 rows=599 loops=1)
-  ->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=2.708..1412.830 rows=599 loops=1)
+Update on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=10.285..4773.807 rows=599 loops=1)
+  ->  Seq Scan on customer c  (cost=0.00..215644.51 rows=599 width=80) (actual time=3.264..3820.316 rows=599 loops=1)
         SubPlan 1
-          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=1404.540..1404.692 rows=599 loops=599)
-                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=52.756..1391.657 rows=16044 loops=599)
+          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=3766.576..3766.853 rows=599 loops=599)
+                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=131.843..3713.518 rows=16044 loops=599)
                       Filter: (customer_id = c.customer_id)
                       Rows Removed by Filter: 9594312
-Trigger last_updated: time=45.895 calls=599
-Total runtime: 1578.486 ms
+Trigger last_updated: time=198.994 calls=599
+Total runtime: 4777.034 ms

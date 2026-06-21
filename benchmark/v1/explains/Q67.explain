@@ -7,11 +7,11 @@ SELECT COUNT(*) FROM customer WHERE customer_id IN (
   21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
 );
 
-Aggregate  (cost=34.52..34.53 rows=1 width=8) (actual time=1.313..1.313 rows=1 loops=1)
-  ->  Hash Semi Join  (cost=1.00..34.41 rows=40 width=0) (actual time=0.996..1.299 rows=40 loops=1)
+Aggregate  (cost=34.52..34.53 rows=1 width=8) (actual time=5.573..5.574 rows=1 loops=1)
+  ->  Hash Semi Join  (cost=1.00..34.41 rows=40 width=0) (actual time=4.765..5.557 rows=40 loops=1)
         Hash Cond: (public.customer.customer_id = "*VALUES*".column1)
-        ->  Seq Scan on customer  (cost=0.00..29.98 rows=1198 width=4) (actual time=0.020..0.154 rows=599 loops=1)
-        ->  Hash  (cost=0.50..0.50 rows=40 width=4) (actual time=0.048..0.048 rows=40 loops=1)
+        ->  Seq Scan on customer  (cost=0.00..29.98 rows=1198 width=4) (actual time=3.605..4.226 rows=599 loops=1)
+        ->  Hash  (cost=0.50..0.50 rows=40 width=4) (actual time=0.067..0.067 rows=40 loops=1)
                Buckets: 32768  Batches: 1  Memory Usage: 258kB
-              ->  Values Scan on "*VALUES*"  (cost=0.00..0.50 rows=40 width=4) (actual time=0.012..0.024 rows=40 loops=1)
-Total runtime: 1.631 ms
+              ->  Values Scan on "*VALUES*"  (cost=0.00..0.50 rows=40 width=4) (actual time=0.028..0.039 rows=40 loops=1)
+Total runtime: 6.385 ms

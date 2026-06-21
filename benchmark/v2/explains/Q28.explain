@@ -1,0 +1,25 @@
+-- @id: Q28
+-- @target: MEM-004
+-- @severity: info
+-- @scenario: 大表 Hash Join 峰值内存高
+SELECT COUNT(*)
+FROM rental r
+INNER JOIN payment p ON r.customer_id = p.customer_id
+INNER JOIN inventory i ON r.inventory_id = i.inventory_id;
+
+Aggregate  (cost=7599.86..7599.87 rows=1 width=8) (actual time=135.545..135.546 rows=1 loops=1)
+  ->  Hash Join  (cost=616.17..6480.85 rows=447604 width=0) (actual time=7.307..96.979 rows=445483 loops=1)
+        Hash Cond: (r.customer_id = p.customer_id)
+        ->  Hash Join  (cost=133.07..674.04 rows=16048 width=4) (actual time=1.582..14.086 rows=16044 loops=1)
+              Hash Cond: (r.inventory_id = i.inventory_id)
+              ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.009..2.420 rows=16044 loops=1)
+              ->  Hash  (cost=75.81..75.81 rows=4581 width=4) (actual time=1.408..1.408 rows=4581 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 418kB
+                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=4) (actual time=0.007..0.632 rows=4581 loops=1)
+        ->  Hash  (cost=282.49..282.49 rows=16049 width=4) (actual time=5.597..5.597 rows=16049 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 821kB
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.045..3.529 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.052..1.975 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 135.758 ms

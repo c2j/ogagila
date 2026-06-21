@@ -1,0 +1,12 @@
+{
+  "id": "Q83",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "小表 Seq Scan 是合理的(actor 200 行)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q83.explain"
+}

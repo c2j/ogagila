@@ -9,6 +9,6 @@
   "warnings": [
     "skipped unsupported in openGauss: 'DELETE STATISTICS rental'"
   ],
-  "elapsed_sec": 0.005,
+  "elapsed_sec": 0.049,
   "explain_file": "Q80.explain"
 }

@@ -1,0 +1,12 @@
+{
+  "id": "Q48",
+  "target_rule": "TYPE-004",
+  "severity": "warning",
+  "scenario": "film.title 前导通配符 LIKE",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q48.explain"
+}

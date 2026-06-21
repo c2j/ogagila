@@ -12,31 +12,31 @@ GROUP BY f.title
 ORDER BY cnt DESC
 LIMIT 20;
 
-Limit  (cost=1035.82..1035.87 rows=20 width=27) (actual time=90.634..90.638 rows=20 loops=1)
-  ->  Sort  (cost=1035.82..1036.30 rows=194 width=27) (actual time=90.631..90.631 rows=20 loops=1)
+Limit  (cost=1035.82..1035.87 rows=20 width=27) (actual time=24.841..24.845 rows=20 loops=1)
+  ->  Sort  (cost=1035.82..1036.30 rows=194 width=27) (actual time=24.837..24.839 rows=20 loops=1)
         Sort Key: (count(r.rental_id)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
-        ->  HashAggregate  (cost=1028.71..1030.65 rows=194 width=27) (actual time=89.819..89.854 rows=183 loops=1)
+        ->  HashAggregate  (cost=1028.71..1030.65 rows=194 width=27) (actual time=24.550..24.584 rows=183 loops=1)
               Group By Key: f.title
-              ->  Hash Join  (cost=637.26..1012.45 rows=3252 width=19) (actual time=35.023..88.003 rows=3212 loops=1)
+              ->  Hash Join  (cost=637.26..1012.45 rows=3252 width=19) (actual time=13.495..23.051 rows=3212 loops=1)
                     Hash Cond: (p.rental_id = r.rental_id)
-                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..10.194 rows=16049 loops=1)
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.026..4.411 rows=16049 loops=1)
                           Iterations: 7
-                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.062..5.272 rows=16049 loops=7)
+                          ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.063..1.959 rows=16049 loops=7)
                                 Selected Partitions:  1..7
-                    ->  Hash  (cost=596.62..596.62 rows=3251 width=19) (actual time=34.673..34.673 rows=3212 loops=1)
+                    ->  Hash  (cost=596.62..596.62 rows=3251 width=19) (actual time=13.124..13.124 rows=3212 loops=1)
                            Buckets: 32768  Batches: 1  Memory Usage: 422kB
-                          ->  Hash Join  (cost=183.62..596.62 rows=3251 width=19) (actual time=2.783..31.961 rows=3212 loops=1)
+                          ->  Hash Join  (cost=183.62..596.62 rows=3251 width=19) (actual time=3.489..11.202 rows=3212 loops=1)
                                 Hash Cond: (r.inventory_id = i.inventory_id)
-                                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.008..10.024 rows=16044 loops=1)
-                                ->  Hash  (cost=172.02..172.02 rows=928 width=19) (actual time=2.190..2.190 rows=924 loops=1)
+                                ->  Seq Scan on rental r  (cost=0.00..318.72 rows=16472 width=8) (actual time=0.008..2.194 rows=16044 loops=1)
+                                ->  Hash  (cost=172.02..172.02 rows=928 width=19) (actual time=3.189..3.189 rows=924 loops=1)
                                        Buckets: 32768  Batches: 1  Memory Usage: 304kB
-                                      ->  Hash Join  (cost=69.92..172.02 rows=928 width=19) (actual time=0.805..1.930 rows=924 loops=1)
+                                      ->  Hash Join  (cost=69.92..172.02 rows=928 width=19) (actual time=1.080..2.707 rows=924 loops=1)
                                             Hash Cond: (i.film_id = f.film_id)
-                                            ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.011..0.439 rows=4581 loops=1)
-                                            ->  Hash  (cost=67.50..67.50 rows=194 width=19) (actual time=0.416..0.416 rows=194 loops=1)
+                                            ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.008..0.565 rows=4581 loops=1)
+                                            ->  Hash  (cost=67.50..67.50 rows=194 width=19) (actual time=0.885..0.885 rows=194 loops=1)
                                                    Buckets: 32768  Batches: 1  Memory Usage: 266kB
-                                                  ->  Seq Scan on film f  (cost=0.00..67.50 rows=194 width=19) (actual time=0.034..0.346 rows=194 loops=1)
+                                                  ->  Seq Scan on film f  (cost=0.00..67.50 rows=194 width=19) (actual time=0.027..0.765 rows=194 loops=1)
                                                         Filter: (rating = 'PG'::mpaa_rating)
                                                         Rows Removed by Filter: 806
-Total runtime: 92.257 ms
+Total runtime: 25.512 ms

@@ -1,0 +1,9 @@
+-- @id: Q88
+-- @target: NONE
+-- @severity: info
+-- @scenario: customer 主键点查
+SELECT * FROM customer WHERE customer_id = 50;
+
+Index Scan using customer_pkey on customer  (cost=0.00..8.27 rows=1 width=78) (actual time=0.026..0.034 rows=1 loops=1)
+  Index Cond: (customer_id = 50)
+Total runtime: 0.093 ms

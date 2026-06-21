@@ -1,0 +1,12 @@
+-- @id: Q51
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 复杂表达式阻止谓词下推
+SELECT * FROM rental
+WHERE EXTRACT(YEAR FROM rental_date) = 2022
+LIMIT 10;
+
+Limit  (cost=0.00..48.91 rows=10 width=40) (actual time=0.057..0.061 rows=10 loops=1)
+  ->  Seq Scan on rental  (cost=0.00..401.08 rows=82 width=40) (actual time=0.055..0.059 rows=10 loops=1)
+        Filter: (date_part('year'::text, rental_date) = 2022::double precision)
+Total runtime: 0.137 ms

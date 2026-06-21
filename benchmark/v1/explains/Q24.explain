@@ -6,6 +6,6 @@ SET work_mem = '64kB';
 SELECT * FROM rental ORDER BY rental_date LIMIT 100;
 RESET work_mem;
 
-Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=1.020..1.085 rows=100 loops=1)
-  ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=1.017..1.069 rows=100 loops=1)
-Total runtime: 1.183 ms
+Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=1.161..1.276 rows=100 loops=1)
+  ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=1.157..1.263 rows=100 loops=1)
+Total runtime: 8.148 ms

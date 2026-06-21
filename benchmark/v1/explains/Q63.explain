@@ -8,20 +8,20 @@ FROM payment p
 WHERE p.amount > 5.00
 LIMIT 10;
 
-Limit  (cost=0.00..710.23 rows=10 width=22) (actual time=0.738..6.248 rows=10 loops=1)
-  ->  Partition Iterator  (cost=0.00..281037.52 rows=3957 width=22) (actual time=0.735..6.238 rows=10 loops=1)
+Limit  (cost=0.00..710.23 rows=10 width=22) (actual time=7.248..15.694 rows=10 loops=1)
+  ->  Partition Iterator  (cost=0.00..281037.52 rows=3957 width=22) (actual time=7.245..15.681 rows=10 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=3957 width=22) (actual time=0.728..6.225 rows=10 loops=1)
+        ->  Partitioned Seq Scan on payment p  (cost=0.00..322.61 rows=3957 width=22) (actual time=7.234..15.662 rows=10 loops=1)
               Filter: (amount > 5.00)
               Rows Removed by Filter: 35
               Selected Partitions:  1..7
               SubPlan 1
-                ->  Aggregate  (cost=70.93..70.94 rows=1 width=38) (actual time=6.047..6.049 rows=10 loops=10)
-                      ->  Bitmap Heap Scan on payment p2  (cost=4.45..70.91 rows=9 width=6) (actual time=0.313..5.940 rows=18 loops=10)
+                ->  Aggregate  (cost=70.93..70.94 rows=1 width=38) (actual time=15.513..15.517 rows=10 loops=10)
+                      ->  Bitmap Heap Scan on payment p2  (cost=4.45..70.91 rows=9 width=6) (actual time=0.482..14.868 rows=18 loops=10)
                             Recheck Cond: (customer_id = p.customer_id)
                             Filter: (payment_date <= p.payment_date)
                             Rows Removed by Filter: 258
                             Heap Blocks: exact=158
-                            ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.182..0.182 rows=276 loops=10)
+                            ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.307..0.307 rows=276 loops=10)
                                   Index Cond: (customer_id = p.customer_id)
-Total runtime: 6.527 ms
+Total runtime: 16.022 ms

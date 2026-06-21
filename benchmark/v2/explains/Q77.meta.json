@@ -1,0 +1,12 @@
+{
+  "id": "Q77",
+  "target_rule": "SKEW-001",
+  "severity": "warning",
+  "scenario": "按 customer_id 聚合,数据分布不均(部分客户消费多)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.002,
+  "explain_file": "Q77.explain"
+}

@@ -4,11 +4,11 @@
 -- @scenario: payment 表(16049 行)按 staff_id 过滤但 staff_id 无索引
 SELECT * FROM payment WHERE staff_id = 1 LIMIT 10;
 
-Limit  (cost=0.00..0.40 rows=10 width=30) (actual time=1.036..1.043 rows=10 loops=1)
-  ->  Partition Iterator  (cost=0.00..322.61 rows=8057 width=30) (actual time=1.032..1.038 rows=10 loops=1)
+Limit  (cost=0.00..0.40 rows=10 width=30) (actual time=0.189..0.197 rows=10 loops=1)
+  ->  Partition Iterator  (cost=0.00..322.61 rows=8057 width=30) (actual time=0.186..0.193 rows=10 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=8057 width=30) (actual time=1.008..1.014 rows=10 loops=1)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=8057 width=30) (actual time=0.160..0.166 rows=10 loops=1)
               Filter: (staff_id = 1)
               Rows Removed by Filter: 17
               Selected Partitions:  1..7
-Total runtime: 4.685 ms
+Total runtime: 2.287 ms

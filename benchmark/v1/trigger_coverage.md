@@ -1,6 +1,6 @@
 # Trigger Coverage Report
 
-**Generated:** 2026-06-20T23:59:19.632406+00:00
+**Generated:** 2026-06-20T22:59:33.985982+00:00
 **Source:** ogagila repo + queries_meta.json
 **Total cases:** 97
 
@@ -29,9 +29,9 @@
 | SKEW-001 | 2 | 2 | 0 | 100% |
 | SORT-003 | 3 | 0 | 3 | 0% |
 | STATS-001 | 2 | 0 | 2 | 0% |
-| SUBQ-001 | 3 | 3 | 0 | 100% |
+| SUBQ-001 | 3 | 0 | 3 | 0% |
 | SUBQ-006 | 2 | 2 | 0 | 100% |
-| TYPE-001 | 4 | 0 | 4 | 0% |
+| TYPE-001 | 4 | 4 | 0 | 100% |
 | TYPE-004 | 3 | 3 | 0 | 100% |
 | VEC-001 | 3 | 2 | 1 | 67% |
 

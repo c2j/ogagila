@@ -9,6 +9,6 @@
   "warnings": [
     "skipped unsupported in openGauss: 'DELETE STATISTICS inventory'"
   ],
-  "elapsed_sec": 0.005,
+  "elapsed_sec": 0.027,
   "explain_file": "Q40.explain"
 }

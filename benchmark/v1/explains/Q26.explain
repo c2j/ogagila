@@ -10,14 +10,14 @@ ORDER BY total DESC
 LIMIT 20;
 RESET work_mem;
 
-Limit  (cost=424.79..424.84 rows=20 width=50) (actual time=13.299..13.305 rows=20 loops=1)
-  ->  Sort  (cost=424.79..426.28 rows=599 width=50) (actual time=13.296..13.299 rows=20 loops=1)
+Limit  (cost=424.79..424.84 rows=20 width=50) (actual time=21.275..21.280 rows=20 loops=1)
+  ->  Sort  (cost=424.79..426.28 rows=599 width=50) (actual time=21.269..21.270 rows=20 loops=1)
         Sort Key: (sum(amount)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
-        ->  HashAggregate  (cost=402.86..408.85 rows=599 width=50) (actual time=12.292..12.476 rows=599 loops=1)
+        ->  HashAggregate  (cost=402.86..408.85 rows=599 width=50) (actual time=20.154..20.298 rows=599 loops=1)
               Group By Key: customer_id
-              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.024..5.156 rows=16049 loops=1)
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.043..7.035 rows=16049 loops=1)
                     Iterations: 7
-                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.066..3.101 rows=16049 loops=7)
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.111..4.169 rows=16049 loops=7)
                           Selected Partitions:  1..7
-Total runtime: 13.610 ms
+Total runtime: 22.311 ms

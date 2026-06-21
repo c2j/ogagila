@@ -4,7 +4,7 @@
 -- @scenario: country 表(109 行,全表 OK)
 SELECT * FROM country WHERE country = 'United States';
 
-Seq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.396..0.396 rows=1 loops=1)
+Seq Scan on country  (cost=0.00..2.36 rows=1 width=21) (actual time=0.058..0.060 rows=1 loops=1)
   Filter: (country = 'United States'::text)
   Rows Removed by Filter: 108
-Total runtime: 0.477 ms
+Total runtime: 0.120 ms

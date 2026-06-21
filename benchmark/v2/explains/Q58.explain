@@ -1,0 +1,10 @@
+-- @id: Q58
+-- @target: PART-001
+-- @severity: warning
+-- @scenario: payment_date IS NULL 不会裁剪
+SELECT COUNT(*) FROM payment WHERE payment_date IS NULL;
+
+Aggregate  (cost=6.13..6.14 rows=1 width=8) (actual time=0.007..0.007 rows=1 loops=1)
+  ->  Result  (cost=0.00..6.13 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=1)
+        One-Time Filter: false
+Total runtime: 0.069 ms

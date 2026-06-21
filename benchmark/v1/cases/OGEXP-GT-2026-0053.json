@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0053",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.560436+00:00",
-  "updated_at": "2026-06-20T23:59:19.560444+00:00",
+  "created_at": "2026-06-20T22:59:33.748813+00:00",
+  "updated_at": "2026-06-20T22:59:33.748824+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "算术运算阻止下推",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM payment WHERE amount * 2 > 10.00 LIMIT 10",
-    "explain_output": "-- @id: Q53\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 算术运算阻止下推\nSELECT * FROM payment WHERE amount * 2 > 10.00 LIMIT 10;\n\nLimit  (cost=0.00..0.68 rows=10 width=30) (actual time=0.043..0.050 rows=10 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.041..0.048 rows=10 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.023..0.028 rows=10 loops=1)\n              Filter: ((amount * 2::numeric) > 10.00)\n              Rows Removed by Filter: 35\n              Selected Partitions:  1..7\nTotal runtime: 0.167 ms\n",
+    "explain_output": "-- @id: Q53\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 算术运算阻止下推\nSELECT * FROM payment WHERE amount * 2 > 10.00 LIMIT 10;\n\nLimit  (cost=0.00..0.68 rows=10 width=30) (actual time=0.056..0.067 rows=10 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.048..0.057 rows=10 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.027..0.035 rows=10 loops=1)\n              Filter: ((amount * 2::numeric) > 10.00)\n              Rows Removed by Filter: 35\n              Selected Partitions:  1..7\nTotal runtime: 0.201 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "PUSH-",
         "severity": "warning",
         "description": "算术运算阻止下推",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.023..0.028 rows=10 loops=1)\nFilter: ((amount * 2::numeric) > 10.00)\nRows Removed by Filter: 35",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.027..0.035 rows=10 loops=1)\nFilter: ((amount * 2::numeric) > 10.00)\nRows Removed by Filter: 35",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [

@@ -1,0 +1,12 @@
+{
+  "id": "Q36",
+  "target_rule": "NET-001",
+  "severity": "warning",
+  "scenario": "嵌套子查询触发多次 broadcast",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.043,
+  "explain_file": "Q36.explain"
+}

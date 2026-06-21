@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0084",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.605323+00:00",
-  "updated_at": "2026-06-20T23:59:19.605338+00:00",
+  "created_at": "2026-06-20T22:59:33.828961+00:00",
+  "updated_at": "2026-06-20T22:59:33.829260+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "category 表全表(16 行,绝对合理)",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT * FROM category",
-    "explain_output": "-- @id: Q84\n-- @target: NONE\n-- @severity: info\n-- @scenario: category 表全表(16 行,绝对合理)\nSELECT * FROM category;\n\nSeq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.984..0.988 rows=16 loops=1)\nTotal runtime: 1.208 ms\n",
+    "explain_output": "-- @id: Q84\n-- @target: NONE\n-- @severity: info\n-- @scenario: category 表全表(16 行,绝对合理)\nSELECT * FROM category;\n\nSeq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.017..0.019 rows=16 loops=1)\nTotal runtime: 0.080 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 1,
+    "plan_actual_runtime_ms": 0,
     "related_tables": [
       "category"
     ]
@@ -34,9 +34,9 @@
         "category": "no_real_problem",
         "severity": "info",
         "description": "No real performance problem; query is well-optimized.",
-        "evidence": "Seq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.984..0.988 rows=16 loops=1)",
+        "evidence": "Seq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.017..0.019 rows=16 loops=1)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms",
         "verified_by": [
           "build_cases.py:auto"
         ]

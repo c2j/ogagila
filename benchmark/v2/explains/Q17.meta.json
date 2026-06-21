@@ -1,0 +1,12 @@
+{
+  "id": "Q17",
+  "target_rule": "JOIN-001",
+  "severity": "warning",
+  "scenario": "强制 NL 提示(测试 NL 触发)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.068,
+  "explain_file": "Q17.explain"
+}

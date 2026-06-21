@@ -4,11 +4,11 @@
 -- @scenario: 算术运算阻止下推
 SELECT * FROM payment WHERE amount * 2 > 10.00 LIMIT 10;
 
-Limit  (cost=0.00..0.68 rows=10 width=30) (actual time=0.043..0.050 rows=10 loops=1)
-  ->  Partition Iterator  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.041..0.048 rows=10 loops=1)
+Limit  (cost=0.00..0.68 rows=10 width=30) (actual time=0.060..0.085 rows=10 loops=1)
+  ->  Partition Iterator  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.059..0.082 rows=10 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.023..0.028 rows=10 loops=1)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=5350 width=30) (actual time=0.032..0.055 rows=10 loops=1)
               Filter: ((amount * 2::numeric) > 10.00)
               Rows Removed by Filter: 35
               Selected Partitions:  1..7
-Total runtime: 0.167 ms
+Total runtime: 0.272 ms

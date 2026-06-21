@@ -1,0 +1,12 @@
+{
+  "id": "Q30",
+  "target_rule": "MEM-004",
+  "severity": "info",
+  "scenario": "多表大 Hash Join",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.041,
+  "explain_file": "Q30.explain"
+}

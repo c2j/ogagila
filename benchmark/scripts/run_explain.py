@@ -325,6 +325,7 @@ def main():
 
     with open(meta_path, encoding="utf-8") as f:
         meta = json.load(f)
+
     sql_by_id = parse_sql_file(sql_path)
 
     queries = []

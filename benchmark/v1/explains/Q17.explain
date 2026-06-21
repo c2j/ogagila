@@ -7,13 +7,13 @@ FROM rental r
 INNER JOIN payment p ON r.rental_id = p.rental_id
 WHERE r.customer_id BETWEEN 1 AND 10;
 
-Nested Loop  (cost=0.00..5656.46 rows=267 width=10) (actual time=0.774..75.595 rows=278 loops=1)
-  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.017..4.907 rows=16049 loops=1)
+Nested Loop  (cost=0.00..5656.46 rows=267 width=10) (actual time=0.186..87.357 rows=278 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.021..5.867 rows=16049 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.047..2.586 rows=16049 loops=7)
+        ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.065..3.126 rows=16049 loops=7)
               Selected Partitions:  1..7
-  ->  Index Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=64.024..64.122 rows=278 loops=16049)
+  ->  Index Scan using rental_pkey on rental r  (cost=0.00..0.32 rows=1 width=4) (actual time=72.790..72.885 rows=278 loops=16049)
         Index Cond: (rental_id = p.rental_id)
         Filter: ((customer_id >= 1) AND (customer_id <= 10))
         Rows Removed by Filter: 15771
-Total runtime: 75.842 ms
+Total runtime: 87.672 ms

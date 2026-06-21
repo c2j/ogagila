@@ -1,0 +1,12 @@
+{
+  "id": "Q45",
+  "target_rule": "TYPE-001",
+  "severity": "critical",
+  "scenario": "staff_id 与 '1' 字符串比较",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.002,
+  "explain_file": "Q45.explain"
+}

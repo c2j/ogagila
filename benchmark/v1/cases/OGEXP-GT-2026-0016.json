@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0016",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.497594+00:00",
-  "updated_at": "2026-06-20T23:59:19.497600+00:00",
+  "created_at": "2026-06-20T22:59:33.682202+00:00",
+  "updated_at": "2026-06-20T22:59:33.682225+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "rental ↔ inventory NL(staff_id 无索引时)",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10",
-    "explain_output": "-- @id: Q16\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: rental ↔ inventory NL(staff_id 无索引时)\nSELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10;\n\nLimit  (cost=0.00..1.73 rows=10 width=12) (actual time=0.039..0.076 rows=10 loops=1)\n  ->  Merge Join  (cost=0.00..1429.10 rows=8254 width=12) (actual time=0.037..0.071 rows=10 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=12) (actual time=0.011..0.011 rows=6 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.021..0.050 rows=10 loops=1)\n              Filter: (staff_id = 1)\n              Rows Removed by Filter: 3\nTotal runtime: 0.158 ms\n",
+    "explain_output": "-- @id: Q16\n-- @target: JOIN-001\n-- @severity: warning\n-- @scenario: rental ↔ inventory NL(staff_id 无索引时)\nSELECT r.rental_id, i.film_id, i.store_id\nFROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10;\n\nLimit  (cost=0.00..1.73 rows=10 width=12) (actual time=0.568..0.609 rows=10 loops=1)\n  ->  Merge Join  (cost=0.00..1429.10 rows=8254 width=12) (actual time=0.566..0.606 rows=10 loops=1)\n        Merge Cond: (i.inventory_id = r.inventory_id)\n        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..161.97 rows=4581 width=12) (actual time=0.021..0.024 rows=6 loops=1)\n        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.522..0.554 rows=10 loops=1)\n              Filter: (staff_id = 1)\n              Rows Removed by Filter: 3\nTotal runtime: 0.728 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,

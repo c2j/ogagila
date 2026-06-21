@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0060",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.572034+00:00",
-  "updated_at": "2026-06-20T23:59:19.572043+00:00",
+  "created_at": "2026-06-20T22:59:33.759514+00:00",
+  "updated_at": "2026-06-20T22:59:33.759522+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment_date 跨全部分区,正确裁剪为全部",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM payment",
-    "explain_output": "-- @id: Q60\n-- @target: PART-001\n-- @severity: info\n-- @scenario: payment_date 跨全部分区,正确裁剪为全部\nSELECT COUNT(*) FROM payment;\n\nAggregate  (cost=322.61..322.62 rows=1 width=8) (actual time=5.665..5.665 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.024..3.971 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.074..1.853 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 5.858 ms\n",
+    "explain_output": "-- @id: Q60\n-- @target: PART-001\n-- @severity: info\n-- @scenario: payment_date 跨全部分区,正确裁剪为全部\nSELECT COUNT(*) FROM payment;\n\nAggregate  (cost=322.61..322.62 rows=1 width=8) (actual time=5.048..5.048 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.021..3.268 rows=16049 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.052..1.709 rows=16049 loops=7)\n              Selected Partitions:  1..7\nTotal runtime: 5.216 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 5,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "PART-",
         "severity": "info",
         "description": "payment_date 跨全部分区,正确裁剪为全部",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.074..1.853 rows=16049 loops=7)\nSelected Partitions:  1..7",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.052..1.709 rows=16049 loops=7)\nSelected Partitions:  1..7",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 5ms; actually_triggered=True; signal=\"Selected Partitions: 1..7\"",
         "verified_by": [

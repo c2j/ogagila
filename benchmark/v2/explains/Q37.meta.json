@@ -1,0 +1,14 @@
+{
+  "id": "Q37",
+  "target_rule": "EST-001",
+  "severity": "warning",
+  "scenario": "删 stats 后严重低估 payment 行数",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK (with 1 warning)",
+  "warnings": [
+    "skipped unsupported in openGauss: 'DELETE STATISTICS payment'"
+  ],
+  "elapsed_sec": 0.011,
+  "explain_file": "Q37.explain"
+}

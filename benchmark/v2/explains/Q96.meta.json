@@ -1,0 +1,12 @@
+{
+  "id": "Q96",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "payment 索引列范围查(customer_id)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q96.explain"
+}

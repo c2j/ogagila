@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0048",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.554578+00:00",
-  "updated_at": "2026-06-20T23:59:19.554592+00:00",
+  "created_at": "2026-06-20T22:59:33.743424+00:00",
+  "updated_at": "2026-06-20T22:59:33.743433+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film.title 前导通配符 LIKE",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT film_id, title FROM film WHERE title LIKE '%Action%' LIMIT 10",
-    "explain_output": "-- @id: Q48\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: film.title 前导通配符 LIKE\nSELECT film_id, title FROM film WHERE title LIKE '%Action%' LIMIT 10;\n\nLimit  (cost=0.00..67.50 rows=1 width=19) (actual time=0.649..0.649 rows=0 loops=1)\n  ->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.644..0.644 rows=0 loops=1)\n        Filter: (title ~~ '%Action%'::text)\n        Rows Removed by Filter: 1000\nTotal runtime: 0.767 ms\n",
+    "explain_output": "-- @id: Q48\n-- @target: TYPE-004\n-- @severity: warning\n-- @scenario: film.title 前导通配符 LIKE\nSELECT film_id, title FROM film WHERE title LIKE '%Action%' LIMIT 10;\n\nLimit  (cost=0.00..67.50 rows=1 width=19) (actual time=0.403..0.403 rows=0 loops=1)\n  ->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.400..0.400 rows=0 loops=1)\n        Filter: (title ~~ '%Action%'::text)\n        Rows Removed by Filter: 1000\nTotal runtime: 0.557 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "TYPE-",
         "severity": "warning",
         "description": "film.title 前导通配符 LIKE",
-        "evidence": "->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.644..0.644 rows=0 loops=1)\nFilter: (title ~~ '%Action%'::text)\nRows Removed by Filter: 1000",
+        "evidence": "->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.400..0.400 rows=0 loops=1)\nFilter: (title ~~ '%Action%'::text)\nRows Removed by Filter: 1000",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"LIKE ~~ with Filter (leading wildcard)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"explicit cast visible in EXPLAIN\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -73,7 +73,7 @@
   "_auto_eval": {
     "target_rule_designed": "TYPE-004",
     "actually_triggered": true,
-    "trigger_signal": "LIKE ~~ with Filter (leading wildcard)",
+    "trigger_signal": "explicit cast visible in EXPLAIN",
     "run_warnings": []
   }
 }

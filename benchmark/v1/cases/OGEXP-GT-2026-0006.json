@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0006",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.487584+00:00",
-  "updated_at": "2026-06-20T23:59:19.487591+00:00",
+  "created_at": "2026-06-20T22:59:33.666162+00:00",
+  "updated_at": "2026-06-20T22:59:33.666176+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "address 表按 district(非索引列)过滤",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT * FROM address WHERE district = 'California' LIMIT 10",
-    "explain_output": "-- @id: Q06\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: address 表按 district(非索引列)过滤\nSELECT * FROM address WHERE district = 'California' LIMIT 10;\n\nLimit  (cost=0.00..15.54 rows=9 width=94) (actual time=5.201..7.461 rows=9 loops=1)\n  ->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=5.197..7.451 rows=9 loops=1)\n        Filter: (district = 'California'::text)\n        Rows Removed by Filter: 594\nTotal runtime: 8.969 ms\n",
+    "explain_output": "-- @id: Q06\n-- @target: SCAN-001\n-- @severity: warning\n-- @scenario: address 表按 district(非索引列)过滤\nSELECT * FROM address WHERE district = 'California' LIMIT 10;\n\nLimit  (cost=0.00..15.54 rows=9 width=94) (actual time=0.457..1.016 rows=9 loops=1)\n  ->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.453..1.009 rows=9 loops=1)\n        Filter: (district = 'California'::text)\n        Rows Removed by Filter: 594\nTotal runtime: 1.309 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 8,
+    "plan_actual_runtime_ms": 1,
     "related_tables": [
       "address"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "SCAN-",
         "severity": "warning",
         "description": "address 表按 district(非索引列)过滤",
-        "evidence": "->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=5.197..7.451 rows=9 loops=1)\nFilter: (district = 'California'::text)\nRows Removed by Filter: 594",
+        "evidence": "->  Seq Scan on address  (cost=0.00..15.54 rows=9 width=94) (actual time=0.453..1.009 rows=9 loops=1)\nFilter: (district = 'California'::text)\nRows Removed by Filter: 594",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 8ms; actually_triggered=True; signal=\"Seq Scan present\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=True; signal=\"Seq Scan present\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

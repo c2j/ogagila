@@ -1,0 +1,12 @@
+{
+  "id": "Q23",
+  "target_rule": "JOIN-002",
+  "severity": "warning",
+  "scenario": "自连接 rental 触发大 Hash",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.128,
+  "explain_file": "Q23.explain"
+}

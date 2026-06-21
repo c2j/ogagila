@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0052",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.559395+00:00",
-  "updated_at": "2026-06-20T23:59:19.559400+00:00",
+  "created_at": "2026-06-20T22:59:33.747355+00:00",
+  "updated_at": "2026-06-20T22:59:33.747363+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "函数包裹索引列,阻止下推",
@@ -17,10 +17,10 @@
   },
   "input": {
     "sql": "SELECT * FROM film WHERE UPPER(title) = 'ACADEMY DINOSAUR'",
-    "explain_output": "-- @id: Q52\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 函数包裹索引列,阻止下推\nSELECT * FROM film WHERE UPPER(title) = 'ACADEMY DINOSAUR';\n\nSeq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=1.569..3.114 rows=1 loops=1)\n  Filter: (upper(title) = 'ACADEMY DINOSAUR'::text)\n  Rows Removed by Filter: 999\nTotal runtime: 3.215 ms\n",
+    "explain_output": "-- @id: Q52\n-- @target: PUSH-001\n-- @severity: warning\n-- @scenario: 函数包裹索引列,阻止下推\nSELECT * FROM film WHERE UPPER(title) = 'ACADEMY DINOSAUR';\n\nSeq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=0.560..1.116 rows=1 loops=1)\n  Filter: (upper(title) = 'ACADEMY DINOSAUR'::text)\n  Rows Removed by Filter: 999\nTotal runtime: 1.204 ms\n",
     "explain_format": "text",
     "has_analyze": true,
-    "plan_actual_runtime_ms": 3,
+    "plan_actual_runtime_ms": 1,
     "related_tables": [
       "film"
     ]
@@ -36,9 +36,9 @@
         "ogexplain_rule_category": "PUSH-",
         "severity": "warning",
         "description": "函数包裹索引列,阻止下推",
-        "evidence": "Seq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=1.569..3.114 rows=1 loops=1)\nFilter: (upper(title) = 'ACADEMY DINOSAUR'::text)\nRows Removed by Filter: 999",
+        "evidence": "Seq Scan on film  (cost=0.00..70.00 rows=5 width=390) (actual time=0.560..1.116 rows=1 loops=1)\nFilter: (upper(title) = 'ACADEMY DINOSAUR'::text)\nRows Removed by Filter: 999",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 3ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 1ms; actually_triggered=False; signal=\"(no signal pattern matched)\"",
         "verified_by": [
           "build_cases.py:auto"
         ]

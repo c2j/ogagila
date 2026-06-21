@@ -1,0 +1,12 @@
+{
+  "id": "Q87",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "film 主键点查",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q87.explain"
+}

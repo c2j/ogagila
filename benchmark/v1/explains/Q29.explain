@@ -6,10 +6,10 @@ SELECT customer_id, COUNT(*), SUM(amount), AVG(amount)
 FROM payment
 GROUP BY customer_id;
 
-HashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=14.242..14.506 rows=599 loops=1)
+HashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=26.468..26.853 rows=599 loops=1)
   Group By Key: customer_id
-  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.024..3.843 rows=16049 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.028..8.492 rows=16049 loops=1)
         Iterations: 7
-        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.049..2.182 rows=16049 loops=7)
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.174..5.473 rows=16049 loops=7)
               Selected Partitions:  1..7
-Total runtime: 15.561 ms
+Total runtime: 27.317 ms

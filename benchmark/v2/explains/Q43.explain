@@ -1,0 +1,23 @@
+-- @id: Q43
+-- @target: EST-004
+-- @severity: warning
+-- @scenario: 删 stats 后 film_actor 误选 NL
+DELETE STATISTICS film_actor;
+SELECT f.title, a.last_name
+FROM film f, film_actor fa, actor a
+WHERE f.film_id = fa.film_id AND fa.actor_id = a.actor_id
+LIMIT 50;
+
+Limit  (cost=6.50..11.35 rows=50 width=22) (actual time=0.184..0.331 rows=50 loops=1)
+  ->  Hash Join  (cost=6.50..536.10 rows=5462 width=22) (actual time=0.182..0.325 rows=50 loops=1)
+        Hash Cond: (fa.actor_id = a.actor_id)
+        ->  Merge Join  (cost=0.00..454.50 rows=5462 width=19) (actual time=0.021..0.152 rows=50 loops=1)
+              Merge Cond: (f.film_id = fa.film_id)
+              ->  Index Scan using film_pkey on film f  (cost=0.00..93.59 rows=1000 width=19) (actual time=0.010..0.014 rows=9 loops=1)
+              ->  Index Scan using idx_fk_film_id on film_actor fa  (cost=0.00..290.13 rows=5462 width=8) (actual time=0.006..0.120 rows=50 loops=1)
+        ->  Hash  (cost=4.00..4.00 rows=200 width=11) (actual time=0.066..0.066 rows=200 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 265kB
+              ->  Seq Scan on actor a  (cost=0.00..4.00 rows=200 width=11) (actual time=0.006..0.023 rows=200 loops=1)
+Total runtime: 0.509 ms
+
+-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS film_actor'

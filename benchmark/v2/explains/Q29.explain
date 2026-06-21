@@ -1,0 +1,15 @@
+-- @id: Q29
+-- @target: MEM-004
+-- @severity: info
+-- @scenario: 全表 HashAggregate 内存峰值
+SELECT customer_id, COUNT(*), SUM(amount), AVG(amount)
+FROM payment
+GROUP BY customer_id;
+
+HashAggregate  (cost=442.98..450.47 rows=599 width=82) (actual time=9.581..9.819 rows=599 loops=1)
+  Group By Key: customer_id
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.015..2.663 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.036..1.502 rows=16049 loops=7)
+              Selected Partitions:  1..7
+Total runtime: 10.032 ms

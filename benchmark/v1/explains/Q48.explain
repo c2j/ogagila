@@ -4,8 +4,8 @@
 -- @scenario: film.title 前导通配符 LIKE
 SELECT film_id, title FROM film WHERE title LIKE '%Action%' LIMIT 10;
 
-Limit  (cost=0.00..67.50 rows=1 width=19) (actual time=0.649..0.649 rows=0 loops=1)
-  ->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=0.644..0.644 rows=0 loops=1)
+Limit  (cost=0.00..67.50 rows=1 width=19) (actual time=1.255..1.255 rows=0 loops=1)
+  ->  Seq Scan on film  (cost=0.00..67.50 rows=1 width=19) (actual time=1.251..1.251 rows=0 loops=1)
         Filter: (title ~~ '%Action%'::text)
         Rows Removed by Filter: 1000
-Total runtime: 0.767 ms
+Total runtime: 1.461 ms

@@ -4,5 +4,5 @@
 -- @scenario: category 表全表(16 行,绝对合理)
 SELECT * FROM category;
 
-Seq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.984..0.988 rows=16 loops=1)
-Total runtime: 1.208 ms
+Seq Scan on category  (cost=0.00..21.04 rows=1104 width=44) (actual time=0.041..0.043 rows=16 loops=1)
+Total runtime: 0.419 ms

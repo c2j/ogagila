@@ -1,0 +1,12 @@
+{
+  "id": "Q08",
+  "target_rule": "SCAN-001",
+  "severity": "warning",
+  "scenario": "payment 表 amount > 10 高 selectivity 过滤(无索引)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.006,
+  "explain_file": "Q08.explain"
+}

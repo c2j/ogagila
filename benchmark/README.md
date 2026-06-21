@@ -10,9 +10,10 @@ benchmark/
 ├── README.md                       ← 本文件（唯一总文档）
 ├── scripts/                        ← Python 工具
 │   ├── run_explain.py              ← Stage A：跑 EXPLAIN ANALYZE
-│   └── build_cases.py              ← Stage B：合成 ground-truth case
+│   ├── build_cases.py              ← Stage B：合成 ground-truth case
+│   └── apply_v2_fixes.py           ← ⛔ ONE-TIME：从 v1 复制并修 27 个 case → v2（跑后可删）
 ├── groundtruth.schema.json         ← case JSON Schema (Draft 2020-12)
-└── v1/                             ← 版本化（可扩展 v2/v3...）
+├── v1/                             ← v1 数据集（baseline）
     ├── queries.sql                 ← 输入：SQL 源（含 -- @id / -- @target 标记）
     ├── queries.md                  ← 输入：该版本的人类可读说明
     ├── queries_meta.json           ← 输入：机器可读元数据
@@ -23,7 +24,14 @@ benchmark/
     │   └── OGEXP-GT-2026-NNNN.json
     ├── case_index.json             ← Stage B 汇总：case 索引
     └── trigger_coverage.md         ← Stage B 汇总：触发率报告
+└── v2/                             ← ⭐ 推荐评估用：修复了 27 个 GT 错 + 补全 multi-root-cause
+    ├── CHANGELOG_v1_to_v2.md       ← v1→v2 详细变更列表（27 个 case）
+    ├── cases/                      ← 97 个修正后的 case JSON
+    ├── case_index.json             ← target_rule 已同步
+    └── trigger_coverage.md         ← v2 的触发率报告
 ```
+
+> **重要:** v2 是从 v1 手工 + 一次性脚本修过的**最终数据集**。不要在 v2 目录上跑 `build_cases.py --version v2`,会覆盖手修的 27 个 case。v3 之后可以正常用 build_cases.py。
 
 输入（`queries.*`）、Stage A 产物（`explains/`）、Stage B 产物（`cases/` + 汇总）按版本完整隔离，新增版本只加一个 `vX/` 目录。
 
@@ -134,21 +142,48 @@ cat benchmark/v1/cases/OGEXP-GT-2026-0001.json | python3 -m json.tool
 - [`v1/queries.md`](v1/queries.md) — 规则覆盖表、副作用清单、数据规模
 - [`v1/trigger_coverage.md`](v1/trigger_coverage.md) — 每条规则的 designed vs actually_triggered 统计
 
+## v2 修复概要
+
+v2 在 v1 基础上**修了 27 个 case 的 ground-truth 错** + 补全了 18 个 case 的多根因(multi-root-cause):
+
+| 类别 | 数量 | 说明 |
+|------|------|------|
+| A. SCAN-001 → SCAN-004 | 6 | 6 个 `WHERE 但无索引` 错标 SCAN-001 |
+| B. Multi-root-cause 补全 | 18 | 1 个 case 可同时有多个根因 |
+| C. NET-001 → SCAN-001/004 | 3 | 单节点不可能 Broadcast |
+| D. PUSH-/SORT-/LIKE co-finding | 嵌入 B | 谓词阻止下推、LIKE 前缀、UNION 隐式转换等 |
+
+修复后评估(同一份 ogexplain 工具输出):
+- case-level F1: 15.7% → **49.5%** (+33.8pp)
+- rule-level F1: 11.8% → **43.5%** (+31.7pp)
+- SCAN-001 规则 F1: 0% → **78.6%**
+
+详细变更见 [`v2/CHANGELOG_v1_to_v2.md`](v2/CHANGELOG_v1_to_v2.md)。
+
+**使用 v2 评估**:
+```bash
+python3 evaluate.py --mode live \
+    --cases /path/to/ogagila/benchmark/v2/cases/ \
+    --ogexplain-binary target/release/ogexplain
+```
+
 ## 扩展指南
 
-### 新增 query set 版本（v2、v3...）
+### 新增 query set 版本（v3、v4...）
 
 ```bash
-# 1. 复制 v1/ 结构
-mkdir -p benchmark/v2
-cp benchmark/v1/queries.sql benchmark/v1/queries.md benchmark/v1/queries_meta.json benchmark/v2/
+# 1. 复制 v2/ 结构(或 v1/,如果你不需要 v2 的修复)
+mkdir -p benchmark/v3
+cp benchmark/v2/queries.sql benchmark/v2/queries.md benchmark/v2/queries_meta.json benchmark/v3/
 # 然后编辑这三个文件加入新 query
 
 # 2. Stage A：跑 EXPLAIN
-python3 benchmark/scripts/run_explain.py --version v2
+python3 benchmark/scripts/run_explain.py --version v3
 
 # 3. Stage B：生成 case
-python3 benchmark/scripts/build_cases.py --version v2
+python3 benchmark/scripts/build_cases.py --version v3
+
+# **不要在 v2 上跑 build_cases.py!** v2 已经被手修过 27 个 case,会覆盖修复。
 ```
 
 ### 新增规则映射

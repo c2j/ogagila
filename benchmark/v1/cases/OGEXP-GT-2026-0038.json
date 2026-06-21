@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0038",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.534914+00:00",
-  "updated_at": "2026-06-20T23:59:19.534925+00:00",
+  "created_at": "2026-06-20T22:59:33.707393+00:00",
+  "updated_at": "2026-06-20T22:59:33.707406+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "删 stats 后 rental 估算偏差",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "DELETE STATISTICS rental;\nSELECT COUNT(*) FROM rental WHERE return_date IS NULL",
-    "explain_output": "-- @id: Q38\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 rental 估算偏差\nDELETE STATISTICS rental;\nSELECT COUNT(*) FROM rental WHERE return_date IS NULL;\n\nAggregate  (cost=319.19..319.20 rows=1 width=8) (actual time=1.854..1.854 rows=1 loops=1)\n  ->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=1.845..1.845 rows=0 loops=1)\n        Filter: (return_date IS NULL)\n        Rows Removed by Filter: 16044\nTotal runtime: 2.001 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'\n",
+    "explain_output": "-- @id: Q38\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 rental 估算偏差\nDELETE STATISTICS rental;\nSELECT COUNT(*) FROM rental WHERE return_date IS NULL;\n\nAggregate  (cost=319.19..319.20 rows=1 width=8) (actual time=1.912..1.912 rows=1 loops=1)\n  ->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=1.902..1.902 rows=0 loops=1)\n        Filter: (return_date IS NULL)\n        Rows Removed by Filter: 16044\nTotal runtime: 2.017 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS rental'\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 2,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "EST-",
         "severity": "warning",
         "description": "删 stats 后 rental 估算偏差",
-        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=1.845..1.845 rows=0 loops=1)\nFilter: (return_date IS NULL)\nRows Removed by Filter: 16044",
+        "evidence": "->  Seq Scan on rental  (cost=0.00..318.72 rows=188 width=0) (actual time=1.902..1.902 rows=0 loops=1)\nFilter: (return_date IS NULL)\nRows Removed by Filter: 16044",
         "verification_method": "consensus_only",
         "verification_detail": "EXPLAIN ANALYZE runtime: 2ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
         "verified_by": [

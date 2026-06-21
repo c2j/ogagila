@@ -9,19 +9,19 @@ FROM customer c
 WHERE c.active = 1
 LIMIT 10;
 
-Limit  (cost=0.00..4309.29 rows=10 width=10) (actual time=10.877..37.913 rows=10 loops=1)
-  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=10.873..37.894 rows=10 loops=1)
+Limit  (cost=0.00..4309.29 rows=10 width=10) (actual time=7.656..40.876 rows=10 loops=1)
+  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=7.652..40.855 rows=10 loops=1)
         Filter: (active = 1)
         SubPlan 1
-          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=26.586..26.590 rows=10 loops=10)
-                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=1.005..26.312 rows=278 loops=10)
+          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=34.027..34.029 rows=10 loops=10)
+                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=1.177..33.747 rows=278 loops=10)
                       Filter: (customer_id = c.customer_id)
                       Rows Removed by Filter: 160162
         SubPlan 2
-          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=10.879..10.879 rows=10 loops=10)
-                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=1.574..10.374 rows=278 loops=10)
+          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=6.553..6.553 rows=10 loops=10)
+                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=0.903..6.029 rows=278 loops=10)
                       Recheck Cond: (customer_id = c.customer_id)
                       Heap Blocks: exact=164
-                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=1.208..1.208 rows=278 loops=10)
+                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.604..0.604 rows=278 loops=10)
                             Index Cond: (customer_id = c.customer_id)
-Total runtime: 39.160 ms
+Total runtime: 41.160 ms

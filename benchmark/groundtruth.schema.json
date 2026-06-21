@@ -216,24 +216,27 @@
     },
     "_auto_eval": {
       "type": "object",
-      "description": "Auto-generated trigger evaluation (heuristic, NOT ground truth — DBA review overrides)",
+      "additionalProperties": false,
+      "description": "Auto-evaluation metadata from build_cases.py (heuristic, not ground truth)",
       "properties": {
         "target_rule_designed": {
           "type": "string",
-          "description": "The ogexplain rule ID this case was designed to trigger (or NONE for healthy)"
+          "description": "The target rule this case was designed for"
         },
         "actually_triggered": {
           "type": "boolean",
-          "description": "Heuristic judgement: did the runtime EXPLAIN signal actually match the intended rule?"
+          "description": "Whether the rule's intended condition actually manifested in the EXPLAIN output"
         },
         "trigger_signal": {
           "type": "string",
-          "description": "Human-readable evidence summary from the EXPLAIN output"
+          "description": "Heuristic signal indicating whether the rule triggered"
         },
         "run_warnings": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Runtime warnings (e.g. skipped unsupported statements)"
+          "items": {
+            "type": "string"
+          },
+          "description": "Warnings from the EXPLAIN ANALYZE run"
         }
       }
     }

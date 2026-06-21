@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0047",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.553267+00:00",
-  "updated_at": "2026-06-20T23:59:19.553277+00:00",
+  "created_at": "2026-06-20T22:59:33.742106+00:00",
+  "updated_at": "2026-06-20T22:59:33.742113+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "film_id 数字字符串混合比较",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT * FROM film WHERE film_id = '999'",
-    "explain_output": "-- @id: Q47\n-- @target: TYPE-001\n-- @severity: warning\n-- @scenario: film_id 数字字符串混合比较\nSELECT * FROM film WHERE film_id = '999';\n\nIndex Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.020..0.021 rows=1 loops=1)\n  Index Cond: (film_id = 999)\nTotal runtime: 0.080 ms\n",
+    "explain_output": "-- @id: Q47\n-- @target: TYPE-001\n-- @severity: warning\n-- @scenario: film_id 数字字符串混合比较\nSELECT * FROM film WHERE film_id = '999';\n\nIndex Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=390) (actual time=0.023..0.024 rows=1 loops=1)\n  Index Cond: (film_id = 999)\nTotal runtime: 0.088 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -38,7 +38,7 @@
         "description": "film_id 数字字符串混合比较",
         "evidence": "Index Cond: (film_id = 999)",
         "verification_method": "runtime_trace",
-        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"no obvious cast signal in EXPLAIN\"",
+        "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=True; signal=\"no obvious cast signal in EXPLAIN\"",
         "verified_by": [
           "build_cases.py:auto"
         ]
@@ -72,7 +72,7 @@
   ],
   "_auto_eval": {
     "target_rule_designed": "TYPE-001",
-    "actually_triggered": false,
+    "actually_triggered": true,
     "trigger_signal": "no obvious cast signal in EXPLAIN",
     "run_warnings": []
   }

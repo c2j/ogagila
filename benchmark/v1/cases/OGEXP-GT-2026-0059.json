@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0059",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.570134+00:00",
-  "updated_at": "2026-06-20T23:59:19.570137+00:00",
+  "created_at": "2026-06-20T22:59:33.758665+00:00",
+  "updated_at": "2026-06-20T22:59:33.758679+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "payment_date 用 OR 拆分,部分无法裁剪",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "SELECT COUNT(*) FROM payment\nWHERE payment_date >= '2022-03-01' OR customer_id = 100",
-    "explain_output": "-- @id: Q59\n-- @target: PART-001\n-- @severity: warning\n-- @scenario: payment_date 用 OR 拆分,部分无法裁剪\nSELECT COUNT(*) FROM payment\nWHERE payment_date >= '2022-03-01' OR customer_id = 100;\n\nAggregate  (cost=395.06..395.07 rows=1 width=8) (actual time=6.127..6.127 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.141..4.763 rows=12930 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.876..3.325 rows=12930 loops=7)\n              Filter: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) OR (customer_id = 100))\n              Rows Removed by Filter: 3119\n              Selected Partitions:  1..7\nTotal runtime: 6.407 ms\n",
+    "explain_output": "-- @id: Q59\n-- @target: PART-001\n-- @severity: warning\n-- @scenario: payment_date 用 OR 拆分,部分无法裁剪\nSELECT COUNT(*) FROM payment\nWHERE payment_date >= '2022-03-01' OR customer_id = 100;\n\nAggregate  (cost=395.06..395.07 rows=1 width=8) (actual time=6.142..6.143 rows=1 loops=1)\n  ->  Partition Iterator  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.162..4.660 rows=12930 loops=1)\n        Iterations: 7\n        ->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.669..3.166 rows=12930 loops=7)\n              Filter: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) OR (customer_id = 100))\n              Rows Removed by Filter: 3119\n              Selected Partitions:  1..7\nTotal runtime: 6.404 ms\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 6,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "PART-",
         "severity": "warning",
         "description": "payment_date 用 OR 拆分,部分无法裁剪",
-        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.876..3.325 rows=12930 loops=7)\nFilter: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) OR (customer_id = 100))\nRows Removed by Filter: 3119",
+        "evidence": "->  Partitioned Seq Scan on payment  (cost=0.00..362.74 rows=12929 width=0) (actual time=0.669..3.166 rows=12930 loops=7)\nFilter: ((payment_date >= '2022-03-01 00:00:00+00'::timestamp with time zone) OR (customer_id = 100))\nRows Removed by Filter: 3119",
         "verification_method": "runtime_trace",
         "verification_detail": "EXPLAIN ANALYZE runtime: 6ms; actually_triggered=True; signal=\"Selected Partitions: 1..7\"",
         "verified_by": [

@@ -1,0 +1,9 @@
+-- @id: Q45
+-- @target: TYPE-001
+-- @severity: critical
+-- @scenario: staff_id 与 '1' 字符串比较
+SELECT * FROM staff WHERE staff_id = '1';
+
+Index Scan using staff_pkey on staff  (cost=0.00..8.27 rows=1 width=153) (actual time=0.016..0.017 rows=1 loops=1)
+  Index Cond: (staff_id = 1)
+Total runtime: 0.052 ms

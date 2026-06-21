@@ -8,9 +8,9 @@ GROUP BY customer_id
 HAVING SUM(amount) > 30
 LIMIT 10;
 
-Limit  (cost=0.00..23.38 rows=10 width=82) (actual time=0.190..0.377 rows=10 loops=1)
-  ->  GroupAggregate  (cost=0.00..1400.53 rows=599 width=82) (actual time=0.189..0.372 rows=10 loops=1)
+Limit  (cost=0.00..23.38 rows=10 width=82) (actual time=3.323..5.159 rows=10 loops=1)
+  ->  GroupAggregate  (cost=0.00..1400.53 rows=599 width=82) (actual time=3.320..5.153 rows=10 loops=1)
         Group By Key: customer_id
         Filter: (sum(amount) > 30::numeric)
-        ->  Index Scan using idx_fk_payment_customer_id on payment  (cost=0.00..1232.55 rows=16049 width=10) (actual time=0.069..0.274 rows=279 loops=1)
-Total runtime: 0.547 ms
+        ->  Index Scan using idx_fk_payment_customer_id on payment  (cost=0.00..1232.55 rows=16049 width=10) (actual time=3.122..4.956 rows=279 loops=1)
+Total runtime: 5.431 ms

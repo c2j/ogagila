@@ -7,9 +7,9 @@ SELECT * FROM (
 ) t
 ORDER BY customer_id;
 
-Sort  (cost=9.73..9.98 rows=100 width=40) (actual time=0.116..0.119 rows=100 loops=1)
+Sort  (cost=9.73..9.98 rows=100 width=40) (actual time=0.457..0.462 rows=100 loops=1)
   Sort Key: rental.customer_id
   Sort Method: quicksort  Memory: 32kB
-  ->  Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.026..0.088 rows=100 loops=1)
-        ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.024..0.072 rows=100 loops=1)
-Total runtime: 0.184 ms
+  ->  Limit  (cost=0.00..5.41 rows=100 width=40) (actual time=0.047..0.397 rows=100 loops=1)
+        ->  Index Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.044..0.381 rows=100 loops=1)
+Total runtime: 0.554 ms

@@ -7,6 +7,6 @@
   "is_healthy": false,
   "status": "OK",
   "warnings": [],
-  "elapsed_sec": 0.022,
+  "elapsed_sec": 0.07,
   "explain_file": "Q26.explain"
 }

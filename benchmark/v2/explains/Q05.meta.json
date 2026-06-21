@@ -1,0 +1,12 @@
+{
+  "id": "Q05",
+  "target_rule": "SCAN-001",
+  "severity": "warning",
+  "scenario": "film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q05.explain"
+}

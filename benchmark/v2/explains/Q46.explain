@@ -1,0 +1,9 @@
+-- @id: Q46
+-- @target: TYPE-001
+-- @severity: critical
+-- @scenario: address_id 整数与字符串
+SELECT * FROM address WHERE address_id = '5';
+
+Index Scan using address_pkey on address  (cost=0.00..8.27 rows=1 width=94) (actual time=0.026..0.028 rows=1 loops=1)
+  Index Cond: (address_id = 5)
+Total runtime: 0.075 ms

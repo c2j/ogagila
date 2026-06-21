@@ -1,8 +1,8 @@
 {
   "case_id": "OGEXP-GT-2026-0039",
   "version": "1.0",
-  "created_at": "2026-06-20T23:59:19.539610+00:00",
-  "updated_at": "2026-06-20T23:59:19.539619+00:00",
+  "created_at": "2026-06-20T22:59:33.709796+00:00",
+  "updated_at": "2026-06-20T22:59:33.709809+00:00",
   "status": "draft",
   "source": {
     "business_scenario": "删 stats 后 customer 估算偏差",
@@ -17,7 +17,7 @@
   },
   "input": {
     "sql": "DELETE STATISTICS customer;\nSELECT COUNT(*) FROM customer WHERE active = 1",
-    "explain_output": "-- @id: Q39\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 customer 估算偏差\nDELETE STATISTICS customer;\nSELECT COUNT(*) FROM customer WHERE active = 1;\n\nAggregate  (cost=17.95..17.96 rows=1 width=8) (actual time=0.361..0.361 rows=1 loops=1)\n  ->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.027..0.281 rows=584 loops=1)\n        Filter: (active = 1)\n        Rows Removed by Filter: 15\nTotal runtime: 0.447 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS customer'\n",
+    "explain_output": "-- @id: Q39\n-- @target: EST-001\n-- @severity: warning\n-- @scenario: 删 stats 后 customer 估算偏差\nDELETE STATISTICS customer;\nSELECT COUNT(*) FROM customer WHERE active = 1;\n\nAggregate  (cost=17.95..17.96 rows=1 width=8) (actual time=0.161..0.161 rows=1 loops=1)\n  ->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.014..0.109 rows=584 loops=1)\n        Filter: (active = 1)\n        Rows Removed by Filter: 15\nTotal runtime: 0.237 ms\n\n-- ⚠ skipped unsupported in openGauss: 'DELETE STATISTICS customer'\n",
     "explain_format": "text",
     "has_analyze": true,
     "plan_actual_runtime_ms": 0,
@@ -36,7 +36,7 @@
         "ogexplain_rule_category": "EST-",
         "severity": "warning",
         "description": "删 stats 后 customer 估算偏差",
-        "evidence": "->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.027..0.281 rows=584 loops=1)\nFilter: (active = 1)\nRows Removed by Filter: 15",
+        "evidence": "->  Seq Scan on customer  (cost=0.00..16.49 rows=584 width=0) (actual time=0.014..0.109 rows=584 loops=1)\nFilter: (active = 1)\nRows Removed by Filter: 15",
         "verification_method": "consensus_only",
         "verification_detail": "EXPLAIN ANALYZE runtime: 0ms; actually_triggered=False; signal=\"warning: openGauss skipped the side-effect statement; rule NOT actually tested\"",
         "verified_by": [

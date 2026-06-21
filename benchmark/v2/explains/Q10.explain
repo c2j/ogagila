@@ -1,0 +1,11 @@
+-- @id: Q10
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: customer.email 过滤(email 无索引)
+SELECT customer_id, first_name, last_name FROM customer WHERE email LIKE '%@example.org' LIMIT 5;
+
+Limit  (cost=0.00..16.49 rows=1 width=17) (actual time=0.167..0.167 rows=0 loops=1)
+  ->  Seq Scan on customer  (cost=0.00..16.49 rows=1 width=17) (actual time=0.164..0.164 rows=0 loops=1)
+        Filter: (email ~~ '%@example.org'::text)
+        Rows Removed by Filter: 599
+Total runtime: 0.306 ms

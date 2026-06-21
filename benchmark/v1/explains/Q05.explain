@@ -4,6 +4,6 @@
 -- @scenario: film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)
 SELECT COUNT(*) FROM film_actor;
 
-Aggregate  (cost=98.28..98.29 rows=1 width=8) (actual time=14.113..14.114 rows=1 loops=1)
-  ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=1.054..13.617 rows=5462 loops=1)
-Total runtime: 14.997 ms
+Aggregate  (cost=98.28..98.29 rows=1 width=8) (actual time=15.628..15.629 rows=1 loops=1)
+  ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.093..14.721 rows=5462 loops=1)
+Total runtime: 26.319 ms
