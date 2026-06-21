@@ -1,0 +1,12 @@
+{
+  "id": "Q105",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "同一查询多个 window partition",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.012,
+  "explain_file": "Q105.explain"
+}

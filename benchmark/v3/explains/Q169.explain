@@ -1,0 +1,12 @@
+-- @id: Q169
+-- @target: SCAN-004
+-- @severity: info
+-- @scenario: 复合索引 (a, b, c) 仅用 c(无 leading)
+CREATE INDEX IF NOT EXISTS idx_film_title_year_rate ON film (title, release_year, rental_rate);
+SELECT * FROM film WHERE rental_rate = 0.99 LIMIT 10;
+
+Limit  (cost=0.00..1.98 rows=10 width=390) (actual time=0.018..0.037 rows=10 loops=1)
+  ->  Seq Scan on film  (cost=0.00..67.50 rows=341 width=390) (actual time=0.015..0.033 rows=10 loops=1)
+        Filter: (rental_rate = .99)
+        Rows Removed by Filter: 17
+Total runtime: 0.113 ms

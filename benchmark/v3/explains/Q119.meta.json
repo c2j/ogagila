@@ -1,0 +1,12 @@
+{
+  "id": "Q119",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "EXCEPT 找从未大额消费的活跃客户",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.015,
+  "explain_file": "Q119.explain"
+}

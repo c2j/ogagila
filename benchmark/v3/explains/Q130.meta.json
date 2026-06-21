@@ -1,0 +1,12 @@
+{
+  "id": "Q130",
+  "target_rule": "AGG-001",
+  "severity": "info",
+  "scenario": "FILTER 子句条件聚合",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.031,
+  "explain_file": "Q130.explain"
+}

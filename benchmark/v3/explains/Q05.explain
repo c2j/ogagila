@@ -1,0 +1,9 @@
+-- @id: Q05
+-- @target: SCAN-001
+-- @severity: warning
+-- @scenario: film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)
+SELECT COUNT(*) FROM film_actor;
+
+Aggregate  (cost=98.28..98.29 rows=1 width=8) (actual time=1.278..1.278 rows=1 loops=1)
+  ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=0) (actual time=0.073..0.904 rows=5462 loops=1)
+Total runtime: 1.532 ms

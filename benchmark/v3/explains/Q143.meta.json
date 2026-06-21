@@ -1,0 +1,12 @@
+{
+  "id": "Q143",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "Top-3 per group(window)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.09,
+  "explain_file": "Q143.explain"
+}

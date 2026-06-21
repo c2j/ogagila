@@ -1,0 +1,21 @@
+-- @id: Q153
+-- @target: SKEW-001
+-- @severity: warning
+-- @scenario: payment 表 customer_id 倾斜(Top 客户消费笔数)
+SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total
+FROM payment
+GROUP BY customer_id
+ORDER BY cnt DESC
+LIMIT 5;
+
+Limit  (cost=418.80..418.81 rows=5 width=50) (actual time=18.195..18.197 rows=5 loops=1)
+  ->  Sort  (cost=418.80..420.29 rows=599 width=50) (actual time=18.192..18.192 rows=5 loops=1)
+        Sort Key: (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        ->  HashAggregate  (cost=402.86..408.85 rows=599 width=50) (actual time=17.975..18.048 rows=599 loops=1)
+              Group By Key: customer_id
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.022..7.006 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.061..2.417 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 18.401 ms

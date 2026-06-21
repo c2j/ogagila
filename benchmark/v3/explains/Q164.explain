@@ -1,0 +1,11 @@
+-- @id: Q164
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: 表达式索引(LOWER 包装,无索引会全表扫)
+CREATE INDEX IF NOT EXISTS idx_customer_email_lower ON customer (LOWER(email));
+SELECT * FROM customer WHERE LOWER(email) LIKE '%@example.org';
+
+Seq Scan on customer  (cost=0.00..26.98 rows=1 width=78) (actual time=0.742..0.742 rows=0 loops=1)
+  Filter: (lower(email) ~~ '%@example.org'::text)
+  Rows Removed by Filter: 599
+Total runtime: 0.836 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q164",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "表达式索引 LOWER(email) 包装,无索引会全表扫",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.05,
+  "explain_file": "Q164.explain"
+}

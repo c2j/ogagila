@@ -1,0 +1,1751 @@
+{
+  "version": "3.1",
+  "source_schema": "pagila-openGauss-7.0",
+  "ogexplain_analyzer_version": "v0.2.x",
+  "generated_at": "2026-06-20",
+  "rule_count_claimed": 25,
+  "rule_count_covered": 25,
+  "query_count": 193,
+  "healthy_count": 20,
+  "problematic_count": 173,
+  "side_effect_count": 54,
+  "queries": [
+    {
+      "id": "Q01",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "rental 表(16044 行)无 WHERE 条件,触发 Seq Scan + 100% selectivity",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q02",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "payment 表(16049 行)按 staff_id 过滤但 staff_id 无索引",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q03",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "inventory 表全表扫后按 film_id 过滤(无索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q04",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "rental 与 payment 笛卡尔积前的 payment Seq Scan",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q05",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "film_actor 联结表全扫(film_id 无单独索引,虽然有联合 PK)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q06",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "address 表按 district(非索引列)过滤",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q07",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "customer 表 active=1 过滤(active 无索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q08",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "payment 表 amount > 10 高 selectivity 过滤(无索引)",
+      "sql": "-- =============================================================================\n-- [SCAN-004] Filter without index — 6 queries\n-- 触发条件: Seq Scan + Filter + rows estimation ratio 高\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q09",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "rental.return_date IS NULL(高频谓词,缺索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q10",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "customer.email 过滤(email 无索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q11",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "payment.amount 范围(无索引,导致 Seq Scan + Filter)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q12",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "staff.username 精确匹配(无索引,典型登录场景)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q13",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "city.city 名精确查(无索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q14",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "film.description 文本扫描",
+      "sql": "-- =============================================================================\n-- [JOIN-001] Nested Loop with large dataset — 5 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q15",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "customer→rental→payment→inventory→film 5 表嵌套循环",
+      "sql": "SELECT c.customer_id, COUNT(*) AS rental_count\nFROM customer c\nINNER JOIN rental r ON c.customer_id = r.customer_id\nINNER JOIN payment p ON r.rental_id = p.rental_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nINNER JOIN film f ON i.film_id = f.film_id\nGROUP BY c.customer_id\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q16",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "rental ↔ inventory NL(staff_id 无索引时)",
+      "sql": "FROM rental r\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.staff_id = 1\nLIMIT 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q17",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "强制 NL 提示(测试 NL 触发)",
+      "sql": "FROM rental r\nINNER JOIN payment p ON r.rental_id = p.rental_id\nWHERE r.customer_id BETWEEN 1 AND 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q18",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "film→film_actor→actor 三表链",
+      "sql": "FROM film f\nINNER JOIN film_actor fa ON f.film_id = fa.film_id\nINNER JOIN actor a ON fa.actor_id = a.actor_id\nWHERE f.rating = 'PG-13'\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q19",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "大表 customer→address NL(address_id 无高效索引时)",
+      "sql": "FROM customer c\nINNER JOIN address a ON c.address_id = a.address_id\nWHERE c.active = 1\nLIMIT 50;\n\n-- =============================================================================\n-- [JOIN-002] Hash spill to disk — 4 queries (SET work_mem 低)\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q20",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "大表 Hash Join + 低 work_mem 触发 spill",
+      "sql": "SELECT r.rental_id, c.first_name, c.last_name\nFROM rental r\nINNER JOIN customer c ON r.customer_id = c.customer_id\nWHERE r.rental_date >= '2022-06-01';\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q21",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "三表 Hash Join 链 + 低内存",
+      "sql": "SELECT p.payment_id, c.first_name, f.title\nFROM payment p\nINNER JOIN customer c ON p.customer_id = c.customer_id\nINNER JOIN rental r ON p.rental_id = r.rental_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id\nINNER JOIN film f ON i.film_id = f.film_id\nWHERE p.amount > 5.00;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q22",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "4 表 Hash Join",
+      "sql": "SELECT COUNT(*)\nFROM rental r\nJOIN payment p ON r.rental_id = p.rental_id\nJOIN customer c ON r.customer_id = c.customer_id\nJOIN staff s ON r.staff_id = s.staff_id;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q23",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "自连接 rental 触发大 Hash",
+      "sql": "SELECT r1.rental_id, r2.rental_id\nFROM rental r1\nINNER JOIN rental r2 ON r1.customer_id = r2.customer_id\nWHERE r1.rental_date < r2.rental_date;\nRESET work_mem;\n\n-- =============================================================================\n-- [MEM-001] Sort spilled to disk — 4 queries\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q24",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "大表 ORDER BY 无索引支撑 + 低内存",
+      "sql": "SELECT * FROM rental ORDER BY rental_date LIMIT 100;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q25",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "大表 ORDER BY amount",
+      "sql": "SELECT * FROM payment ORDER BY amount DESC LIMIT 50;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q26",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "GROUP BY + ORDER BY 组合排序",
+      "sql": "SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total\nFROM payment\nGROUP BY customer_id\nORDER BY total DESC\nLIMIT 20;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q27",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "多列 ORDER BY 触发 external sort",
+      "sql": "SELECT rental_date, customer_id, inventory_id\nFROM rental\nORDER BY rental_date, customer_id\nLIMIT 200;\nRESET work_mem;\n\n-- =============================================================================\n-- [MEM-004] High peak memory — 3 queries\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q28",
+      "target_rule": "MEM",
+      "severity": "info",
+      "scenario": "大表 Hash Join 峰值内存高",
+      "sql": "FROM rental r\nINNER JOIN payment p ON r.customer_id = p.customer_id\nINNER JOIN inventory i ON r.inventory_id = i.inventory_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q29",
+      "target_rule": "MEM",
+      "severity": "info",
+      "scenario": "全表 HashAggregate 内存峰值",
+      "sql": "FROM payment\nGROUP BY customer_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q30",
+      "target_rule": "MEM",
+      "severity": "info",
+      "scenario": "多表大 Hash Join",
+      "sql": "FROM film f\nJOIN inventory i ON f.film_id = i.film_id\nJOIN rental r ON i.inventory_id = r.inventory_id\nJOIN payment p ON r.rental_id = p.rental_id\nGROUP BY f.title\nLIMIT 30;\n\n-- =============================================================================\n-- [SORT-003] Duplicate sort — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q31",
+      "target_rule": "SORT",
+      "severity": "warning",
+      "scenario": "嵌套 ORDER BY(外层 + 内层各排一次)",
+      "sql": "SELECT * FROM rental ORDER BY rental_date LIMIT 100\n) t\nORDER BY customer_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q32",
+      "target_rule": "SORT",
+      "severity": "warning",
+      "scenario": "UNION + ORDER BY 触发两层 sort",
+      "sql": "UNION ALL\nSELECT rental_id, customer_id FROM rental WHERE staff_id = 2\nORDER BY 1, 2",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q33",
+      "target_rule": "SORT",
+      "severity": "warning",
+      "scenario": "DISTINCT + ORDER BY 不同字段",
+      "sql": "-- =============================================================================\n-- [NET-001] Broadcast large table — 3 queries\n-- 注: 单节点不直接触发,但 explain 中的 Stream 节点会暴露\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q34",
+      "target_rule": "NET",
+      "severity": "warning",
+      "scenario": "强制 Hash Join 大表驱动,explain 应包含 Broadcast/Redistribute",
+      "sql": "FROM rental r, customer c\nWHERE r.customer_id = c.customer_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q35",
+      "target_rule": "NET",
+      "severity": "warning",
+      "scenario": "payment 与 customer 联接",
+      "sql": "FROM payment p, customer c\nWHERE p.customer_id = c.customer_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q36",
+      "target_rule": "NET",
+      "severity": "warning",
+      "scenario": "嵌套子查询触发多次 broadcast",
+      "sql": "(SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS cnt\nFROM customer c\nWHERE c.active = 1\nLIMIT 20;\n\n-- =============================================================================\n-- [EST-001] Severe row underestimation — 4 queries (需 stale stats)\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q37",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后严重低估 payment 行数",
+      "sql": "-- 在 run_explain.py 里会先执行 SET 准备\nDELETE STATISTICS payment;\nSELECT COUNT(*) FROM payment WHERE amount > 5.00",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q38",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后 rental 估算偏差",
+      "sql": "SELECT COUNT(*) FROM rental WHERE return_date IS NULL",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q39",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后 customer 估算偏差",
+      "sql": "SELECT COUNT(*) FROM customer WHERE active = 1",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q40",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后 inventory 估算偏差",
+      "sql": "SELECT COUNT(*) FROM inventory WHERE store_id = 1;\n\n-- =============================================================================\n-- [EST-004] Nested Loop from underestimation — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q41",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后误选 NL(应该选 Hash)",
+      "sql": "SELECT /*+ nestloop(p c) */ COUNT(*)\nFROM payment p, customer c\nWHERE p.customer_id = c.customer_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q42",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后 rental-inventory 选 NL",
+      "sql": "SELECT r.rental_id, i.store_id\nFROM rental r, inventory i\nWHERE r.inventory_id = i.inventory_id",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q43",
+      "target_rule": "EST",
+      "severity": "warning",
+      "scenario": "删 stats 后 film_actor 误选 NL",
+      "sql": "SELECT f.title, a.last_name\nFROM film f, film_actor fa, actor a\nWHERE f.film_id = fa.film_id AND fa.actor_id = a.actor_id\nLIMIT 50;\n\n-- =============================================================================\n-- [TYPE-001] Implicit type coercion — 4 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q44",
+      "target_rule": "TYPE",
+      "severity": "critical",
+      "scenario": "customer_id integer 字段用字符串比较",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q45",
+      "target_rule": "TYPE",
+      "severity": "critical",
+      "scenario": "staff_id 与 '1' 字符串比较",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q46",
+      "target_rule": "TYPE",
+      "severity": "critical",
+      "scenario": "address_id 整数与字符串",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q47",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "film_id 数字字符串混合比较",
+      "sql": "-- =============================================================================\n-- [TYPE-004] LIKE leading wildcard — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q48",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "film.title 前导通配符 LIKE",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q49",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "actor.last_name 前导通配符",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q50",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "customer.email 前导通配符",
+      "sql": "-- =============================================================================\n-- [PUSH-001] Query not pushed down — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q51",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "复杂表达式阻止谓词下推",
+      "sql": "WHERE EXTRACT(YEAR FROM rental_date) = 2022\nLIMIT 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q52",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "函数包裹索引列,阻止下推",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q53",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "算术运算阻止下推",
+      "sql": "-- =============================================================================\n-- [PUSH-002] Multi-layer streaming — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q54",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "复杂查询产生多层 Streaming 节点",
+      "sql": "FROM film f\nJOIN inventory i ON f.film_id = i.film_id\nJOIN rental r ON i.inventory_id = r.inventory_id\nJOIN payment p ON r.rental_id = p.rental_id\nWHERE f.rating = 'PG'\nGROUP BY f.title\nORDER BY cnt DESC\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q55",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "多层联接 + 子查询",
+      "sql": "(SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,\n       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid\nFROM customer c\nWHERE c.active = 1\nLIMIT 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q56",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "CTE + 多层联接",
+      "sql": "SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total\n  FROM payment\n  GROUP BY customer_id\n)\nSELECT c.first_name, c.last_name, cs.cnt, cs.total\nFROM customer c\nJOIN cust_stats cs ON c.customer_id = cs.customer_id\nWHERE cs.total > 30\nLIMIT 20;\n\n-- =============================================================================\n-- [PART-001] Partition pruning failure — 4 queries\n-- payment 表按月分 7 区(2022-01 到 2022-07)\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q57",
+      "target_rule": "PART",
+      "severity": "warning",
+      "scenario": "payment_date 用函数包装,无法分区裁剪",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q58",
+      "target_rule": "PART",
+      "severity": "warning",
+      "scenario": "payment_date IS NULL 不会裁剪",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q59",
+      "target_rule": "PART",
+      "severity": "warning",
+      "scenario": "payment_date 用 OR 拆分,部分无法裁剪",
+      "sql": "WHERE payment_date >= '2022-03-01' OR customer_id = 100",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q60",
+      "target_rule": "PART",
+      "severity": "info",
+      "scenario": "payment_date 跨全部分区,正确裁剪为全部",
+      "sql": "-- =============================================================================\n-- [SUBQ-001] Correlated subquery not lifted — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q61",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "customer 主查询 + 相关 rental 子查询",
+      "sql": "(SELECT MAX(rental_date) FROM rental r WHERE r.customer_id = c.customer_id) AS last_rental\nFROM customer c\nWHERE c.active = 1\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q62",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "film 主查询 + 相关 film_actor 子查询",
+      "sql": "(SELECT COUNT(*) FROM film_actor fa WHERE fa.film_id = f.film_id) AS actor_cnt\nFROM film f\nWHERE f.rating = 'PG'\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q63",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "payment 主查询 + 相关子查询(嵌套两层)",
+      "sql": "(SELECT SUM(amount) FROM payment p2 WHERE p2.customer_id = p.customer_id AND p2.payment_date <= p.payment_date) AS running_total\nFROM payment p\nWHERE p.amount > 5.00\nLIMIT 10;\n\n-- =============================================================================\n-- [SUBQ-006] Correlated subquery self-update — 2 queries\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q64",
+      "target_rule": "SUBQ",
+      "severity": "critical",
+      "scenario": "rental.return_date 通过相关子查询自更新",
+      "sql": "SET return_date = (\n  SELECT MAX(payment_date)\n  FROM payment p\n  WHERE p.rental_id = r.rental_id\n)\nWHERE r.return_date IS NULL",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q65",
+      "target_rule": "SUBQ",
+      "severity": "critical",
+      "scenario": "customer.active 通过 rental 计数自更新",
+      "sql": "SET active = (\n  SELECT COUNT(*) > 0\n  FROM rental r\n  WHERE r.customer_id = c.customer_id\n);\n\n-- =============================================================================\n-- [REW-001] Large IN list not rewritten — 2 queries\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q66",
+      "target_rule": "REW",
+      "severity": "warning",
+      "scenario": "film_id IN (...) 1000 个值",
+      "sql": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,\n  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,\n  41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60\n)",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q67",
+      "target_rule": "REW",
+      "severity": "warning",
+      "scenario": "customer_id IN 大列表",
+      "sql": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,\n  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40\n);\n\n-- =============================================================================\n-- [VEC-001] Mixed vectorization/row engines — 3 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q68",
+      "target_rule": "VEC",
+      "severity": "info",
+      "scenario": "普通 SELECT 触发 Row Adapter / Vector Adapter 切换",
+      "sql": "FROM customer c\nJOIN rental r ON c.customer_id = r.customer_id\nJOIN inventory i ON r.inventory_id = i.inventory_id\nJOIN film f ON i.film_id = f.film_id\nWHERE c.active = 1\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q69",
+      "target_rule": "VEC",
+      "severity": "info",
+      "scenario": "聚合查询触发 Row Adapter",
+      "sql": "FROM customer c\nJOIN payment p ON c.customer_id = p.customer_id\nGROUP BY c.customer_id\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q70",
+      "target_rule": "VEC",
+      "severity": "info",
+      "scenario": "多表连接混合引擎",
+      "sql": "FROM film f, film_actor fa, actor a, inventory i, rental r, customer c\nWHERE f.film_id = fa.film_id\n  AND fa.actor_id = a.actor_id\n  AND f.film_id = i.film_id\n  AND i.inventory_id = r.inventory_id\n  AND r.customer_id = c.customer_id\nLIMIT 10;\n\n-- =============================================================================\n-- [AGG-001] Wrong aggregate strategy — 2 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q71",
+      "target_rule": "AGG",
+      "severity": "warning",
+      "scenario": "大数据量 GROUP BY 走 GroupAggregate 而非 HashAggregate",
+      "sql": "SELECT customer_id, COUNT(*) FROM rental GROUP BY customer_id LIMIT 20;\nRESET enable_sort",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q72",
+      "target_rule": "AGG",
+      "severity": "warning",
+      "scenario": "payment GROUP BY 排序聚合",
+      "sql": "SELECT staff_id, COUNT(*) FROM payment GROUP BY staff_id LIMIT 10;\nRESET enable_hashagg;\n\n-- =============================================================================\n-- [AGG-002] HashAggregate spill — 2 queries\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q73",
+      "target_rule": "AGG",
+      "severity": "warning",
+      "scenario": "大 GROUP BY + 低 work_mem",
+      "sql": "SELECT customer_id, COUNT(*), SUM(amount), AVG(amount), MAX(amount), MIN(amount)\nFROM payment\nGROUP BY customer_id;\nRESET work_mem",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q74",
+      "target_rule": "AGG",
+      "severity": "warning",
+      "scenario": "多列 GROUP BY",
+      "sql": "SELECT customer_id, staff_id, COUNT(*), SUM(amount)\nFROM payment\nGROUP BY customer_id, staff_id;\nRESET work_mem;\n\n-- =============================================================================\n-- [DIST-001] Poor distribution column — 2 queries\n-- 注: 单节点下主要观察 explain 节点,真实分布键问题需多节点\n-- =============================================================================",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q75",
+      "target_rule": "DIST",
+      "severity": "info",
+      "scenario": "payment 无分布键提示,触发重分布",
+      "sql": "FROM payment p\nJOIN customer c ON p.customer_id = c.customer_id\nLIMIT 20",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q76",
+      "target_rule": "DIST",
+      "severity": "info",
+      "scenario": "rental 无分布键提示",
+      "sql": "FROM rental r\nJOIN inventory i ON r.inventory_id = i.inventory_id\nWHERE r.rental_date >= '2022-06-01'\nLIMIT 20;\n\n-- =============================================================================\n-- [SKEW-001] Data skew — 2 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q77",
+      "target_rule": "SKEW",
+      "severity": "warning",
+      "scenario": "按 customer_id 聚合,数据分布不均(部分客户消费多)",
+      "sql": "FROM payment\nGROUP BY customer_id\nHAVING SUM(amount) > 30\nLIMIT 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q78",
+      "target_rule": "SKEW",
+      "severity": "warning",
+      "scenario": "rental 按 staff_id 聚合(staff 数量少,数据偏斜)",
+      "sql": "FROM rental\nGROUP BY staff_id;\n\n-- =============================================================================\n-- [STATS-001] Statistics not collected — 2 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q79",
+      "target_rule": "STATS",
+      "severity": "warning",
+      "scenario": "删 stats 后统计列数为 0",
+      "sql": "SELECT COUNT(*) FROM payment WHERE amount > 5.00",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q80",
+      "target_rule": "STATS",
+      "severity": "warning",
+      "scenario": "删 stats 后 rental 估算异常",
+      "sql": "SELECT COUNT(*) FROM rental WHERE return_date IS NULL;\n\n-- =============================================================================\n-- [GEN-001] Plan depth too deep — 2 queries\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q81",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "7 层以上嵌套查询",
+      "sql": "FROM film f\nWHERE f.film_id IN (\n  SELECT film_id FROM inventory WHERE inventory_id IN (\n    SELECT inventory_id FROM rental WHERE customer_id IN (\n      SELECT customer_id FROM customer WHERE store_id IN (\n        SELECT store_id FROM store WHERE manager_staff_id IN (\n          SELECT staff_id FROM staff WHERE active = true\n        )\n      )\n    )\n  )\n)\nLIMIT 10",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q82",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "多层 CTE 嵌套",
+      "sql": "t2 AS (SELECT t1.customer_id, COUNT(*) AS cnt FROM t1 JOIN rental r ON t1.customer_id = r.customer_id GROUP BY t1.customer_id),\n     t3 AS (SELECT t2.customer_id, t2.cnt, COALESCE(p.total, 0) AS total FROM t2 LEFT JOIN (SELECT customer_id, SUM(amount) AS total FROM payment GROUP BY customer_id) p ON t2.customer_id = p.customer_id)\nSELECT * FROM t3 WHERE total > 20 LIMIT 10;\n\n-- =============================================================================\n-- [HEALTHY] Healthy cases — 15 queries(不应触发任何规则,用于测误报率)\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q83",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "小表 Seq Scan 是合理的(actor 200 行)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q84",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "category 表全表(16 行,绝对合理)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q85",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "country 表(109 行,全表 OK)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q86",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "language 表(6 行)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q87",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "film 主键点查",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q88",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "customer 主键点查",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q89",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "actor 主键点查",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q90",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "payment 主键点查(分区裁剪生效)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q91",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "经典 Sakila 已优化查询:逾期未还",
+      "sql": "CONCAT(customer.last_name, ', ', customer.first_name) AS customer,\n    address.phone,\n    film.title\nFROM rental\n    INNER JOIN customer ON rental.customer_id = customer.customer_id\n    INNER JOIN address ON customer.address_id = address.address_id\n    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id\n    INNER JOIN film ON inventory.film_id = film.film_id\nWHERE rental.return_date IS NULL\n    AND rental_date < CURRENT_DATE\nORDER BY title\nLIMIT 5",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q92",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "payment 按月分区裁剪正确",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q93",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "全文检索使用 GIN 索引",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q94",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "film 索引列范围查(rating)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q95",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "film 索引列范围查(language_id)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q96",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "payment 索引列范围查(customer_id)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q97",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "rental 索引列精确查(inventory_id)",
+      "sql": "-- =============================================================================\n-- 结束 - 共 97 条 query\n-- =============================================================================",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q98",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "客户消费 ROW_NUMBER 排行,触发 window operator + Sort",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q99",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "LAG 窗口函数,需 Sort + Window",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q100",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "累计 SUM OVER,触发 WindowAgg 节点",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q101",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "RANK vs DENSE_RANK,排序 + 窗口",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q102",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "NTILE 分四分位",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q103",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "FIRST_VALUE + LAST_VALUE 带 frame",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q104",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "7 天移动平均,ROWS BETWEEN 6 PRECEDING AND CURRENT ROW",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q105",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "同一查询多个 window partition",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q106",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "单 CTE + JOIN,大表 CTE 全扫",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q107",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "多 CTE 链,每步都可能 SCAN-004",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q108",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "CTE 引用多次,触发 Materialize",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q109",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "递归 CTE,生成 1-10 序列",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q110",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "递归 CTE + 时间序列展开",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q111",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "CTE 嵌套 IN + EXISTS,相关子查询",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q112",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "嵌套 CTE",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q113",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "CTE 链 + 多种聚合 + LEFT JOIN",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q114",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "LATERAL Top-N per group",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q115",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "LATERAL 子查询聚合",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q116",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "LATERAL 取前 N 个 actor",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q117",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "UNION 合并 customer 和 staff",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q118",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "INTERSECT 找消费高的活跃客户",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q119",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "EXCEPT 找从未大额消费的活跃客户",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q120",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "混合 UNION + EXCEPT",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q121",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "标量子查询 in SELECT(N+1 反面教材)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q122",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "相关子查询 in WHERE (EXISTS)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q123",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "NOT EXISTS 找从未租过碟的客户",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q124",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "子查询 in HAVING",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q125",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "派生表 in FROM",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q126",
+      "target_rule": "SUBQ",
+      "severity": "info",
+      "scenario": "相关子查询 in SELECT + WHERE",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q127",
+      "target_rule": "AGG",
+      "severity": "info",
+      "scenario": "GROUPING SETS 多维度汇总",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q128",
+      "target_rule": "AGG",
+      "severity": "info",
+      "scenario": "CUBE 二维全组合",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q129",
+      "target_rule": "AGG",
+      "severity": "info",
+      "scenario": "ROLLUP 层级汇总",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q130",
+      "target_rule": "AGG",
+      "severity": "info",
+      "scenario": "FILTER 子句条件聚合",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q131",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "PERCENTILE 排序聚合(需 work_mem)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q132",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "隐式 cast: payment_date 与 string 比较",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q133",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "JOIN 条件中双侧 cast(强制 Seq Scan)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q134",
+      "target_rule": "TYPE",
+      "severity": "info",
+      "scenario": "text 字段与 integer 隐式比较",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q135",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "健康 - 空结果集",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q136",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "健康 - 单行 PK 查询",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q137",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "DISTINCT ON 找每个客户最早一笔消费",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q138",
+      "target_rule": "JOIN",
+      "severity": "warning",
+      "scenario": "自连接 - 同地址客户配对(NL)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q139",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "大 OFFSET 分页",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q140",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "NULL 处理",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q141",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "N+1 反面教材 - 客户信息 + 多次子查询",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q142",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "时间序列日营收 dashboard",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q143",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "Top-3 per group(window)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q144",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "漏斗分析:浏览 → 租碟 → 付费",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q145",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "队列分析:按首次付费月份分组",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q146",
+      "target_rule": "TYPE",
+      "severity": "warning",
+      "scenario": "全字段模糊搜索(无索引)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q147",
+      "target_rule": "GEN",
+      "severity": "warning",
+      "scenario": "笛卡尔积 + 后期过滤(效率极低)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q148",
+      "target_rule": "MEM",
+      "severity": "warning",
+      "scenario": "大 Hash 表 + 多表 JOIN(降低 work_mem)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q149",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "谓词包装在函数里,阻止索引下推",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q150",
+      "target_rule": "SORT",
+      "severity": "warning",
+      "scenario": "重复排序(子查询 ORDER BY 后再 ORDER BY)",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q151",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "跨列相关子查询,无法提升",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q152",
+      "target_rule": "VEC",
+      "severity": "warning",
+      "scenario": "强制使用行存引擎",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q153",
+      "target_rule": "SKEW",
+      "severity": "warning",
+      "scenario": "payment 表 customer_id 倾斜",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q154",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "类型转换阻止下推",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q155",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "多表 JOIN 无合适分布键",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q156",
+      "target_rule": "GEN",
+      "severity": "warning",
+      "scenario": "三表 LEFT JOIN + 多聚合",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": false
+    },
+    {
+      "id": "Q157",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "健康 - 简单聚合 + 索引列",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q158",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "健康 - 索引等值连接",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q159",
+      "target_rule": "NONE",
+      "severity": "info",
+      "scenario": "健康 - 简单 TOP-N 用索引",
+      "sql": "",
+      "has_side_effect": false,
+      "is_healthy": true
+    },
+    {
+      "id": "Q160",
+      "target_rule": "PART",
+      "severity": "info",
+      "scenario": "局部分区索引 seek(单分区),payment_date 单分区查询",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q161",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "跨分区查询,customer_id 无全局索引",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q162",
+      "target_rule": "SCAN",
+      "severity": "info",
+      "scenario": "Index-only scan(covering index)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q163",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "Bitmap OR scan(多条件 OR)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q164",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "表达式索引 LOWER(email) 包装,无索引会全表扫",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q165",
+      "target_rule": "PART",
+      "severity": "info",
+      "scenario": "复合索引 leading column 命中(customer_id, payment_date)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q166",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "复合索引非 leading column(只查 payment_date,无法用复合索引)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q167",
+      "target_rule": "SCAN",
+      "severity": "info",
+      "scenario": "部分索引(带 WHERE 谓词 amount > 5)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q168",
+      "target_rule": "SCAN",
+      "severity": "warning",
+      "scenario": "HASH 函数索引(无索引,全表扫)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q169",
+      "target_rule": "SCAN",
+      "severity": "info",
+      "scenario": "复合索引 (title, year, rate) 仅用 rate(无 leading)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q170",
+      "target_rule": "PART",
+      "severity": "info",
+      "scenario": "全局索引 + 分区剪枝(组合)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q171",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "Index scan + heap fetch(非 index-only)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q172",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE SET col = 标量子查询(单行)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q173",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE SET 多字段 + 多个子查询",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q174",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE 嵌套相关子查询(多层)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q175",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE FROM + 聚合子查询",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q176",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE WHERE NOT IN 子查询",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q177",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE WHERE EXISTS 相关子查询",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q178",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE WITH CTE",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q179",
+      "target_rule": "PART",
+      "severity": "warning",
+      "scenario": "UPDATE 分区表(单分区操作)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q180",
+      "target_rule": "GEN",
+      "severity": "warning",
+      "scenario": "UPDATE 多字段 FROM JOIN",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q181",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "UPDATE ... RETURNING(返回修改行)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q182",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "UPDATE SET with CASE WHEN",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q183",
+      "target_rule": "SUBQ",
+      "severity": "warning",
+      "scenario": "UPDATE WITH RECURSIVE CTE",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q184",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "1 层视图 + WHERE 谓词(正例: 谓词可下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q185",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "2 层嵌套视图 + WHERE(测试下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q186",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "3 层嵌套视图(深度测试)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q187",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图内层有 GROUP BY(反例: 谓词无法下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q188",
+      "target_rule": "GEN",
+      "severity": "info",
+      "scenario": "视图内 UNION(正例: 谓词下推到每个分支)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q189",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图内含标量子查询(反例: 外层谓词无法下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q190",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图套分区表 + 谓词(反例: 全分区扫)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q191",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图内 DISTINCT(反例: 谓词不下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q192",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图内 LIMIT(反例: LIMIT 阻止谓词下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    },
+    {
+      "id": "Q193",
+      "target_rule": "PUSH",
+      "severity": "warning",
+      "scenario": "视图内 HAVING(反例: HAVING 阻止外层谓词下推)",
+      "sql": "",
+      "has_side_effect": true,
+      "is_healthy": false
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q114",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "LATERAL Top-N per group",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.059,
+  "explain_file": "Q114.explain"
+}

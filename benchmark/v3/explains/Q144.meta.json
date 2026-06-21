@@ -1,0 +1,12 @@
+{
+  "id": "Q144",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "漏斗分析:浏览 → 租碟 → 付费",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.155,
+  "explain_file": "Q144.explain"
+}

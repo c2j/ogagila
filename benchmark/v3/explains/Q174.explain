@@ -1,0 +1,30 @@
+-- @id: Q174
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE 嵌套相关子查询(多层)
+UPDATE customer c
+SET address_id = (
+    SELECT address_id FROM address a
+    WHERE a.city_id = (
+        SELECT city_id FROM city WHERE city = 'London' LIMIT 1
+    )
+    LIMIT 1
+)
+WHERE c.active = 1;
+
+Update on customer c  (cost=14.52..47.49 rows=1168 width=80) (actual time=0.480..41.538 rows=584 loops=1)
+  InitPlan 2 (returns $1)
+    ->  Limit  (cost=6.25..14.52 rows=1 width=4) (actual time=0.119..0.119 rows=1 loops=1)
+          InitPlan 1 (returns $0)
+            ->  Limit  (cost=0.00..6.25 rows=1 width=4) (actual time=0.056..0.057 rows=1 loops=1)
+                  ->  Seq Scan on city  (cost=0.00..12.50 rows=2 width=4) (actual time=0.054..0.054 rows=1 loops=1)
+                        Filter: (city = 'London'::text)
+                        Rows Removed by Filter: 311
+          ->  Index Scan using idx_fk_city_id on address a  (cost=0.00..8.27 rows=1 width=4) (actual time=0.117..0.117 rows=1 loops=1)
+                Index Cond: (city_id = $0)
+  ->  Seq Scan on customer c  (cost=0.00..32.98 rows=1168 width=80) (actual time=0.148..1.062 rows=584 loops=1)
+        Filter: (active = 1)
+        Rows Removed by Filter: 15
+Trigger for constraint customer_address_id_fkey: time=42.198 calls=583
+Trigger last_updated: time=6.259 calls=584
+Total runtime: 84.781 ms

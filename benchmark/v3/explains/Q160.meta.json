@@ -1,0 +1,12 @@
+{
+  "id": "Q160",
+  "target_rule": "PART-001",
+  "severity": "info",
+  "scenario": "局部分区索引 seek(单分区),payment_date 单分区查询",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.139,
+  "explain_file": "Q160.explain"
+}

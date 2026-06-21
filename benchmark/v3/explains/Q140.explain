@@ -1,0 +1,15 @@
+-- @id: Q140
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: NULL 处理
+SELECT COUNT(*) AS null_count
+FROM customer
+WHERE address_id IS NULL;
+
+Aggregate  (cost=4.27..4.28 rows=1 width=8) (actual time=0.005..0.005 rows=1 loops=1)
+  ->  Result  (cost=0.00..4.27 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=1)
+        One-Time Filter: false
+        ->  Index Only Scan using idx_fk_address_id on customer  (cost=0.00..4.27 rows=1 width=0) (Actual time: never executed)
+              Index Cond: (address_id IS NULL)
+              Heap Fetches: 0
+Total runtime: 0.067 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q185",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "2 层嵌套视图 + WHERE(测试下推)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.077,
+  "explain_file": "Q185.explain"
+}

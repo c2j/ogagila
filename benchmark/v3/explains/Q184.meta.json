@@ -1,0 +1,12 @@
+{
+  "id": "Q184",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "1 层视图 + WHERE 谓词(正例: 谓词可下推)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.115,
+  "explain_file": "Q184.explain"
+}

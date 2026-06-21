@@ -1,0 +1,30 @@
+-- @id: Q176
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE WHERE NOT IN 子查询
+UPDATE film
+SET rental_rate = rental_rate * 0.9
+WHERE film_id NOT IN (
+    SELECT i.film_id FROM inventory i
+    JOIN rental r ON i.inventory_id = r.inventory_id
+    WHERE r.rental_date >= '2022-06-01'
+);
+
+Update on film  (cost=210.57..839.93 rows=51 width=408) (actual time=30.439..36.146 rows=42 loops=1)
+  ->  Hash Right Anti Join  (cost=210.57..839.93 rows=51 width=408) (actual time=29.352..29.569 rows=42 loops=1)
+        Hash Cond: (i.film_id = film.film_id)
+        ->  Hash Join  (cost=133.07..701.22 rows=15145 width=16) (actual time=2.673..24.448 rows=14706 loops=1)
+              Hash Cond: (r.inventory_id = i.inventory_id)
+              ->  Seq Scan on rental r  (cost=0.00..359.90 rows=15145 width=10) (actual time=0.203..12.848 rows=14706 loops=1)
+                    Filter: (rental_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)
+                    Rows Removed by Filter: 1338
+              ->  Hash  (cost=75.81..75.81 rows=4581 width=14) (actual time=2.213..2.213 rows=4581 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 471kB
+                    ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=14) (actual time=0.009..0.740 rows=4581 loops=1)
+        ->  Hash  (cost=65.00..65.00 rows=1000 width=396) (actual time=1.474..1.474 rows=1000 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 689kB
+              ->  Seq Scan on film  (cost=0.00..65.00 rows=1000 width=396) (actual time=0.007..0.555 rows=1000 loops=1)
+Trigger for constraint film_original_language_id_fkey: time=0.149 calls=42
+Trigger film_fulltext_trigger: time=1.390 calls=42
+Trigger last_updated: time=0.765 calls=42
+Total runtime: 36.684 ms

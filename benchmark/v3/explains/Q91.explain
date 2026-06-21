@@ -1,0 +1,38 @@
+-- @id: Q91
+-- @target: NONE
+-- @severity: info
+-- @scenario: 经典 Sakila 已优化查询:逾期未还
+SELECT
+    CONCAT(customer.last_name, ', ', customer.first_name) AS customer,
+    address.phone,
+    film.title
+FROM rental
+    INNER JOIN customer ON rental.customer_id = customer.customer_id
+    INNER JOIN address ON customer.address_id = address.address_id
+    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
+    INNER JOIN film ON inventory.film_id = film.film_id
+WHERE rental.return_date IS NULL
+    AND rental_date < CURRENT_DATE
+ORDER BY title
+LIMIT 5;
+
+Limit  (cost=362.25..448.53 rows=5 width=40) (actual time=2.647..2.647 rows=0 loops=1)
+  ->  Nested Loop  (cost=362.25..3606.42 rows=188 width=40) (actual time=2.645..2.645 rows=0 loops=1)
+        ->  Nested Loop  (cost=362.25..3545.78 rows=188 width=32) (actual time=2.642..2.642 rows=0 loops=1)
+              ->  Nested Loop  (cost=362.25..3393.14 rows=188 width=19) (actual time=2.640..2.640 rows=0 loops=1)
+                    Join Filter: (inventory.film_id = film.film_id)
+                    ->  Index Scan using idx_title on film  (cost=0.00..113.59 rows=1000 width=19) (actual time=0.039..0.684 rows=1000 loops=1)
+                    ->  Materialize  (cost=362.25..460.01 rows=188 width=8) (actual time=1.746..1.746 rows=0 loops=1000)
+                          ->  Hash Join  (cost=362.25..459.07 rows=188 width=8) (actual time=1.605..1.605 rows=0 loops=1)
+                                Hash Cond: (inventory.inventory_id = rental.inventory_id)
+                                ->  Seq Scan on inventory  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.004..0.004 rows=1 loops=1)
+                                ->  Hash  (cost=359.90..359.90 rows=188 width=8) (actual time=1.473..1.473 rows=0 loops=1)
+                                       Buckets: 32768  Batches: 1  Memory Usage: 256kB
+                                      ->  Seq Scan on rental  (cost=0.00..359.90 rows=188 width=8) (actual time=1.469..1.469 rows=0 loops=1)
+                                            Filter: ((return_date IS NULL) AND (rental_date < '2026-06-21'::date))
+                                            Rows Removed by Filter: 16044
+              ->  Index Scan using customer_pkey on customer  (cost=0.00..0.80 rows=1 width=21) (Actual time: never executed)
+                    Index Cond: (customer_id = rental.customer_id)
+        ->  Index Scan using address_pkey on address  (cost=0.00..0.31 rows=1 width=16) (Actual time: never executed)
+              Index Cond: (address_id = customer.address_id)
+Total runtime: 3.103 ms

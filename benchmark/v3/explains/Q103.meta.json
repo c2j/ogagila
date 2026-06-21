@@ -1,0 +1,12 @@
+{
+  "id": "Q103",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "FIRST_VALUE + LAST_VALUE 带 frame",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.006,
+  "explain_file": "Q103.explain"
+}

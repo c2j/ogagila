@@ -1,0 +1,28 @@
+-- @id: Q119
+-- @target: SUBQ-001
+-- @severity: info
+-- @scenario: EXCEPT 找从未大额消费的活跃客户
+SELECT customer_id FROM customer WHERE active = 1
+EXCEPT
+SELECT customer_id FROM payment WHERE amount > 5
+ORDER BY customer_id
+LIMIT 20;
+
+Limit  (cost=450.73..450.78 rows=20 width=4) (actual time=6.787..6.787 rows=0 loops=1)
+  ->  Sort  (cost=450.73..453.65 rows=1168 width=4) (actual time=6.785..6.785 rows=0 loops=1)
+        Sort Key: "*SELECT* 1".customer_id
+        Sort Method: quicksort  Memory: 25kB
+        ->  HashSetOp Except  (cost=0.00..419.65 rows=1168 width=4) (actual time=6.769..6.769 rows=0 loops=1)
+              ->  Append  (cost=0.00..406.84 rows=5125 width=4) (actual time=0.021..5.616 rows=4541 loops=1)
+                    ->  Subquery Scan on "*SELECT* 1"  (cost=0.00..44.66 rows=1168 width=4) (actual time=0.020..0.315 rows=584 loops=1)
+                          ->  Seq Scan on customer  (cost=0.00..32.98 rows=1168 width=4) (actual time=0.018..0.230 rows=584 loops=1)
+                                Filter: (active = 1)
+                                Rows Removed by Filter: 15
+                    ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..362.18 rows=3957 width=4) (actual time=0.047..4.739 rows=3957 loops=1)
+                          ->  Partition Iterator  (cost=0.00..322.61 rows=3957 width=4) (actual time=0.046..4.069 rows=3957 loops=1)
+                                Iterations: 7
+                                ->  Partitioned Seq Scan on payment  (cost=0.00..322.61 rows=3957 width=4) (actual time=0.065..3.481 rows=3957 loops=7)
+                                      Filter: (amount > 5::numeric)
+                                      Rows Removed by Filter: 12092
+                                      Selected Partitions:  1..7
+Total runtime: 6.979 ms

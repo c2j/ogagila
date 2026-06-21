@@ -1,0 +1,27 @@
+-- @id: Q177
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE WHERE EXISTS 相关子查询
+UPDATE film f
+SET rental_rate = rental_rate * 1.1
+WHERE EXISTS (
+    SELECT 1 FROM film_actor fa
+    WHERE fa.film_id = f.film_id
+      AND fa.actor_id < 5
+);
+
+Update on film f  (cost=36.52..88.87 rows=95 width=402) (actual time=0.338..9.445 rows=83 loops=1)
+  ->  Nested Loop  (cost=36.52..88.87 rows=95 width=402) (actual time=0.094..0.997 rows=83 loops=1)
+        ->  HashAggregate  (cost=36.52..36.71 rows=19 width=10) (actual time=0.079..0.131 rows=83 loops=1)
+              Group By Key: fa.film_id
+              ->  Bitmap Heap Scan on film_actor fa  (cost=5.03..36.27 rows=100 width=10) (actual time=0.049..0.056 rows=88 loops=1)
+                    Recheck Cond: (actor_id < 5)
+                    Heap Blocks: exact=1
+                    ->  Bitmap Index Scan on film_actor_pkey  (cost=0.00..5.00 rows=100 width=0) (actual time=0.037..0.037 rows=88 loops=1)
+                          Index Cond: (actor_id < 5)
+        ->  Index Scan using film_pkey on film f  (cost=0.00..2.71 rows=1 width=396) (actual time=0.423..0.671 rows=83 loops=83)
+              Index Cond: (film_id = fa.film_id)
+Trigger for constraint film_original_language_id_fkey: time=0.189 calls=83
+Trigger film_fulltext_trigger: time=2.620 calls=83
+Trigger last_updated: time=0.998 calls=83
+Total runtime: 9.879 ms

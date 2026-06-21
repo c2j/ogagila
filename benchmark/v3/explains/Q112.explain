@@ -1,0 +1,31 @@
+-- @id: Q112
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 嵌套 CTE
+WITH outer_cte AS (
+    WITH inner_cte AS (
+        SELECT category_id, COUNT(*) AS film_count
+        FROM film_category
+        GROUP BY category_id
+    )
+    SELECT * FROM inner_cte WHERE film_count > 50
+)
+SELECT c.name, o.film_count
+FROM category c
+JOIN outer_cte o ON c.category_id = o.category_id
+ORDER BY o.film_count DESC;
+
+Sort  (cost=79.53..79.57 rows=16 width=40) (actual time=1.146..1.147 rows=16 loops=1)
+  Sort Key: o.film_count DESC
+  Sort Method: quicksort  Memory: 25kB
+  ->  Hash Join  (cost=55.14..79.21 rows=16 width=40) (actual time=1.083..1.091 rows=16 loops=1)
+        Hash Cond: (c.category_id = o.category_id)
+        ->  Seq Scan on category c  (cost=0.00..21.04 rows=1104 width=36) (actual time=0.012..0.015 rows=16 loops=1)
+        ->  Hash  (cost=54.94..54.94 rows=16 width=12) (actual time=0.938..0.938 rows=16 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 257kB
+              ->  Subquery Scan on o  (cost=54.42..54.94 rows=16 width=12) (actual time=0.921..0.925 rows=16 loops=1)
+                    ->  HashAggregate  (cost=54.42..54.62 rows=16 width=20) (actual time=0.918..0.920 rows=16 loops=1)
+                          Group By Key: film_category.category_id
+                          Filter: (count(*) > 50)
+                          ->  Seq Scan on film_category  (cost=0.00..36.67 rows=2367 width=4) (actual time=0.033..0.420 rows=2367 loops=1)
+Total runtime: 1.286 ms

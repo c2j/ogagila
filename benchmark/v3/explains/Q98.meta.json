@@ -1,0 +1,12 @@
+{
+  "id": "Q98",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "客户消费 ROW_NUMBER 排行,触发 window operator + Sort",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.028,
+  "explain_file": "Q98.explain"
+}

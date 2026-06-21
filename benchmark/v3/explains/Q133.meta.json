@@ -1,0 +1,12 @@
+{
+  "id": "Q133",
+  "target_rule": "TYPE-001",
+  "severity": "warning",
+  "scenario": "JOIN 条件中双侧 cast(强制 Seq Scan)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.033,
+  "explain_file": "Q133.explain"
+}

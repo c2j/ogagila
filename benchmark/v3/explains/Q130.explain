@@ -1,0 +1,24 @@
+-- @id: Q130
+-- @target: AGG-001
+-- @severity: info
+-- @scenario: FILTER 子句条件聚合
+SELECT
+    staff_id,
+    COUNT(*) AS total,
+    COUNT(*) FILTER (WHERE amount > 5) AS large_count,
+    SUM(amount) FILTER (WHERE amount > 5) AS large_sum,
+    COUNT(*) FILTER (WHERE amount < 2) AS small_count
+FROM payment
+GROUP BY staff_id
+ORDER BY staff_id;
+
+Sort  (cost=483.13..483.14 rows=2 width=66) (actual time=23.179..23.180 rows=2 loops=1)
+  Sort Key: staff_id
+  Sort Method: quicksort  Memory: 25kB
+  ->  HashAggregate  (cost=483.10..483.12 rows=2 width=66) (actual time=23.149..23.151 rows=2 loops=1)
+        Group By Key: staff_id
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.070..11.546 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.079..4.326 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+Total runtime: 23.487 ms

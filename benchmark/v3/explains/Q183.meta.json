@@ -1,0 +1,12 @@
+{
+  "id": "Q183",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "UPDATE WITH RECURSIVE CTE",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 2.028,
+  "explain_file": "Q183.explain"
+}

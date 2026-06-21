@@ -1,0 +1,12 @@
+{
+  "id": "Q107",
+  "target_rule": "SCAN-004",
+  "severity": "warning",
+  "scenario": "多 CTE 链,每步都可能 SCAN-004",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.03,
+  "explain_file": "Q107.explain"
+}

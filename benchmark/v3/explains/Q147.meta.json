@@ -1,0 +1,12 @@
+{
+  "id": "Q147",
+  "target_rule": "GEN-001",
+  "severity": "warning",
+  "scenario": "笛卡尔积 + 后期过滤(效率极低)",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.09,
+  "explain_file": "Q147.explain"
+}

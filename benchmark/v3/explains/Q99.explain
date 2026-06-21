@@ -1,0 +1,25 @@
+-- @id: Q99
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: LAG 窗口函数,需 Sort + Window
+SELECT
+    payment_date,
+    amount,
+    COALESCE(LAG(amount, 1) OVER (ORDER BY payment_date), 0) AS prev_amount,
+    amount - COALESCE(LAG(amount, 1) OVER (ORDER BY payment_date), 0) AS diff
+FROM payment
+WHERE customer_id = 1
+ORDER BY payment_date
+LIMIT 30;
+
+Limit  (cost=69.45..70.04 rows=26 width=14) (actual time=0.332..0.355 rows=30 loops=1)
+  ->  WindowAgg  (cost=69.45..70.04 rows=26 width=14) (actual time=0.330..0.349 rows=30 loops=1)
+        ->  Sort  (cost=69.45..69.52 rows=26 width=14) (actual time=0.304..0.305 rows=30 loops=1)
+              Sort Key: payment_date
+              Sort Method: quicksort  Memory: 26kB
+              ->  Bitmap Heap Scan on payment  (cost=4.45..68.84 rows=26 width=14) (actual time=0.127..0.276 rows=32 loops=1)
+                    Recheck Cond: (customer_id = 1)
+                    Heap Blocks: exact=17
+                    ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=26 width=0) (actual time=0.030..0.030 rows=32 loops=1)
+                          Index Cond: (customer_id = 1)
+Total runtime: 0.460 ms

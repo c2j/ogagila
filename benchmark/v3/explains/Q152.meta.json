@@ -1,0 +1,12 @@
+{
+  "id": "Q152",
+  "target_rule": "VEC-001",
+  "severity": "warning",
+  "scenario": "强制使用行存引擎",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.022,
+  "explain_file": "Q152.explain"
+}

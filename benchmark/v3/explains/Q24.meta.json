@@ -1,0 +1,12 @@
+{
+  "id": "Q24",
+  "target_rule": "MEM-001",
+  "severity": "warning",
+  "scenario": "大表 ORDER BY 无索引支撑 + 低内存",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q24.explain"
+}

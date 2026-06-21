@@ -1,0 +1,12 @@
+{
+  "id": "Q177",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "UPDATE WHERE EXISTS 相关子查询",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.016,
+  "explain_file": "Q177.explain"
+}

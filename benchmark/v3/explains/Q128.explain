@@ -1,0 +1,38 @@
+-- @id: Q128
+-- @target: AGG-001
+-- @severity: info
+-- @scenario: CUBE 二维全组合
+SELECT
+    staff_id,
+    customer_id,
+    SUM(amount) AS total,
+    COUNT(*) AS cnt
+FROM payment
+WHERE payment_date >= '2022-06-01'
+GROUP BY CUBE (staff_id, customer_id)
+ORDER BY staff_id NULLS LAST, customer_id NULLS LAST
+LIMIT 50;
+
+Limit  (cost=906.41..906.54 rows=50 width=54) (actual time=11.827..11.832 rows=50 loops=1)
+  ->  Sort  (cost=906.41..907.82 rows=562 width=54) (actual time=11.824..11.826 rows=50 loops=1)
+        Sort Key: staff_id, customer_id
+        Sort Method: top-N heapsort  Memory: 28kB
+        ->  GroupAggregate  (cost=458.27..887.75 rows=562 width=54) (actual time=4.172..11.008 rows=1776 loops=1)
+              Group By Key: staff_id, customer_id
+              Group By Key: staff_id
+              Group By Key: ()
+              Sort Key: customer_id
+                Group By Key: customer_id
+              ->  Sort  (cost=458.27..470.73 rows=4984 width=14) (actual time=4.135..5.060 rows=4988 loops=1)
+                    Sort Key: staff_id, customer_id
+                    Sort Method: quicksort  Memory: 426kB
+                    ->  Partition Iterator  (cost=54.88..152.18 rows=4984 width=14) (actual time=0.645..2.261 rows=4988 loops=1)
+                          Iterations: 2
+                          ->  Partitioned Bitmap Heap Scan on payment  (cost=54.88..152.18 rows=4984 width=14) (actual time=0.981..1.754 rows=4988 loops=2)
+                                Recheck Cond: (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)
+                                Heap Blocks: exact=38
+                                Selected Partitions:  6..7
+                                ->  Partitioned Bitmap Index Scan on payment_pkey  (cost=0.00..53.63 rows=4984 width=0) (actual time=0.947..0.947 rows=4988 loops=2)
+                                      Index Cond: (payment_date >= '2022-06-01 00:00:00+00'::timestamp with time zone)
+                                      Selected Partitions:  6..7
+Total runtime: 14.554 ms

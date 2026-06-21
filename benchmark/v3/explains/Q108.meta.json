@@ -1,0 +1,12 @@
+{
+  "id": "Q108",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "CTE 引用多次,触发 Materialize",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.078,
+  "explain_file": "Q108.explain"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "Q110",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "递归 CTE + 时间序列展开",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.02,
+  "explain_file": "Q110.explain"
+}

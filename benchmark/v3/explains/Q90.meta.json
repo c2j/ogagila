@@ -1,0 +1,12 @@
+{
+  "id": "Q90",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "payment 主键点查(分区裁剪生效)",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q90.explain"
+}

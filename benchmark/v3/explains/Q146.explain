@@ -1,0 +1,17 @@
+-- @id: Q146
+-- @target: TYPE-004
+-- @severity: warning
+-- @scenario: 全字段模糊搜索(无索引)
+SELECT * FROM film
+WHERE title ILIKE '%love%' OR description ILIKE '%love%'
+ORDER BY film_id
+LIMIT 20;
+
+Limit  (cost=70.01..70.02 rows=1 width=390) (actual time=6.583..6.586 rows=10 loops=1)
+  ->  Sort  (cost=70.01..70.02 rows=1 width=390) (actual time=6.580..6.581 rows=10 loops=1)
+        Sort Key: film_id
+        Sort Method: quicksort  Memory: 30kB
+        ->  Seq Scan on film  (cost=0.00..70.00 rows=1 width=390) (actual time=2.782..6.551 rows=10 loops=1)
+              Filter: ((title ~~* '%love%'::text) OR (description ~~* '%love%'::text))
+              Rows Removed by Filter: 990
+Total runtime: 6.692 ms

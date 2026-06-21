@@ -1,0 +1,9 @@
+-- @id: Q01
+-- @target: SCAN-001
+-- @severity: warning
+-- @scenario: rental 表(16044 行)无 WHERE 条件,触发 Seq Scan + 100% selectivity
+SELECT * FROM rental LIMIT 10;
+
+Limit  (cost=0.00..0.19 rows=10 width=40) (actual time=0.065..0.067 rows=10 loops=1)
+  ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=40) (actual time=0.064..0.064 rows=10 loops=1)
+Total runtime: 0.366 ms

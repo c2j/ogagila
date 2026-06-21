@@ -1,0 +1,9 @@
+-- @id: Q159
+-- @target: NONE
+-- @severity: info
+-- @scenario: 健康 - 简单 TOP-N 用索引
+SELECT * FROM rental ORDER BY rental_date DESC LIMIT 10;
+
+Limit  (cost=0.00..0.54 rows=10 width=40) (actual time=0.068..0.073 rows=10 loops=1)
+  ->  Index Scan Backward using idx_unq_rental_rental_date_inventory_id_customer_id on rental  (cost=0.00..890.44 rows=16472 width=40) (actual time=0.066..0.070 rows=10 loops=1)
+Total runtime: 0.133 ms

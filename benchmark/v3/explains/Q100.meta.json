@@ -1,0 +1,12 @@
+{
+  "id": "Q100",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "累计 SUM OVER,触发 WindowAgg 节点",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.004,
+  "explain_file": "Q100.explain"
+}

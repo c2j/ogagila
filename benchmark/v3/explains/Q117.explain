@@ -1,0 +1,19 @@
+-- @id: Q117
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: UNION 合并 customer 和 staff
+SELECT customer_id AS person_id, first_name AS name, 'customer' AS type
+FROM customer
+UNION
+SELECT staff_id, first_name, 'staff' FROM staff
+ORDER BY type, person_id;
+
+Sort  (cost=303.93..310.67 rows=2698 width=10) (actual time=3.945..4.109 rows=2099 loops=1)
+  Sort Key: ('customer'::text), customer.customer_id
+  Sort Method: quicksort  Memory: 241kB
+  ->  HashAggregate  (cost=123.20..150.18 rows=2698 width=10) (actual time=2.074..2.484 rows=2099 loops=1)
+        Group By Key: customer.customer_id, customer.first_name, ('customer'::text)
+        ->  Append  (cost=0.00..102.96 rows=2698 width=10) (actual time=0.021..1.184 rows=2099 loops=1)
+              ->  Seq Scan on customer  (cost=0.00..29.98 rows=1198 width=10) (actual time=0.019..0.287 rows=599 loops=1)
+              ->  Seq Scan on staff  (cost=0.00..46.00 rows=1500 width=10) (actual time=0.033..0.673 rows=1500 loops=1)
+Total runtime: 4.400 ms

@@ -1,0 +1,33 @@
+-- @id: Q131
+-- @target: AGG-002
+-- @severity: warning
+-- @scenario: PERCENTILE 排序聚合(需 work_mem)
+SET work_mem = '64kB';
+SELECT
+    customer_id,
+    AVG(amount) AS avg_amount,
+    MAX(amount) AS max_amount,
+    MIN(amount) AS min_amount,
+    STDDEV(amount) AS stddev_amount,
+    COUNT(*) AS cnt
+FROM payment
+GROUP BY customer_id
+HAVING COUNT(*) > 20
+ORDER BY avg_amount DESC
+LIMIT 20;
+RESET work_mem;
+
+Limit  (cost=589.77..589.82 rows=20 width=154) (actual time=62.760..62.771 rows=20 loops=1)
+  ->  Sort  (cost=589.77..591.27 rows=599 width=154) (actual time=62.751..62.756 rows=20 loops=1)
+        Sort Key: (avg(amount)) DESC
+        Sort Method: top-N heapsort  Memory: 29kB
+        ->  HashAggregate  (cost=563.35..573.83 rows=599 width=154) (actual time=25.672..62.335 rows=543 loops=1)
+              Group By Key: customer_id
+              Filter: (count(*) > 20)
+              Rows Removed by Filter: 56
+Temp File Num: 64
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.043..6.029 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.097..3.474 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 65.930 ms

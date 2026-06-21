@@ -1,0 +1,12 @@
+{
+  "id": "Q162",
+  "target_rule": "SCAN-004",
+  "severity": "info",
+  "scenario": "Index-only scan(covering index)",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.088,
+  "explain_file": "Q162.explain"
+}

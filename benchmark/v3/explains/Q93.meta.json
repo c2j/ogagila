@@ -1,0 +1,12 @@
+{
+  "id": "Q93",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "全文检索使用 GIN 索引",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q93.explain"
+}

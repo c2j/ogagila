@@ -1,0 +1,13 @@
+-- @id: Q97
+-- @target: NONE
+-- @severity: info
+-- @scenario: rental 索引列精确查(inventory_id)
+SELECT COUNT(*) FROM rental WHERE inventory_id = 100;
+
+Aggregate  (cost=15.06..15.07 rows=1 width=8) (actual time=0.101..0.101 rows=1 loops=1)
+  ->  Bitmap Heap Scan on rental  (cost=4.27..15.05 rows=3 width=0) (actual time=0.059..0.090 rows=4 loops=1)
+        Recheck Cond: (inventory_id = 100)
+        Heap Blocks: exact=4
+        ->  Bitmap Index Scan on idx_fk_inventory_id  (cost=0.00..4.27 rows=3 width=0) (actual time=0.048..0.048 rows=4 loops=1)
+              Index Cond: (inventory_id = 100)
+Total runtime: 0.197 ms

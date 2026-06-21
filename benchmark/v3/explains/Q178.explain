@@ -1,0 +1,28 @@
+-- @id: Q178
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE WITH CTE
+WITH high_renters AS (
+    SELECT customer_id, COUNT(*) AS cnt
+    FROM rental
+    GROUP BY customer_id
+    HAVING COUNT(*) > 30
+)
+UPDATE customer c
+SET active = 0
+FROM high_renters h
+WHERE c.customer_id = h.customer_id;
+
+Update on customer c  (cost=463.23..535.83 rows=599 width=92) (actual time=9.689..40.538 rows=134 loops=1)
+  ->  Hash Join  (cost=463.23..535.83 rows=599 width=92) (actual time=8.945..9.830 rows=134 loops=1)
+        Hash Cond: (c.customer_id = rental.customer_id)
+        ->  Seq Scan on customer c  (cost=0.00..53.30 rows=2130 width=80) (actual time=0.035..0.513 rows=599 loops=1)
+        ->  Hash  (cost=455.74..455.74 rows=599 width=12) (actual time=8.656..8.656 rows=134 loops=1)
+               Buckets: 32768  Batches: 1  Memory Usage: 263kB
+              ->  HashAggregate  (cost=442.26..449.75 rows=599 width=20) (actual time=8.346..8.432 rows=134 loops=1)
+                    Group By Key: rental.customer_id
+                    Filter: (count(*) > 30)
+                    Rows Removed by Filter: 465
+                    ->  Seq Scan on rental  (cost=0.00..318.72 rows=16472 width=4) (actual time=0.012..2.662 rows=16044 loops=1)
+Trigger last_updated: time=2.118 calls=134
+Total runtime: 41.155 ms

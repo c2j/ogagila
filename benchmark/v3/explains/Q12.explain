@@ -1,0 +1,10 @@
+-- @id: Q12
+-- @target: SCAN-004
+-- @severity: warning
+-- @scenario: staff.username 精确匹配(无索引,典型登录场景)
+SELECT * FROM staff WHERE username = 'Mike';
+
+Seq Scan on staff  (cost=0.00..49.75 rows=1 width=153) (actual time=0.844..0.844 rows=0 loops=1)
+  Filter: (username = 'Mike'::text)
+  Rows Removed by Filter: 1500
+Total runtime: 0.974 ms

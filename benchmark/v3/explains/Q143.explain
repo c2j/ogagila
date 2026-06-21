@@ -1,0 +1,28 @@
+-- @id: Q143
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: Top-3 per group(window)
+SELECT * FROM (
+    SELECT
+        customer_id, payment_date, amount,
+        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY amount DESC) AS rk
+    FROM payment
+) t
+WHERE rk <= 3
+ORDER BY customer_id, rk;
+
+Sort  (cost=2256.43..2269.80 rows=5350 width=26) (actual time=48.219..48.267 rows=1797 loops=1)
+  Sort Key: t.customer_id, t.rk
+  Sort Method: quicksort  Memory: 189kB
+  ->  Subquery Scan on t  (cost=1403.53..1925.12 rows=5350 width=26) (actual time=29.623..46.592 rows=1797 loops=1)
+        Filter: (t.rk <= 3)
+        Rows Removed by Filter: 14252
+        ->  WindowAgg  (cost=1403.53..1724.51 rows=16049 width=18) (actual time=29.604..42.377 rows=16049 loops=1)
+              ->  Sort  (cost=1403.53..1443.65 rows=16049 width=18) (actual time=29.571..31.970 rows=16049 loops=1)
+                    Sort Key: payment.customer_id, payment.amount DESC
+                    Sort Method: quicksort  Memory: 1638kB
+                    ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.164..7.645 rows=16049 loops=1)
+                          Iterations: 7
+                          ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=18) (actual time=0.125..4.239 rows=16049 loops=7)
+                                Selected Partitions:  1..7
+Total runtime: 48.927 ms

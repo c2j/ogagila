@@ -1,0 +1,14 @@
+{
+  "id": "Q42",
+  "target_rule": "EST-004",
+  "severity": "warning",
+  "scenario": "删 stats 后 rental-inventory 选 NL",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK (with 1 warning)",
+  "warnings": [
+    "skipped unsupported in openGauss: 'DELETE STATISTICS rental'"
+  ],
+  "elapsed_sec": 0.018,
+  "explain_file": "Q42.explain"
+}

@@ -1,0 +1,25 @@
+-- @id: Q125
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 派生表 in FROM
+SELECT sub.customer_id, sub.cnt, sub.total
+FROM (
+    SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total
+    FROM payment
+    GROUP BY customer_id
+) sub
+WHERE sub.cnt > 30
+ORDER BY sub.cnt DESC;
+
+Sort  (cost=484.09..485.59 rows=599 width=44) (actual time=12.225..12.231 rows=134 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 35kB
+  ->  HashAggregate  (cost=442.98..450.47 rows=599 width=58) (actual time=12.042..12.175 rows=134 loops=1)
+        Group By Key: payment.customer_id
+        Filter: (count(*) > 30)
+        Rows Removed by Filter: 465
+        ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.022..5.144 rows=16049 loops=1)
+              Iterations: 7
+              ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.059..2.692 rows=16049 loops=7)
+                    Selected Partitions:  1..7
+Total runtime: 12.431 ms

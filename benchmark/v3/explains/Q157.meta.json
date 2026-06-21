@@ -1,0 +1,12 @@
+{
+  "id": "Q157",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "健康 - 简单聚合 + 索引列",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.013,
+  "explain_file": "Q157.explain"
+}

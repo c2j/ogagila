@@ -1,0 +1,12 @@
+{
+  "id": "Q134",
+  "target_rule": "TYPE-001",
+  "severity": "info",
+  "scenario": "text 字段与 integer 隐式比较",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.017,
+  "explain_file": "Q134.explain"
+}

@@ -1,0 +1,36 @@
+-- @id: Q124
+-- @target: SUBQ-001
+-- @severity: info
+-- @scenario: 子查询 in HAVING
+SELECT customer_id, COUNT(*) AS cnt, SUM(amount) AS total
+FROM payment
+GROUP BY customer_id
+HAVING COUNT(*) > (
+    SELECT AVG(c) FROM (
+        SELECT COUNT(*) AS c FROM payment GROUP BY customer_id
+    ) sub
+)
+ORDER BY cnt DESC
+LIMIT 20;
+
+Limit  (cost=844.13..844.18 rows=20 width=58) (actual time=24.548..24.552 rows=20 loops=1)
+  InitPlan 1 (returns $2)
+    ->  Aggregate  (cost=376.22..376.23 rows=1 width=40) (actual time=9.769..9.769 rows=1 loops=1)
+          ->  HashAggregate  (cost=362.74..368.73 rows=599 width=12) (actual time=9.339..9.426 rows=599 loops=1)
+                Group By Key: public.payment.customer_id
+                ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.033..5.481 rows=16049 loops=1)
+                      Iterations: 7
+                      ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=4) (actual time=0.036..2.591 rows=16049 loops=7)
+                            Selected Partitions:  1..7
+  ->  Sort  (cost=467.90..469.40 rows=599 width=58) (actual time=24.545..24.545 rows=20 loops=1)
+        Sort Key: (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 27kB
+        ->  HashAggregate  (cost=442.98..451.97 rows=599 width=58) (actual time=24.231..24.480 rows=296 loops=1)
+              Group By Key: public.payment.customer_id
+              Filter: ((count(*))::numeric > $2)
+              Rows Removed by Filter: 303
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.018..5.759 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=10) (actual time=0.069..2.843 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+Total runtime: 24.810 ms

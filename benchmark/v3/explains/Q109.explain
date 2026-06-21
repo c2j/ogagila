@@ -1,0 +1,19 @@
+-- @id: Q109
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 递归 CTE,生成 1-10 序列
+WITH RECURSIVE num_series AS (
+    SELECT 1 AS n
+    UNION ALL
+    SELECT n + 1 FROM num_series WHERE n < 10
+)
+SELECT n FROM num_series;
+
+CTE Scan on num_series  (cost=2.95..3.57 rows=31 width=4) (actual time=0.009..0.031 rows=10 loops=1)
+  CTE num_series
+    ->  Recursive Union  (cost=0.00..2.95 rows=31 width=4) (actual time=0.006..0.024 rows=10 loops=1)
+          ->  Result  (cost=0.00..0.01 rows=1 width=0) (actual time=0.002..0.002 rows=1 loops=1)
+          ->  WorkTable Scan on num_series  (cost=0.00..0.23 rows=3 width=4) (actual time=0.013..0.014 rows=9 loops=10)
+                Filter: (n < 10)
+                Rows Removed by Filter: 1
+Total runtime: 0.093 ms

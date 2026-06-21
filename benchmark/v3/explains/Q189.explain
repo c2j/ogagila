@@ -1,0 +1,20 @@
+-- @id: Q189
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图内含标量子查询(反例: 外层谓词无法下推)
+CREATE OR REPLACE VIEW v_customer_pay_count AS
+SELECT c.customer_id, c.first_name,
+    (SELECT COUNT(*) FROM payment p WHERE p.customer_id = c.customer_id) AS pay_count
+FROM customer c;
+SELECT * FROM v_customer_pay_count WHERE customer_id <= 10;
+
+Index Scan using customer_pkey on customer c  (cost=0.00..4122.82 rows=58 width=10) (actual time=0.584..1.092 rows=10 loops=1)
+  Index Cond: (customer_id <= 10)
+  SubPlan 1
+    ->  Aggregate  (cost=70.91..70.92 rows=1 width=8) (actual time=1.007..1.007 rows=10 loops=10)
+          ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=0) (actual time=0.253..0.936 rows=278 loops=10)
+                Recheck Cond: (customer_id = c.customer_id)
+                Heap Blocks: exact=164
+                ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.148..0.148 rows=326 loops=10)
+                      Index Cond: (customer_id = c.customer_id)
+Total runtime: 1.275 ms

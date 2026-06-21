@@ -1,0 +1,36 @@
+-- @id: Q110
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 递归 CTE + 时间序列
+WITH RECURSIVE date_series AS (
+    SELECT cast('2022-01-01' as timestamp) AS d
+    UNION ALL
+    SELECT d + INTERVAL '1 day' FROM date_series WHERE d < cast('2022-01-31' as timestamp)
+)
+SELECT cast(ds.d as date) AS d, COALESCE(SUM(p.amount), 0) AS daily_revenue
+FROM date_series ds
+LEFT JOIN payment p ON cast(p.payment_date as date) = cast(ds.d as date)
+GROUP BY cast(ds.d as date)
+ORDER BY d;
+
+Sort  (cost=383.71..383.79 rows=31 width=46) (actual time=12.765..12.766 rows=31 loops=1)
+  Sort Key: ((ds.d)::timestamp(0) without time zone)
+  Sort Method: quicksort  Memory: 26kB
+  CTE date_series
+    ->  Recursive Union  (cost=0.00..2.95 rows=31 width=8) (actual time=0.006..0.034 rows=31 loops=1)
+          ->  Result  (cost=0.00..0.01 rows=1 width=0) (actual time=0.002..0.002 rows=1 loops=1)
+          ->  WorkTable Scan on date_series  (cost=0.00..0.23 rows=3 width=8) (actual time=0.015..0.015 rows=30 loops=31)
+                Filter: (d < '2022-01-31 00:00:00'::timestamp without time zone)
+                Rows Removed by Filter: 1
+  ->  HashAggregate  (cost=379.60..379.99 rows=31 width=46) (actual time=12.735..12.742 rows=31 loops=1)
+        Group By Key: (ds.d)::timestamp(0) without time zone
+        ->  Hash Right Join  (cost=1.01..367.16 rows=2488 width=14) (actual time=12.562..12.655 rows=31 loops=1)
+              Hash Cond: ((p.payment_date)::timestamp(0) without time zone = (ds.d)::timestamp(0) without time zone)
+              ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=14) (actual time=0.019..5.567 rows=16049 loops=1)
+                    Iterations: 7
+                    ->  Partitioned Seq Scan on payment p  (cost=0.00..282.49 rows=16049 width=14) (actual time=0.052..2.916 rows=16049 loops=7)
+                          Selected Partitions:  1..7
+              ->  Hash  (cost=0.62..0.62 rows=31 width=8) (actual time=0.066..0.066 rows=31 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 258kB
+                    ->  CTE Scan on date_series ds  (cost=0.00..0.62 rows=31 width=8) (actual time=0.010..0.045 rows=31 loops=1)
+Total runtime: 13.236 ms

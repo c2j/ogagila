@@ -1,0 +1,12 @@
+-- @id: Q171
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: Index scan + heap fetch(非 index-only)
+CREATE INDEX IF NOT EXISTS idx_film_rating ON film (rating);
+SELECT film_id, title, rental_rate, length FROM film WHERE rating = 'PG-13' LIMIT 10;
+
+Limit  (cost=0.00..3.03 rows=10 width=27) (actual time=0.018..0.043 rows=10 loops=1)
+  ->  Seq Scan on film  (cost=0.00..67.50 rows=223 width=27) (actual time=0.016..0.040 rows=10 loops=1)
+        Filter: (rating = 'PG-13'::mpaa_rating)
+        Rows Removed by Filter: 40
+Total runtime: 0.106 ms

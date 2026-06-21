@@ -1,0 +1,12 @@
+{
+  "id": "Q135",
+  "target_rule": "NONE",
+  "severity": "info",
+  "scenario": "健康 - 空结果集",
+  "has_side_effect": false,
+  "is_healthy": true,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.003,
+  "explain_file": "Q135.explain"
+}

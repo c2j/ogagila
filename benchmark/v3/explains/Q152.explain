@@ -1,0 +1,15 @@
+-- @id: Q152
+-- @target: VEC-001
+-- @severity: warning
+-- @scenario: 强制使用行存引擎
+SET enable_vector_engine = off;
+SELECT COUNT(*), AVG(amount), SUM(amount)
+FROM payment;
+SET enable_vector_engine = on;
+
+Aggregate  (cost=402.86..402.87 rows=1 width=78) (actual time=13.185..13.186 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=6) (actual time=0.018..4.013 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=6) (actual time=0.050..2.024 rows=16049 loops=7)
+              Selected Partitions:  1..7
+Total runtime: 13.400 ms

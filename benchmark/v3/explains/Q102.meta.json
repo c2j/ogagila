@@ -1,0 +1,12 @@
+{
+  "id": "Q102",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "NTILE 分四分位",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.008,
+  "explain_file": "Q102.explain"
+}

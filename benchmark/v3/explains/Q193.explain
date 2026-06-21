@@ -1,0 +1,20 @@
+-- @id: Q193
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 视图内 HAVING(反例: HAVING 阻止外层谓词下推)
+CREATE OR REPLACE VIEW v_high_value_customers AS
+SELECT customer_id, SUM(amount) AS total
+FROM payment
+GROUP BY customer_id
+HAVING SUM(amount) > 50;
+SELECT * FROM v_high_value_customers WHERE customer_id = 1;
+
+GroupAggregate  (cost=4.45..69.05 rows=1 width=74) (actual time=1.229..1.230 rows=1 loops=1)
+  Group By Key: payment.customer_id
+  Filter: (sum(payment.amount) > 50::numeric)
+  ->  Bitmap Heap Scan on payment  (cost=4.45..68.84 rows=26 width=10) (actual time=1.046..1.167 rows=32 loops=1)
+        Recheck Cond: (customer_id = 1)
+        Heap Blocks: exact=17
+        ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=26 width=0) (actual time=0.961..0.961 rows=37 loops=1)
+              Index Cond: (customer_id = 1)
+Total runtime: 2.055 ms

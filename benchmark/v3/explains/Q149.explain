@@ -1,0 +1,16 @@
+-- @id: Q149
+-- @target: PUSH-001
+-- @severity: warning
+-- @scenario: 谓词包装在函数里,阻止索引下推
+SELECT COUNT(*) FROM payment
+WHERE EXTRACT(MONTH FROM payment_date) = 6
+  AND EXTRACT(YEAR FROM payment_date) = 2022;
+
+Aggregate  (cost=442.98..442.99 rows=1 width=8) (actual time=12.896..12.896 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..442.98 rows=1 width=0) (actual time=3.562..12.380 rows=2654 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..442.98 rows=1 width=0) (actual time=5.678..11.729 rows=2654 loops=7)
+              Filter: ((date_part('month'::text, payment_date) = 6::double precision) AND (date_part('year'::text, payment_date) = 2022::double precision))
+              Rows Removed by Filter: 13395
+              Selected Partitions:  1..7
+Total runtime: 13.311 ms

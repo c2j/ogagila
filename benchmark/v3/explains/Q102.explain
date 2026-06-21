@@ -1,0 +1,18 @@
+-- @id: Q102
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: NTILE 分四分位
+SELECT
+    film_id,
+    title,
+    length,
+    NTILE(4) OVER (ORDER BY length) AS quartile
+FROM film
+ORDER BY length;
+
+WindowAgg  (cost=114.83..132.33 rows=1000 width=21) (actual time=1.046..1.250 rows=1000 loops=1)
+  ->  Sort  (cost=114.83..117.33 rows=1000 width=21) (actual time=0.837..0.922 rows=1000 loops=1)
+        Sort Key: length
+        Sort Method: quicksort  Memory: 103kB
+        ->  Seq Scan on film  (cost=0.00..65.00 rows=1000 width=21) (actual time=0.010..0.470 rows=1000 loops=1)
+Total runtime: 1.517 ms

@@ -1,0 +1,18 @@
+-- @id: Q16
+-- @target: JOIN-001
+-- @severity: warning
+-- @scenario: rental ↔ inventory NL(staff_id 无索引时)
+SELECT r.rental_id, i.film_id, i.store_id
+FROM rental r
+INNER JOIN inventory i ON r.inventory_id = i.inventory_id
+WHERE r.staff_id = 1
+LIMIT 10;
+
+Limit  (cost=0.00..1.79 rows=10 width=12) (actual time=0.046..0.076 rows=10 loops=1)
+  ->  Merge Join  (cost=0.00..1477.10 rows=8254 width=12) (actual time=0.043..0.072 rows=10 loops=1)
+        Merge Cond: (i.inventory_id = r.inventory_id)
+        ->  Index Scan using inventory_pkey on inventory i  (cost=0.00..209.97 rows=4581 width=12) (actual time=0.009..0.009 rows=6 loops=1)
+        ->  Index Scan using idx_fk_inventory_id on rental r  (cost=0.00..1152.51 rows=8254 width=8) (actual time=0.021..0.047 rows=10 loops=1)
+              Filter: (staff_id = 1)
+              Rows Removed by Filter: 3
+Total runtime: 0.149 ms

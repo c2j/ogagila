@@ -1,0 +1,12 @@
+-- @id: Q60
+-- @target: PART-001
+-- @severity: info
+-- @scenario: payment_date 跨全部分区,正确裁剪为全部
+SELECT COUNT(*) FROM payment;
+
+Aggregate  (cost=322.61..322.62 rows=1 width=8) (actual time=4.739..4.739 rows=1 loops=1)
+  ->  Partition Iterator  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.022..3.175 rows=16049 loops=1)
+        Iterations: 7
+        ->  Partitioned Seq Scan on payment  (cost=0.00..282.49 rows=16049 width=0) (actual time=0.061..1.415 rows=16049 loops=7)
+              Selected Partitions:  1..7
+Total runtime: 4.933 ms

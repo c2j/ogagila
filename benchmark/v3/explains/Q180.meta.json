@@ -1,0 +1,12 @@
+{
+  "id": "Q180",
+  "target_rule": "GEN-001",
+  "severity": "warning",
+  "scenario": "UPDATE 多字段 FROM JOIN",
+  "has_side_effect": true,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.133,
+  "explain_file": "Q180.explain"
+}

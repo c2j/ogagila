@@ -1,0 +1,19 @@
+-- @id: Q172
+-- @target: SUBQ-001
+-- @severity: warning
+-- @scenario: UPDATE SET col = 标量子查询(单行)
+UPDATE film
+SET release_year = 2020
+WHERE film_id = (SELECT film_id FROM film ORDER BY film_id DESC LIMIT 1);
+
+Update on film  (cost=0.05..8.32 rows=1 width=392) (actual time=2.168..2.184 rows=1 loops=1)
+  InitPlan 1 (returns $0)
+    ->  Limit  (cost=0.00..0.05 rows=1 width=4) (actual time=0.066..0.067 rows=1 loops=1)
+          ->  Index Only Scan Backward using film_pkey on film  (cost=0.00..48.26 rows=1000 width=4) (actual time=0.064..0.064 rows=1 loops=1)
+                Heap Fetches: 1
+  ->  Index Scan using film_pkey on film  (cost=0.00..8.27 rows=1 width=392) (actual time=0.124..0.136 rows=1 loops=1)
+        Index Cond: (film_id = $0)
+Trigger for constraint film_original_language_id_fkey: time=0.031 calls=1
+Trigger film_fulltext_trigger: time=0.439 calls=1
+Trigger last_updated: time=0.907 calls=1
+Total runtime: 2.643 ms

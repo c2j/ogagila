@@ -1,0 +1,12 @@
+{
+  "id": "Q18",
+  "target_rule": "JOIN-001",
+  "severity": "warning",
+  "scenario": "film→film_actor→actor 三表链",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.012,
+  "explain_file": "Q18.explain"
+}

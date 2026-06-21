@@ -1,0 +1,10 @@
+-- @id: Q03
+-- @target: SCAN-001
+-- @severity: warning
+-- @scenario: inventory 表全表扫后按 film_id 过滤(无索引)
+SELECT inventory_id, film_id, store_id FROM inventory WHERE film_id BETWEEN 100 AND 200;
+
+Seq Scan on inventory  (cost=0.00..98.72 rows=461 width=12) (actual time=0.131..2.220 rows=454 loops=1)
+  Filter: ((film_id >= 100) AND (film_id <= 200))
+  Rows Removed by Filter: 4127
+Total runtime: 2.808 ms

@@ -1,0 +1,12 @@
+{
+  "id": "Q124",
+  "target_rule": "SUBQ-001",
+  "severity": "info",
+  "scenario": "子查询 in HAVING",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.029,
+  "explain_file": "Q124.explain"
+}

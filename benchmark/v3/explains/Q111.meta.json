@@ -1,0 +1,12 @@
+{
+  "id": "Q111",
+  "target_rule": "SUBQ-001",
+  "severity": "warning",
+  "scenario": "CTE 嵌套 IN + EXISTS,相关子查询",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.02,
+  "explain_file": "Q111.explain"
+}

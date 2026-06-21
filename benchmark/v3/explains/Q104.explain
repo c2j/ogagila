@@ -1,0 +1,27 @@
+-- @id: Q104
+-- @target: GEN-001
+-- @severity: info
+-- @scenario: 7 天移动平均,frame clause
+SELECT
+    customer_id,
+    payment_date,
+    amount,
+    AVG(amount) OVER (
+        PARTITION BY customer_id
+        ORDER BY payment_date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS moving_avg_7
+FROM payment
+WHERE customer_id = 1
+ORDER BY payment_date;
+
+WindowAgg  (cost=69.45..69.91 rows=26 width=18) (actual time=0.213..0.300 rows=32 loops=1)
+  ->  Sort  (cost=69.45..69.52 rows=26 width=18) (actual time=0.196..0.196 rows=32 loops=1)
+        Sort Key: payment_date
+        Sort Method: quicksort  Memory: 27kB
+        ->  Bitmap Heap Scan on payment  (cost=4.45..68.84 rows=26 width=18) (actual time=0.073..0.175 rows=32 loops=1)
+              Recheck Cond: (customer_id = 1)
+              Heap Blocks: exact=17
+              ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=26 width=0) (actual time=0.024..0.024 rows=32 loops=1)
+                    Index Cond: (customer_id = 1)
+Total runtime: 0.443 ms

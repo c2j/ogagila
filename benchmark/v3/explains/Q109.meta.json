@@ -1,0 +1,12 @@
+{
+  "id": "Q109",
+  "target_rule": "GEN-001",
+  "severity": "info",
+  "scenario": "递归 CTE,生成 1-10 序列",
+  "has_side_effect": false,
+  "is_healthy": false,
+  "status": "OK",
+  "warnings": [],
+  "elapsed_sec": 0.005,
+  "explain_file": "Q109.explain"
+}

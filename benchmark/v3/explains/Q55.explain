@@ -1,0 +1,27 @@
+-- @id: Q55
+-- @target: PUSH-002
+-- @severity: warning
+-- @scenario: 多层联接 + 子查询
+SELECT c.customer_id, c.first_name,
+       (SELECT COUNT(*) FROM rental r WHERE r.customer_id = c.customer_id) AS rental_cnt,
+       (SELECT SUM(amount) FROM payment p WHERE p.customer_id = c.customer_id) AS total_paid
+FROM customer c
+WHERE c.active = 1
+LIMIT 10;
+
+Limit  (cost=0.00..4309.29 rows=10 width=10) (actual time=5.523..31.561 rows=10 loops=1)
+  ->  Seq Scan on customer c  (cost=0.00..251662.58 rows=584 width=10) (actual time=5.520..31.538 rows=10 loops=1)
+        Filter: (active = 1)
+        SubPlan 1
+          ->  Aggregate  (cost=359.97..359.98 rows=1 width=8) (actual time=27.793..27.796 rows=10 loops=10)
+                ->  Seq Scan on rental r  (cost=0.00..359.90 rows=27 width=0) (actual time=0.895..27.566 rows=278 loops=10)
+                      Filter: (customer_id = c.customer_id)
+                      Rows Removed by Filter: 160162
+        SubPlan 2
+          ->  Aggregate  (cost=70.91..70.92 rows=1 width=38) (actual time=3.468..3.469 rows=10 loops=10)
+                ->  Bitmap Heap Scan on payment p  (cost=4.46..70.85 rows=27 width=6) (actual time=0.692..3.016 rows=278 loops=10)
+                      Recheck Cond: (customer_id = c.customer_id)
+                      Heap Blocks: exact=164
+                      ->  Bitmap Index Scan on idx_fk_payment_customer_id  (cost=0.00..4.45 rows=27 width=0) (actual time=0.384..0.384 rows=278 loops=10)
+                            Index Cond: (customer_id = c.customer_id)
+Total runtime: 31.850 ms
