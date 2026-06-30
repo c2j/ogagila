@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.CityMapper">
+
+    <resultMap id="cityResultMap" type="City">
+        <id property="cityId" column="city_id"/>
+        <result property="city" column="city"/>
+        <result property="countryId" column="country_id"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <!-- Using GaussDB CTE (Common Table Expression) for hierarchical city listing -->
+    <select id="selectAll" resultMap="cityResultMap">
+        WITH city_cte AS (
+            SELECT c.city_id, c.city, c.country_id, c.last_update,
+                   co.country AS country_name
+            FROM city c
+            JOIN country co ON c.country_id = co.country_id
+        )
+        SELECT city_id, city, country_id, last_update
+        FROM city_cte
+        ORDER BY city
+    </select>
+
+    <select id="selectById" resultMap="cityResultMap">
+        SELECT city_id, city, country_id, last_update
+        FROM city
+        WHERE city_id = #{cityId}
+    </select>
+
+    <select id="selectByCountry" resultMap="cityResultMap">
+        SELECT city_id, city, country_id, last_update
+        FROM city
+        WHERE country_id = #{countryId}
+        ORDER BY city
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="City" useGeneratedKeys="true" keyProperty="cityId" keyColumn="city_id">
+        INSERT INTO city (city, country_id, last_update)
+        VALUES (#{city}, #{countryId}, COALESCE(#{lastUpdate}, now()))
+        RETURNING city_id
+    </insert>
+
+    <update id="update" parameterType="City">
+        UPDATE city
+        SET city = #{city},
+            country_id = #{countryId},
+            last_update = now()
+        WHERE city_id = #{cityId}
+    </update>
+
+</mapper>

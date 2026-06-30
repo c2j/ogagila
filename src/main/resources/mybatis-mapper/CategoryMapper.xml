@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.CategoryMapper">
+
+    <resultMap id="categoryResultMap" type="Category">
+        <id property="categoryId" column="category_id"/>
+        <result property="name" column="name"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="categoryResultMap">
+        SELECT category_id, name, last_update
+        FROM category
+        ORDER BY name
+    </select>
+
+    <select id="selectById" resultMap="categoryResultMap">
+        SELECT category_id, name, last_update
+        FROM category
+        WHERE category_id = #{categoryId}
+    </select>
+
+    <!-- GaussDB MERGE INTO (Oracle-compatible upsert) -->
+    <insert id="insert" parameterType="Category" useGeneratedKeys="true" keyProperty="categoryId" keyColumn="category_id">
+        INSERT INTO category (name, last_update)
+        VALUES (#{name}, COALESCE(#{lastUpdate}, now()))
+        RETURNING category_id
+    </insert>
+
+    <update id="update" parameterType="Category">
+        UPDATE category
+        SET name = #{name},
+            last_update = now()
+        WHERE category_id = #{categoryId}
+    </update>
+
+</mapper>

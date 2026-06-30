@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.RentalMapper">
+
+    <resultMap id="rentalResultMap" type="Rental">
+        <id property="rentalId" column="rental_id"/>
+        <result property="rentalDate" column="rental_date"/>
+        <result property="inventoryId" column="inventory_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="returnDate" column="return_date"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM rental
+    </select>
+
+    <select id="selectAll" resultMap="rentalResultMap">
+        SELECT rental_id, rental_date, inventory_id, customer_id,
+               return_date, staff_id, last_update
+        FROM rental
+        ORDER BY rental_date DESC
+    </select>
+
+    <select id="selectById" resultMap="rentalResultMap">
+        SELECT rental_id, rental_date, inventory_id, customer_id,
+               return_date, staff_id, last_update
+        FROM rental
+        WHERE rental_id = #{rentalId}
+    </select>
+
+    <!-- GaussDB: Overdue rentals using INTERVAL arithmetic and film rental_duration -->
+    <select id="selectOverdue" resultMap="rentalResultMap">
+        SELECT r.rental_id, r.rental_date, r.inventory_id, r.customer_id,
+               r.return_date, r.staff_id, r.last_update
+        FROM rental r
+        JOIN inventory i ON r.inventory_id = i.inventory_id
+        JOIN film f ON i.film_id = f.film_id
+        WHERE r.return_date IS NULL
+          AND r.rental_date + (f.rental_duration || ' days')::INTERVAL <![CDATA[ < ]]> now()
+        ORDER BY r.rental_date
+    </select>
+
+    <select id="selectByCustomer" resultMap="rentalResultMap">
+        SELECT rental_id, rental_date, inventory_id, customer_id,
+               return_date, staff_id, last_update
+        FROM rental
+        WHERE customer_id = #{customerId}
+        ORDER BY rental_date DESC
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="Rental" useGeneratedKeys="true" keyProperty="rentalId" keyColumn="rental_id">
+        INSERT INTO rental (rental_date, inventory_id, customer_id, return_date, staff_id, last_update)
+        VALUES (#{rentalDate}, #{inventoryId}, #{customerId}, #{returnDate}, #{staffId}, COALESCE(#{lastUpdate}, now()))
+        RETURNING rental_id
+    </insert>
+
+    <!-- GaussDB: Update return_date for check-in - only if not already returned -->
+    <update id="updateReturn">
+        UPDATE rental
+        SET return_date = #{returnDate},
+            last_update = now()
+        WHERE rental_id = #{rentalId}
+          AND return_date IS NULL
+    </update>
+
+    <!-- GaussDB: Monthly stats with partition pruning via rental date range,
+         LAG window function for growth comparison, and FILTER clause -->
+    <select id="selectMonthlyStats" resultType="java.util.Map">
+        WITH monthly_rentals AS (
+            SELECT
+                DATE_TRUNC('month', r.rental_date)::date AS month,
+                COUNT(r.rental_id) AS rental_count,
+                COUNT(r.return_date) AS return_count,
+                COUNT(*) FILTER (WHERE r.return_date IS NULL) AS still_rented,
+                ROUND(AVG(EXTRACT(DAY FROM COALESCE(r.return_date, now()) - r.rental_date)), 1) AS avg_rental_days,
+                SUM(p.amount) AS total_revenue
+            FROM rental r
+            LEFT JOIN payment p ON r.rental_id = p.rental_id
+            WHERE r.rental_date >= #{startDate} AND r.rental_date <![CDATA[ < ]]> #{endDate}
+            GROUP BY DATE_TRUNC('month', r.rental_date)
+        )
+        SELECT
+            month,
+            rental_count,
+            return_count,
+            still_rented,
+            avg_rental_days,
+            total_revenue,
+            LAG(rental_count) OVER (ORDER BY month) AS prev_month_rentals,
+            CASE
+                WHEN LAG(rental_count) OVER (ORDER BY month) IS NULL THEN NULL
+                ELSE ROUND(
+                    (rental_count - LAG(rental_count) OVER (ORDER BY month))::numeric
+                    / NULLIF(LAG(rental_count) OVER (ORDER BY month), 0) * 100, 2)
+            END AS growth_pct
+        FROM monthly_rentals
+        ORDER BY month
+    </select>
+
+</mapper>

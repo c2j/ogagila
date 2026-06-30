@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGAGILA Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="vue-layout">
+            <nav class="vue-sidebar">
+                <div class="sidebar-brand">
+                    <h2>OGAGILA</h2>
+                    <small>Modern Console</small>
+                </div>
+                <ul class="sidebar-nav">
+                    <li><router-link to="/" class="nav-link">📊 Dashboard</router-link></li>
+                    <li><router-link to="/films" class="nav-link">🎬 Films</router-link></li>
+                    <li><router-link to="/customers" class="nav-link">👤 Customers</router-link></li>
+                    <li><router-link to="/rentals" class="nav-link">📋 Rentals</router-link></li>
+                    <li><router-link to="/payments" class="nav-link">💰 Payments</router-link></li>
+                    <li><router-link to="/reports" class="nav-link">📈 Reports</router-link></li>
+                    <li><router-link to="/jsonb" class="nav-link">🗂️ JSONB Explorer</router-link></li>
+                </ul>
+                <div class="sidebar-footer">
+                    <small>Gen3 - Vue 3 SPA</small>
+                </div>
+            </nav>
+            <main class="vue-main">
+                <router-view></router-view>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
+
+    <script src="js/components/Dashboard.js"></script>
+    <script src="js/components/FilmCatalog.js"></script>
+    <script src="js/components/FilmDetail.js"></script>
+    <script src="js/components/CustomerList.js"></script>
+    <script src="js/components/CustomerDetail.js"></script>
+    <script src="js/components/RentalList.js"></script>
+    <script src="js/components/PaymentList.js"></script>
+    <script src="js/components/Reports.js"></script>
+    <script src="js/components/JsonbExplorer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

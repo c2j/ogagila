@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.ReportMapper">
+
+    <select id="selectDashboardStats" resultType="java.util.LinkedHashMap">
+        SELECT
+            (SELECT COUNT(*) FROM film) AS film_count,
+            (SELECT COUNT(*) FROM customer) AS customer_count,
+            (SELECT COUNT(*) FROM rental) AS rental_count,
+            (SELECT COALESCE(SUM(amount), 0) FROM payment) AS total_revenue,
+            (SELECT COUNT(*) FROM rental WHERE return_date IS NULL
+                    AND rental_date <![CDATA[ < ]]> NOW() - INTERVAL '3 days') AS overdue_count,
+            (SELECT COUNT(*) FROM actor) AS actor_count,
+            (SELECT COUNT(*) FROM inventory) AS inventory_count,
+            (SELECT COUNT(*) FROM store) AS store_count
+    </select>
+
+    <select id="selectSalesByCategory" resultType="java.util.LinkedHashMap">
+        SELECT c.category_id, c.name AS category_name,
+               COUNT(p.payment_id) AS rental_count,
+               SUM(p.amount) AS total_sales,
+               ROUND(AVG(p.amount), 2) AS avg_sale,
+               DENSE_RANK() OVER (ORDER BY SUM(p.amount) DESC) AS rank
+        FROM category c
+        JOIN film_category fc ON c.category_id = fc.category_id
+        JOIN film f ON fc.film_id = f.film_id
+        JOIN inventory i ON f.film_id = i.film_id
+        JOIN rental r ON i.inventory_id = r.inventory_id
+        JOIN payment p ON r.rental_id = p.rental_id
+        GROUP BY c.category_id, c.name
+        ORDER BY total_sales DESC
+    </select>
+
+    <select id="selectSalesByStore" resultType="java.util.LinkedHashMap">
+        SELECT s.store_id,
+               a.address,
+               a.district,
+               COUNT(p.payment_id) AS transaction_count,
+               SUM(p.amount) AS total_sales,
+               ROUND(AVG(p.amount), 2) AS avg_transaction
+        FROM store s
+        JOIN address a ON s.address_id = a.address_id
+        JOIN inventory i ON s.store_id = i.store_id
+        JOIN rental r ON i.inventory_id = r.inventory_id
+        JOIN payment p ON r.rental_id = p.rental_id
+        GROUP BY s.store_id, a.address, a.district
+        ORDER BY total_sales DESC
+    </select>
+
+    <select id="selectTopFilms" resultType="java.util.LinkedHashMap">
+        SELECT f.film_id, f.title, f.rating,
+               f.rental_rate, f.length,
+               COUNT(r.rental_id) AS rental_count,
+               SUM(p.amount) AS total_revenue,
+               RANK() OVER (ORDER BY COUNT(r.rental_id) DESC) AS rank
+        FROM film f
+        JOIN inventory i ON f.film_id = i.film_id
+        JOIN rental r ON i.inventory_id = r.inventory_id
+        LEFT JOIN payment p ON r.rental_id = p.rental_id
+        GROUP BY f.film_id, f.title, f.rating, f.rental_rate, f.length
+        ORDER BY rental_count DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectTopActors" resultType="java.util.LinkedHashMap">
+        SELECT a.actor_id,
+               a.first_name || ' ' || a.last_name AS actor_name,
+               COUNT(fa.film_id) AS film_count,
+               COUNT(r.rental_id) AS rental_count,
+               SUM(p.amount) AS total_revenue,
+               RANK() OVER (ORDER BY COUNT(r.rental_id) DESC) AS rank
+        FROM actor a
+        JOIN film_actor fa ON a.actor_id = fa.actor_id
+        JOIN inventory i ON fa.film_id = i.film_id
+        JOIN rental r ON i.inventory_id = r.inventory_id
+        LEFT JOIN payment p ON r.rental_id = p.rental_id
+        GROUP BY a.actor_id, a.first_name, a.last_name
+        ORDER BY rental_count DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectMonthlyRevenue" resultType="java.util.LinkedHashMap">
+        SELECT EXTRACT(MONTH FROM payment_date) AS month,
+               COUNT(*) AS transaction_count,
+               SUM(amount) AS revenue,
+               ROUND(AVG(amount), 2) AS avg_transaction
+        FROM payment
+        WHERE EXTRACT(YEAR FROM payment_date) = #{year}
+        GROUP BY EXTRACT(MONTH FROM payment_date)
+        ORDER BY month
+    </select>
+
+    <select id="selectCustomerActivity" resultType="java.util.LinkedHashMap">
+        SELECT c.customer_id, c.first_name, c.last_name, c.email,
+               COUNT(DISTINCT r.rental_id) AS rental_count,
+               COUNT(DISTINCT p.payment_id) AS payment_count,
+               SUM(p.amount) AS total_spent,
+               MAX(r.rental_date) AS last_rental_date,
+               NTILE(4) OVER (ORDER BY SUM(p.amount) DESC) AS quartile
+        FROM customer c
+        LEFT JOIN rental r ON c.customer_id = r.customer_id
+        LEFT JOIN payment p ON c.customer_id = p.customer_id
+        GROUP BY c.customer_id, c.first_name, c.last_name, c.email
+        ORDER BY total_spent DESC NULLS LAST
+        LIMIT #{limit}
+    </select>
+
+</mapper>

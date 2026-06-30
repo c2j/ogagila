@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /ogagila
+    # JSP view resolution for legacy tier
+    jsp:
+      registered: true
+
+spring:
+  # openGauss DataSource
+  datasource:
+    url: jdbc:opengauss://localhost:5432/pagila?sslmode=disable
+    driver-class-name: org.opengauss.Driver
+    username: gaussdb
+    password: Enmo@123
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      connection-test-query: SELECT 1
+      data-source-properties:
+        stringtype: unspecified
+        reWriteBatchedInserts: true
+        ApplicationName: ogagila-web
+        oracleCase: true
+
+  # Jackson JSON
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+  # MVC
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+    # Allow static resources to be served
+    static-path-pattern: /static/**
+
+  # Web resources
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+  # Disable JPA auto-config (using MyBatis only)
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+# MyBatis
+mybatis:
+  # Type handler package for custom type handlers
+  type-handlers-package: com.ogagila.typehandler
+  # XML mapper location
+  mapper-locations: classpath:mybatis-mapper/**/*.xml
+  # Entity package for type aliases
+  type-aliases-package: com.ogagila.entity
+  configuration:
+    # mapUnderscoreToCamelCase: true for snake_case -> camelCase
+    map-underscore-to-camel-case: true
+    # Log SQL for debugging
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # Lazy loading
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+# Logging
+logging:
+  level:
+    com.ogagila: DEBUG
+    com.ogagila.mapper: DEBUG
+    org.mybatis: DEBUG

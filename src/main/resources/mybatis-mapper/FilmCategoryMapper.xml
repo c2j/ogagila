@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.FilmCategoryMapper">
+
+    <resultMap id="filmCategoryResultMap" type="FilmCategory">
+        <id property="filmId" column="film_id"/>
+        <id property="categoryId" column="category_id"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="selectByFilm" resultMap="filmCategoryResultMap">
+        SELECT film_id, category_id, last_update
+        FROM film_category
+        WHERE film_id = #{filmId}
+    </select>
+
+    <select id="selectByCategory" resultMap="filmCategoryResultMap">
+        SELECT film_id, category_id, last_update
+        FROM film_category
+        WHERE category_id = #{categoryId}
+    </select>
+
+    <!-- GaussDB MERGE INTO for upsert behavior on composite key -->
+    <insert id="insert" parameterType="FilmCategory">
+        MERGE INTO film_category t
+        USING (SELECT #{filmId} AS film_id, #{categoryId} AS category_id) s
+        ON (t.film_id = s.film_id AND t.category_id = s.category_id)
+        WHEN NOT MATCHED THEN
+            INSERT (film_id, category_id, last_update)
+            VALUES (s.film_id, s.category_id, COALESCE(#{lastUpdate}, now()))
+    </insert>
+
+    <delete id="delete" parameterType="FilmCategoryId">
+        DELETE FROM film_category
+        WHERE film_id = #{filmId} AND category_id = #{categoryId}
+    </delete>
+
+</mapper>

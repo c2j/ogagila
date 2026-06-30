@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.InventoryMapper">
+
+    <resultMap id="inventoryResultMap" type="Inventory">
+        <id property="inventoryId" column="inventory_id"/>
+        <result property="filmId" column="film_id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="inventoryResultMap">
+        SELECT inventory_id, film_id, store_id, last_update
+        FROM inventory
+        ORDER BY inventory_id
+    </select>
+
+    <select id="selectByStore" resultMap="inventoryResultMap">
+        SELECT inventory_id, film_id, store_id, last_update
+        FROM inventory
+        WHERE store_id = #{storeId}
+        ORDER BY film_id
+    </select>
+
+    <select id="selectByFilm" resultMap="inventoryResultMap">
+        SELECT inventory_id, film_id, store_id, last_update
+        FROM inventory
+        WHERE film_id = #{filmId}
+        ORDER BY store_id
+    </select>
+
+    <!-- GaussDB stored function call: inventory_in_stock(film_id, store_id) returns boolean -->
+    <select id="checkInStock" resultType="java.lang.Boolean">
+        SELECT inventory_in_stock(#{filmId}, #{storeId})
+    </select>
+
+    <insert id="insert" parameterType="Inventory" useGeneratedKeys="true" keyProperty="inventoryId" keyColumn="inventory_id">
+        INSERT INTO inventory (film_id, store_id, last_update)
+        VALUES (#{filmId}, #{storeId}, COALESCE(#{lastUpdate}, now()))
+        RETURNING inventory_id
+    </insert>
+
+    <update id="update" parameterType="Inventory">
+        UPDATE inventory
+        SET film_id = #{filmId},
+            store_id = #{storeId},
+            last_update = now()
+        WHERE inventory_id = #{inventoryId}
+    </update>
+
+</mapper>

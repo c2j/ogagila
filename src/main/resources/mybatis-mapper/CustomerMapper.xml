@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.CustomerMapper">
+
+    <resultMap id="customerResultMap" type="Customer">
+        <id property="customerId" column="customer_id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="email" column="email"/>
+        <result property="addressId" column="address_id"/>
+        <result property="activebool" column="activebool"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdate" column="last_update"/>
+        <result property="active" column="active"/>
+    </resultMap>
+
+    <!-- Customer with nested address association -->
+    <resultMap id="customerWithAddressResultMap" type="Customer" extends="customerResultMap">
+        <association property="addressId" column="address_id"
+                     select="com.ogagila.mapper.AddressMapper.selectById"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM customer
+    </select>
+
+    <select id="selectAll" resultMap="customerResultMap">
+        SELECT customer_id, store_id, first_name, last_name, email,
+               address_id, activebool, create_date, last_update, active
+        FROM customer
+        ORDER BY last_name, first_name
+    </select>
+
+    <select id="selectById" resultMap="customerResultMap">
+        SELECT customer_id, store_id, first_name, last_name, email,
+               address_id, activebool, create_date, last_update, active
+        FROM customer
+        WHERE customer_id = #{customerId}
+    </select>
+
+    <select id="selectWithAddress" resultMap="customerWithAddressResultMap">
+        SELECT c.customer_id, c.store_id, c.first_name, c.last_name, c.email,
+               c.address_id, c.activebool, c.create_date, c.last_update, c.active,
+               a.address, a.address2, a.district, a.phone, a.postal_code
+        FROM customer c
+        LEFT JOIN address a ON c.address_id = a.address_id
+        WHERE c.customer_id = #{customerId}
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="Customer" useGeneratedKeys="true" keyProperty="customerId" keyColumn="customer_id">
+        INSERT INTO customer (store_id, first_name, last_name, email, address_id,
+                              activebool, create_date, last_update, active)
+        VALUES (#{storeId}, #{firstName}, #{lastName}, #{email}, #{addressId},
+                #{activebool}, #{createDate}, COALESCE(#{lastUpdate}, now()), #{active})
+        RETURNING customer_id
+    </insert>
+
+    <update id="update" parameterType="Customer">
+        UPDATE customer
+        SET store_id = #{storeId},
+            first_name = #{firstName},
+            last_name = #{lastName},
+            email = #{email},
+            address_id = #{addressId},
+            activebool = #{activebool},
+            active = #{active},
+            last_update = now()
+        WHERE customer_id = #{customerId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM customer
+        WHERE customer_id = #{customerId}
+    </delete>
+
+    <!-- GaussDB: High-value customers with aggregate functions and window ranking -->
+    <select id="selectHighValueCustomers" resultType="java.util.Map">
+        SELECT
+            c.customer_id,
+            c.first_name || ' ' || c.last_name AS full_name,
+            c.email,
+            COUNT(p.payment_id) AS total_transactions,
+            SUM(p.amount) AS total_spent,
+            ROUND(AVG(p.amount), 2) AS avg_transaction,
+            MAX(p.amount) AS max_transaction,
+            MIN(p.amount) AS min_transaction,
+            DENSE_RANK() OVER (ORDER BY SUM(p.amount) DESC) AS rank
+        FROM customer c
+        JOIN payment p ON c.customer_id = p.customer_id
+        GROUP BY c.customer_id, c.first_name, c.last_name, c.email
+        HAVING SUM(p.amount) >= #{minAmount}
+        ORDER BY total_spent DESC
+    </select>
+
+    <!-- GaussDB Oracle-compatible CONNECT BY for store hierarchy traversal -->
+    <select id="selectByStoreHierarchical" resultMap="customerResultMap">
+        SELECT c.customer_id, c.store_id, c.first_name, c.last_name, c.email,
+               c.address_id, c.activebool, c.create_date, c.last_update, c.active
+        FROM customer c
+        WHERE c.store_id IN (
+            SELECT s.store_id
+            FROM store s
+            START WITH s.store_id = #{storeId}
+            CONNECT BY PRIOR s.store_id = s.manager_staff_id
+        )
+        ORDER BY c.last_name, c.first_name
+    </select>
+
+</mapper>

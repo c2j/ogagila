@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.FilmMapper">
+
+    <resultMap id="filmResultMap" type="Film">
+        <id property="filmId" column="film_id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="releaseYear" column="release_year"/>
+        <result property="languageId" column="language_id"/>
+        <result property="originalLanguageId" column="original_language_id"/>
+        <result property="rentalDuration" column="rental_duration"/>
+        <result property="rentalRate" column="rental_rate"/>
+        <result property="length" column="length"/>
+        <result property="replacementCost" column="replacement_cost"/>
+        <result property="rating" column="rating"
+                typeHandler="com.ogagila.typehandler.MpaaRatingTypeHandler"/>
+        <result property="lastUpdate" column="last_update"/>
+        <result property="specialFeatures" column="special_features"
+                typeHandler="com.ogagila.typehandler.StringArrayTypeHandler"/>
+        <result property="fulltext" column="fulltext"/>
+    </resultMap>
+
+    <!-- Film with actors - uses nested collection -->
+    <resultMap id="filmWithActorsResultMap" type="Film" extends="filmResultMap">
+        <collection property="actorId" ofType="java.lang.Integer"
+                    select="com.ogagila.mapper.FilmActorMapper.selectByFilm"
+                    column="film_id"/>
+    </resultMap>
+
+    <!-- Film with categories - uses nested collection -->
+    <resultMap id="filmWithCategoriesResultMap" type="Film" extends="filmResultMap">
+        <collection property="categoryId" ofType="java.lang.Integer"
+                    select="com.ogagila.mapper.FilmCategoryMapper.selectByFilm"
+                    column="film_id"/>
+    </resultMap>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM film
+    </select>
+
+    <select id="selectAll" resultMap="filmResultMap">
+        SELECT film_id, title, description, release_year, language_id,
+               original_language_id, rental_duration, rental_rate, length,
+               replacement_cost, rating, last_update, special_features, fulltext
+        FROM film
+        ORDER BY title
+    </select>
+
+    <select id="selectById" resultMap="filmResultMap">
+        SELECT film_id, title, description, release_year, language_id,
+               original_language_id, rental_duration, rental_rate, length,
+               replacement_cost, rating, last_update, special_features, fulltext
+        FROM film
+        WHERE film_id = #{filmId}
+    </select>
+
+    <!-- GaussDB fulltext search using @@ tsquery operator with GIN index.
+         to_tsquery supports & (AND), | (OR), ! (NOT) operators for advanced queries -->
+    <select id="selectByTitle" resultMap="filmResultMap">
+        SELECT film_id, title, description, release_year, language_id,
+               original_language_id, rental_duration, rental_rate, length,
+               replacement_cost, rating, last_update, special_features, fulltext
+        FROM film
+        WHERE fulltext @@ to_tsquery('english', #{keyword})
+        ORDER BY ts_rank(fulltext, to_tsquery('english', #{keyword})) DESC
+    </select>
+
+    <!-- Film with actors via collection sub-select -->
+    <select id="selectWithActors" resultMap="filmWithActorsResultMap">
+        SELECT f.film_id, f.title, f.description, f.release_year, f.language_id,
+               f.original_language_id, f.rental_duration, f.rental_rate, f.length,
+               f.replacement_cost, f.rating, f.last_update, f.special_features, f.fulltext
+        FROM film f
+        WHERE f.film_id = #{filmId}
+    </select>
+
+    <!-- Film with categories via collection sub-select -->
+    <select id="selectWithCategories" resultMap="filmWithCategoriesResultMap">
+        SELECT f.film_id, f.title, f.description, f.release_year, f.language_id,
+               f.original_language_id, f.rental_duration, f.rental_rate, f.length,
+               f.replacement_cost, f.rating, f.last_update, f.special_features, f.fulltext
+        FROM film f
+        WHERE f.film_id = #{filmId}
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause - returns generated film_id -->
+    <insert id="insert" parameterType="Film" useGeneratedKeys="true" keyProperty="filmId" keyColumn="film_id">
+        INSERT INTO film (title, description, release_year, language_id, original_language_id,
+                          rental_duration, rental_rate, length, replacement_cost,
+                          rating, last_update, special_features, fulltext)
+        VALUES (#{title}, #{description}, #{releaseYear}, #{languageId}, #{originalLanguageId},
+                #{rentalDuration}, #{rentalRate}, #{length}, #{replacementCost},
+                #{rating, typeHandler=com.ogagila.typehandler.MpaaRatingTypeHandler},
+                COALESCE(#{lastUpdate}, now()),
+#{specialFeatures, typeHandler=com.ogagila.typehandler.StringArrayTypeHandler},
+                #{fulltext})
+        RETURNING film_id
+    </insert>
+
+    <update id="update" parameterType="Film">
+        UPDATE film
+        SET title = #{title},
+            description = #{description},
+            release_year = #{releaseYear},
+            language_id = #{languageId},
+            original_language_id = #{originalLanguageId},
+            rental_duration = #{rentalDuration},
+            rental_rate = #{rentalRate},
+            length = #{length},
+            replacement_cost = #{replacementCost},
+            rating = #{rating, typeHandler=com.ogagila.typehandler.MpaaRatingTypeHandler},
+            last_update = now(),
+            special_features = #{specialFeatures, typeHandler=com.ogagila.typehandler.StringArrayTypeHandler},
+            fulltext = #{fulltext}
+        WHERE film_id = #{filmId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM film
+        WHERE film_id = #{filmId}
+    </delete>
+
+    <!-- GaussDB: Overdue films with array contains check (@> operator)
+         and analytic window function for ranking overdue films -->
+    <select id="selectOverdueFilms" resultType="java.util.Map">
+        WITH overdue_rentals AS (
+            SELECT
+                r.rental_id,
+                r.rental_date,
+                r.return_date,
+                r.inventory_id,
+                r.customer_id,
+                EXTRACT(DAY FROM (now() - r.rental_date)) AS days_rented
+            FROM rental r
+            WHERE r.return_date IS NULL
+        )
+        SELECT
+            f.film_id,
+            f.title,
+            f.rental_duration,
+            f.special_features,
+            COUNT(ovr.rental_id) AS overdue_count,
+            CASE
+                WHEN f.special_features IS NOT NULL
+                     AND f.special_features @> ARRAY['Trailers'] THEN 'Has Trailers'
+                ELSE 'No Trailers'
+            END AS trailer_info,
+            RANK() OVER (ORDER BY COUNT(ovr.rental_id) DESC) AS overdue_rank
+        FROM overdue_rentals ovr
+        JOIN inventory i ON ovr.inventory_id = i.inventory_id
+        JOIN film f ON i.film_id = f.film_id
+        WHERE ovr.days_rented > f.rental_duration
+        GROUP BY f.film_id, f.title, f.rental_duration, f.special_features
+        ORDER BY overdue_count DESC
+    </select>
+
+    <!-- GaussDB: Top rented films using ROW_NUMBER and RANK window functions
+         with PARTITION BY category for category-level ranking -->
+    <select id="selectTopRented" resultType="java.util.Map">
+        WITH film_rentals AS (
+            SELECT
+                f.film_id,
+                f.title,
+                fc.category_id,
+                COUNT(r.rental_id) AS rental_count
+            FROM film f
+            JOIN inventory i ON f.film_id = i.film_id
+            JOIN rental r ON i.inventory_id = r.inventory_id
+            LEFT JOIN film_category fc ON f.film_id = fc.film_id
+            GROUP BY f.film_id, f.title, fc.category_id
+        )
+        SELECT
+            film_id,
+            title,
+            rental_count,
+            RANK() OVER (ORDER BY rental_count DESC) AS rank,
+            ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY rental_count DESC) AS category_rank
+        FROM film_rentals
+        ORDER BY rank
+        LIMIT #{topN}
+    </select>
+
+</mapper>

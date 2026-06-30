@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.StoreMapper">
+
+    <resultMap id="storeResultMap" type="Store">
+        <id property="storeId" column="store_id"/>
+        <result property="managerStaffId" column="manager_staff_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM store
+    </select>
+
+    <select id="selectAll" resultMap="storeResultMap">
+        SELECT store_id, manager_staff_id, address_id, last_update
+        FROM store
+        ORDER BY store_id
+    </select>
+
+    <select id="selectById" resultMap="storeResultMap">
+        SELECT store_id, manager_staff_id, address_id, last_update
+        FROM store
+        WHERE store_id = #{storeId}
+    </select>
+
+    <!-- Store with manager details using JOIN -->
+    <resultMap id="storeWithManagerResultMap" type="Store" extends="storeResultMap">
+        <association property="managerStaffId" column="manager_staff_id"
+                     select="com.ogagila.mapper.StaffMapper.selectById"/>
+    </resultMap>
+
+    <select id="selectWithManager" resultMap="storeWithManagerResultMap">
+        SELECT s.store_id, s.manager_staff_id, s.address_id, s.last_update,
+               st.first_name AS manager_first_name,
+               st.last_name AS manager_last_name
+        FROM store s
+        LEFT JOIN staff st ON s.manager_staff_id = st.staff_id
+        WHERE s.store_id = #{storeId}
+    </select>
+
+    <!-- GaussDB window function: sales report with LAG for period-over-period comparison -->
+    <select id="selectSalesReport" resultType="java.util.Map">
+        WITH monthly_sales AS (
+            SELECT
+                DATE_TRUNC('month', p.payment_date)::date AS month,
+                s.store_id,
+                SUM(p.amount) AS total_sales,
+                COUNT(p.payment_id) AS transaction_count
+            FROM payment p
+            JOIN rental r ON p.rental_id = r.rental_id
+            JOIN inventory i ON r.inventory_id = i.inventory_id
+            JOIN store s ON i.store_id = s.store_id
+            WHERE s.store_id = #{storeId}
+              AND p.payment_date >= '2022-01-01'
+            GROUP BY DATE_TRUNC('month', p.payment_date), s.store_id
+        )
+        SELECT
+            month,
+            store_id,
+            total_sales,
+            transaction_count,
+            LAG(total_sales) OVER (ORDER BY month) AS prev_month_sales,
+            CASE
+                WHEN LAG(total_sales) OVER (ORDER BY month) IS NULL THEN NULL
+                ELSE ROUND(
+                    (total_sales - LAG(total_sales) OVER (ORDER BY month))
+                    / LAG(total_sales) OVER (ORDER BY month) * 100, 2)
+            END AS growth_pct
+        FROM monthly_sales
+        ORDER BY month DESC
+    </select>
+
+</mapper>

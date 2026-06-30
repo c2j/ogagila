@@ -1,0 +1,301 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>OGAGILA - <c:out value="${param.pageTitle != null ? param.pageTitle : 'Management Console'}"/></title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            font-size: 14px;
+        }
+        .navbar {
+            background: #2c3e50;
+            color: #fff;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: wrap;
+        }
+        .navbar-brand {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ecf0f1;
+            text-decoration: none;
+            margin-right: 25px;
+        }
+        .navbar-brand span {
+            color: #e74c3c;
+        }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .navbar-nav li { margin: 0 8px; }
+        .navbar-nav a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 5px 8px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        .navbar-nav a:hover {
+            color: #fff;
+            background: #34495e;
+        }
+        .navbar-nav a.active {
+            color: #fff;
+            background: #e74c3c;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .page-header {
+            background: #fff;
+            padding: 15px 20px;
+            border-bottom: 3px solid #e74c3c;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .page-header h2 {
+            color: #2c3e50;
+            font-size: 22px;
+        }
+        .page-header p {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 13px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-default { background: #95a5a6; color: #fff; }
+        .btn-default:hover { background: #7f8c8d; }
+        .btn-primary { background: #3498db; color: #fff; }
+        .btn-primary:hover { background: #2980b9; }
+        .btn-danger { background: #e74c3c; color: #fff; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #27ae60; color: #fff; }
+        .btn-success:hover { background: #229954; }
+        .btn-warning { background: #f39c12; color: #fff; }
+        .btn-warning:hover { background: #d68910; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        table th {
+            background: #2c3e50;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 13px;
+        }
+        table tr:hover { background: #f9f9f9; }
+        table tr.overdue { background: #fde8e8; }
+        table tr.overdue td { color: #c0392b; font-weight: bold; }
+        .card {
+            background: #fff;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .stat-box {
+            display: inline-block;
+            background: #fff;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+        .stat-box .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-box .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+        .search-form {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .search-form input[type="text"] {
+            padding: 7px 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 3px;
+            width: 300px;
+            font-size: 13px;
+        }
+        .search-form input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+        .pagination {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 5px 12px;
+            margin: 0 2px;
+            background: #fff;
+            border: 1px solid #bdc3c7;
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+        }
+        .pagination a:hover { background: #ecf0f1; }
+        .pagination a.active {
+            background: #2c3e50;
+            color: #fff;
+            border-color: #2c3e50;
+        }
+        .alert {
+            padding: 12px 15px;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .alert-danger {
+            background: #fde8e8;
+            border: 1px solid #f5c6cb;
+            color: #c0392b;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .badge-success { background: #27ae60; color: #fff; }
+        .badge-danger { background: #e74c3c; color: #fff; }
+        .badge-warning { background: #f39c12; color: #fff; }
+        .badge-info { background: #3498db; color: #fff; }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #95a5a6;
+            font-size: 12px;
+            border-top: 1px solid #ecf0f1;
+            margin-top: 30px;
+        }
+        .warning-banner {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #856404;
+            text-align: center;
+        }
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .info-row .label {
+            font-weight: bold;
+            width: 150px;
+            color: #2c3e50;
+        }
+        .info-row .value {
+            flex: 1;
+        }
+        @media (max-width: 768px) {
+            .navbar-inner { flex-direction: column; align-items: flex-start; }
+            .navbar-nav { margin-top: 10px; }
+            .navbar-nav li { margin: 3px 5px; }
+            .search-form input[type="text"] { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Legacy Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="${pageContext.request.contextPath}/legacy/dashboard" class="navbar-brand">
+            OGAGILA <span>Console</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="${pageContext.request.contextPath}/legacy/dashboard">Dashboard</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/films">Films</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/customers">Customers</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/rentals">Rentals</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/rentals/overdue">Overdue</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/reports/sales">Sales</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/reports/top-films">Top Films</a></li>
+            <li><a href="${pageContext.request.contextPath}/legacy/raw-sql/rental-stats">Raw SQL</a></li>
+            <li><a href="${pageContext.request.contextPath}/modern/film-catalog">Vue Films</a></li>
+            <li><a href="${pageContext.request.contextPath}/modern/customer-search">Vue Search</a></li>
+        </ul>
+    </div>
+</nav>

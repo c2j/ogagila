@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.ProcedureMapper">
+
+    <!-- film_in_stock procedure: returns inventory count in stock for a film at a store -->
+    <select id="filmInStock" resultType="java.util.LinkedHashMap" statementType="CALLABLE">
+        CALL film_in_stock(#{filmId, mode=IN}, #{storeId, mode=IN})
+    </select>
+
+    <!-- get_customer_balance function: returns customer balance -->
+    <select id="getCustomerBalance" resultType="java.util.LinkedHashMap" statementType="CALLABLE">
+        SELECT get_customer_balance(#{customerId}) AS balance
+    </select>
+
+    <!-- rewards_report procedure: generates rewards report -->
+    <select id="rewardsReport" resultType="java.util.LinkedHashMap" statementType="CALLABLE">
+        CALL rewards_report(#{minPurchases, mode=IN}, #{minAmount, mode=IN})
+    </select>
+
+    <!-- inventory_in_stock function: checks if inventory item is in stock -->
+    <select id="inventoryInStock" resultType="java.util.LinkedHashMap" statementType="CALLABLE">
+        SELECT inventory_in_stock(#{inventoryId}) AS in_stock
+    </select>
+
+</mapper>

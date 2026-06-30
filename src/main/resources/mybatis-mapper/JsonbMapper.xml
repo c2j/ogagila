@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.JsonbMapper">
+
+    <!-- JSONB packages table (APT packages) -->
+    <select id="selectPackagesApt" resultType="java.util.LinkedHashMap">
+        SELECT id, package_name, version, repository,
+               jsonb_pretty(package_data) AS package_data,
+               created_at
+        FROM jsonb_packages
+        WHERE package_type = 'apt'
+        ORDER BY package_name
+    </select>
+
+    <!-- JSONB packages table (YUM packages) -->
+    <select id="selectPackagesYum" resultType="java.util.LinkedHashMap">
+        SELECT id, package_name, version, repository,
+               jsonb_pretty(package_data) AS package_data,
+               created_at
+        FROM jsonb_packages
+        WHERE package_type = 'yum'
+        ORDER BY package_name
+    </select>
+
+    <!-- Full-text search on JSONB content -->
+    <select id="searchPackages" resultType="java.util.LinkedHashMap">
+        SELECT id, package_name, version, repository, package_type,
+               jsonb_pretty(package_data) AS package_data,
+               created_at
+        FROM jsonb_packages
+        WHERE package_data::text ILIKE '%' || #{keyword} || '%'
+           OR package_name ILIKE '%' || #{keyword} || '%'
+        ORDER BY package_name
+    </select>
+
+    <!-- Get package by ID -->
+    <select id="selectPackageById" resultType="java.util.LinkedHashMap">
+        SELECT id, package_name, version, repository, package_type,
+               jsonb_pretty(package_data) AS package_data,
+               created_at
+        FROM jsonb_packages
+        WHERE id = #{id}
+    </select>
+
+</mapper>

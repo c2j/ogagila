@@ -1,0 +1,18 @@
+<%
+    String pageName = request.getParameter("pageName");
+    if (pageName == null) pageName = "Unknown";
+%>
+<div class="footer">
+    <p>
+        OGAGILA Management System v1.0 |
+        openGauss + JSP + MyBatis + Vue |
+        Multi-Generation Tech Stack Demo
+    </p>
+    <p style="margin-top:5px;">
+        Page: <c:out value="<%= pageName %>"/> |
+        Generated: <%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) %> |
+        Server: <%= application.getServerInfo() %>
+    </p>
+</div>
+</body>
+</html>

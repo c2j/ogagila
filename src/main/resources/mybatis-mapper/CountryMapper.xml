@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.CountryMapper">
+
+    <resultMap id="countryResultMap" type="Country">
+        <id property="countryId" column="country_id"/>
+        <result property="country" column="country"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="countryResultMap">
+        SELECT country_id, country, last_update
+        FROM country
+        ORDER BY country
+    </select>
+
+    <select id="selectById" resultMap="countryResultMap" parameterType="int">
+        SELECT country_id, country, last_update
+        FROM country
+        WHERE country_id = #{countryId}
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="Country" useGeneratedKeys="true" keyProperty="countryId" keyColumn="country_id">
+        INSERT INTO country (country, last_update)
+        VALUES (#{country}, COALESCE(#{lastUpdate}, now()))
+        RETURNING country_id
+    </insert>
+
+    <update id="update" parameterType="Country">
+        UPDATE country
+        SET country = #{country},
+            last_update = now()
+        WHERE country_id = #{countryId}
+    </update>
+
+</mapper>

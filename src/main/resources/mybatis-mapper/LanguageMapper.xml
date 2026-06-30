@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.LanguageMapper">
+
+    <resultMap id="languageResultMap" type="Language">
+        <id property="languageId" column="language_id"/>
+        <result property="name" column="name"/>
+        <result property="lastUpdate" column="last_update"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="languageResultMap">
+        SELECT language_id, name, last_update
+        FROM language
+        ORDER BY name
+    </select>
+
+    <select id="selectById" resultMap="languageResultMap">
+        SELECT language_id, name, last_update
+        FROM language
+        WHERE language_id = #{languageId}
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="Language" useGeneratedKeys="true" keyProperty="languageId" keyColumn="language_id">
+        INSERT INTO language (name, last_update)
+        VALUES (#{name}, COALESCE(#{lastUpdate}, now()))
+        RETURNING language_id
+    </insert>
+
+    <update id="update" parameterType="Language">
+        UPDATE language
+        SET name = #{name},
+            last_update = now()
+        WHERE language_id = #{languageId}
+    </update>
+
+</mapper>

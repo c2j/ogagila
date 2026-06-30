@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ogagila.mapper.PaymentMapper">
+
+    <resultMap id="paymentResultMap" type="Payment">
+        <id property="paymentId" column="payment_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="rentalId" column="rental_id"/>
+        <result property="amount" column="amount"/>
+        <result property="paymentDate" column="payment_date"/>
+    </resultMap>
+
+    <!-- GaussDB partition pruning: payment_date range filter ensures query
+         only scans relevant monthly partitions. The payment table is partitioned
+         by payment_date into 7 monthly partitions (2022-01 through 2022-07). -->
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM payment
+    </select>
+
+    <select id="selectAll" resultMap="paymentResultMap">
+        SELECT payment_id, customer_id, staff_id, rental_id, amount, payment_date
+        FROM payment
+        WHERE payment_date >= '2022-01-01' AND payment_date <![CDATA[ < ]]> '2022-08-01'
+        ORDER BY payment_date DESC
+    </select>
+
+    <select id="selectByCustomer" resultMap="paymentResultMap">
+        SELECT payment_id, customer_id, staff_id, rental_id, amount, payment_date
+        FROM payment
+        WHERE customer_id = #{customerId}
+          AND payment_date >= '2022-01-01' AND payment_date <![CDATA[ < ]]> '2022-08-01'
+        ORDER BY payment_date DESC
+    </select>
+
+    <!-- GaussDB INSERT with RETURNING clause -->
+    <insert id="insert" parameterType="Payment" useGeneratedKeys="true" keyProperty="paymentId" keyColumn="payment_id">
+        INSERT INTO payment (customer_id, staff_id, rental_id, amount, payment_date)
+        VALUES (#{customerId}, #{staffId}, #{rentalId}, #{amount}, COALESCE(#{paymentDate}, now()))
+        RETURNING payment_id
+    </insert>
+
+    <!-- GaussDB: Monthly total with partition pruning + custom aggregate group_concat
+         group_concat is an openGauss custom aggregate that concatenates strings -->
+    <select id="selectMonthlyTotal" resultType="java.util.Map">
+        SELECT
+            DATE_TRUNC('month', payment_date)::date AS month,
+            COUNT(payment_id) AS transaction_count,
+            SUM(amount) AS total_amount,
+            ROUND(AVG(amount), 2) AS avg_amount,
+            MIN(amount) AS min_amount,
+            MAX(amount) AS max_amount,
+            group_concat(DISTINCT customer_id::text) AS customer_ids
+        FROM payment
+        WHERE payment_date >= #{startDate} AND payment_date <![CDATA[ < ]]> #{endDate}
+        GROUP BY DATE_TRUNC('month', payment_date)
+        ORDER BY month
+    </select>
+
+    <!-- GaussDB: Query partition metadata from pg_partition for the payment table -->
+    <select id="selectPartitionInfo" resultType="java.util.Map">
+        SELECT
+            p.relname AS partition_name,
+            p.partstrategy AS strategy,
+            p.interval AS range_interval,
+            p.relpages AS pages,
+            pg_get_expr(p.relcudescs, p.relcudescrelid) AS range_boundary,
+            CASE
+                WHEN p.parttype = 'p' THEN 'range'
+                WHEN p.parttype = 'i' THEN 'interval'
+                ELSE 'other'
+            END AS partition_type
+        FROM pg_class c
+        JOIN pg_partition p ON c.oid = p.parentid
+        WHERE c.relname = 'payment'
+        ORDER BY p.boundaries
+    </select>
+
+    <!-- GaussDB: LAG window function for day-over-day revenue comparison
+         with rolling 7-day average and revenue rank -->
+    <select id="selectDailyRevenue" resultType="java.util.Map">
+        WITH daily_revenue AS (
+            SELECT
+                payment_date::date AS day,
+                SUM(amount) AS revenue,
+                COUNT(payment_id) AS transactions
+            FROM payment
+            WHERE payment_date >= #{startDate} AND payment_date <![CDATA[ < ]]> #{endDate}
+            GROUP BY payment_date::date
+        )
+        SELECT
+            day,
+            revenue,
+            transactions,
+            LAG(revenue) OVER (ORDER BY day) AS prev_day_revenue,
+            ROUND(
+                (revenue - LAG(revenue) OVER (ORDER BY day))::numeric
+                / NULLIF(LAG(revenue) OVER (ORDER BY day), 0) * 100, 2
+            ) AS day_over_day_change_pct,
+            ROUND(AVG(revenue) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) AS rolling_7day_avg,
+            ROW_NUMBER() OVER (ORDER BY revenue DESC) AS revenue_rank
+        FROM daily_revenue
+        ORDER BY day
+    </select>
+
+</mapper>
