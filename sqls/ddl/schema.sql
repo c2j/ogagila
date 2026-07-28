@@ -855,6 +855,52 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
+-- Column comments
+--
+
+COMMENT ON COLUMN public.customer.customer_id IS '客户ID';
+COMMENT ON COLUMN public.customer.store_id IS '所属门店ID';
+COMMENT ON COLUMN public.customer.first_name IS '名';
+COMMENT ON COLUMN public.customer.last_name IS '姓';
+COMMENT ON COLUMN public.customer.email IS '电子邮箱';
+COMMENT ON COLUMN public.customer.address_id IS '地址ID';
+COMMENT ON COLUMN public.customer.activebool IS '是否活跃';
+COMMENT ON COLUMN public.customer.create_date IS '创建日期';
+COMMENT ON COLUMN public.customer.last_update IS '最后更新时间';
+COMMENT ON COLUMN public.customer.active IS '活跃状态';
+
+COMMENT ON COLUMN public.film.film_id IS '影片ID';
+COMMENT ON COLUMN public.film.title IS '影片标题';
+COMMENT ON COLUMN public.film.description IS '影片描述';
+COMMENT ON COLUMN public.film.release_year IS '发行年份';
+COMMENT ON COLUMN public.film.language_id IS '语言ID';
+COMMENT ON COLUMN public.film.original_language_id IS '原始语言ID';
+COMMENT ON COLUMN public.film.rental_duration IS '租期（天）';
+COMMENT ON COLUMN public.film.rental_rate IS '租金';
+COMMENT ON COLUMN public.film.length IS '片长（分钟）';
+COMMENT ON COLUMN public.film.replacement_cost IS '重置成本';
+COMMENT ON COLUMN public.film.rating IS '分级';
+COMMENT ON COLUMN public.film.last_update IS '最后更新时间';
+COMMENT ON COLUMN public.film.special_features IS '特色功能';
+COMMENT ON COLUMN public.film.fulltext IS '全文检索向量';
+
+COMMENT ON COLUMN public.rental.rental_id IS '租赁ID';
+COMMENT ON COLUMN public.rental.rental_date IS '租赁日期';
+COMMENT ON COLUMN public.rental.inventory_id IS '库存ID';
+COMMENT ON COLUMN public.rental.customer_id IS '客户ID';
+COMMENT ON COLUMN public.rental.return_date IS '归还日期';
+COMMENT ON COLUMN public.rental.staff_id IS '员工ID';
+COMMENT ON COLUMN public.rental.last_update IS '最后更新时间';
+
+COMMENT ON COLUMN public.payment.payment_id IS '支付ID';
+COMMENT ON COLUMN public.payment.customer_id IS '客户ID';
+COMMENT ON COLUMN public.payment.staff_id IS '员工ID';
+COMMENT ON COLUMN public.payment.rental_id IS '租赁ID';
+COMMENT ON COLUMN public.payment.amount IS '支付金额';
+COMMENT ON COLUMN public.payment.payment_date IS '支付日期';
+
+
+--
 -- PostgreSQL database dump complete
 --
 
