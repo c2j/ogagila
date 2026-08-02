@@ -144,6 +144,7 @@ ogagila/
 │   └── gsql-wrapper.sh              # gsql 包装脚本（自动注入用户名密码）
 ├── sqls/
 │   ├── ddl/                         # DDL：表、序列、类型、约束、索引
+│   │   ├── init-gaussdb-schema.sql  # 创建 gaussdb schema（防 JDBC 驱动报错）
 │   │   ├── schema.sql
 │   │   └── schema-jsonb.sql         # JSONB 扩展表
 │   ├── program/                     # 存储程序：函数、触发器、视图
