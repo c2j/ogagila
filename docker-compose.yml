@@ -1,6 +1,9 @@
 services:
   pagila:
-    image: opengauss/opengauss:latest
+    image: ogagila-pagila:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: pagila
     restart: unless-stopped
     environment:
