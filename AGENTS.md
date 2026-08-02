@@ -16,6 +16,7 @@ ogagila/
 │   └── gsql-wrapper.sh             # gsql 包装脚本（自动注入 gaussdb 用户名密码）
 ├── sqls/
 │   ├── ddl/                        # DDL：表、序列、类型、约束、索引
+│   │   ├── init-gaussdb-schema.sql # 创建 gaussdb schema（防 JDBC 驱动 $user search_path 报错）
 │   │   ├── schema.sql              # 主 schema：15 表 + payment 分区表（7 内联分区）
 │   │   └── schema-jsonb.sql        # JSONB 扩展：packages_apt/yum_postgresql_org
 │   ├── program/                    # 存储程序：函数、触发器、视图
@@ -58,7 +59,7 @@ ogagila/
 | 触发器 | `sqls/program/triggers.sql` | 依赖 ddl/schema.sql 的表 + functions.sql 的触发器函数 |
 | 视图 | `sqls/program/views.sql` | 含物化视图 MV 上的唯一索引 |
 | 修改 Docker | `docker-compose.yml` | `GS_DB=pagila` 自动建库，8 个 SQL 文件按序号自动加载 |
-| 初始化顺序 | `docker-compose.yml` volumes | 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum |
+| 初始化顺序 | `docker-compose.yml` volumes | 0-gaussdb-schema → 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum |
 | pgAdmin 连接 | `pgadmin/pgadmin_servers.json` | Host=pagila, User=gaussdb, DB=pagila |
 | 分区定义 | `sqls/ddl/schema.sql` payment 表 | openGauss 内联 `VALUES LESS THAN` 语法 |
 | EXPLAIN 测试 query | `benchmark/v1/queries.sql` | 97 条 query，每条用 `-- @id`/`-- @target`/`-- @severity`/`-- @scenario` 标记 |
@@ -150,6 +151,7 @@ docker-compose down -v
 - JSONB 数据文件较大（~49MB + ~54MB）— 纯 SQL 文本，无 Git LFS
 - Docker 初始化总耗时约 6 秒（不含镜像下载和 initdb）
 - `gsql-pagila` 包装脚本自动注入 gaussdb 用户名密码 — openGauss 安全插件要求非 omm 用户必须密码认证
+- `init-gaussdb-schema.sql` 创建 gaussdb schema — PostgreSQL JDBC 驱动默认 `SET search_path TO "$user", public`，无此 schema 会报 `ERROR: schema "gaussdb" does not exist`
 - **queries + benchmark 多版本机制**：`benchmark/` 整合了 SQL 查询集、EXPLAIN 物料、ground-truth case 和工具脚本。`scripts/run_explain.py` 和 `scripts/build_cases.py` 都支持 `--version <V>`，默认 v1。每个版本独立放在 `benchmark/<version>/` 子目录下，包含输入（`queries.*`）+ Stage A 产物（`explains/`）+ Stage B 产物（`cases/` + `case_index.json` + `trigger_coverage.md`）。新增版本只加一个 `benchmark/v2/` 目录，与 v1 完全隔离。
 - **queries 与 ogexplain-analyzer 的关系**：ogagila 的 benchmark 提供 ground-truth 数据集，评估 EXPLAIN 诊断工具（如 ogexplain-analyzer）的准确率。评估器（`evaluate.py`）不在本仓库 — 见 ogexplain-analyzer 项目。
 - **case JSON 的 `ogexplain_rule_id` 字段**：引用 ogexplain-analyzer 定义的 25 条诊断规则体系。该字段名是外部规则命名空间引用，不要重命名。

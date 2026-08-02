@@ -15,6 +15,7 @@ services:
       PGUSER: gaussdb
       PGHOST: /tmp
     volumes:
+      - ./sqls/ddl/init-gaussdb-schema.sql:/docker-entrypoint-initdb.d/0-init-gaussdb-schema.sql
       - ./sqls/ddl/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
       - ./sqls/ddl/schema-jsonb.sql:/docker-entrypoint-initdb.d/2-schema-jsonb.sql
       - ./sqls/program/functions.sql:/docker-entrypoint-initdb.d/3-functions.sql
