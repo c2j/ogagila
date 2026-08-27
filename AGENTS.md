@@ -69,7 +69,7 @@ ogagila/
 | 初始化顺序 | `docker-compose.yml` volumes | 0-gaussdb-schema → 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum → 9-dw-*（DDL 00~06 → program 10~18） |
 | pgAdmin 连接 | `pgadmin/pgadmin_servers.json` | Host=pagila, User=gaussdb, DB=pagila |
 | 分区定义 | `sqls/ddl/schema.sql` payment 表 | openGauss 内联 `VALUES LESS THAN` 语法 |
-| 报表分层总览 | `.sisyphus/plans/opengauss-tiered-reporting.md` | 991 行方案：24 条实测约束（G18~G41）+ 13 套 QA 记录 |
+| 报表分层总览 | `.sisyphus/plans/opengauss-tiered-reporting.md` | 1096 行方案：24 条实测约束（G18~G41）+ 13 套 QA 记录 |
 | 数仓 DDL | `sqls/dw/ddl/` | 7 文件：00-source-fixes（MAXVALUE 兜底分区+F2 索引）/ 01-infra / 02-dim / 03-dwd / 04-dws / 05-ads / 06-rpt |
 | 数仓存储程序 | `sqls/dw/program/` | 9 文件：00-pkg-etl-core（分区哨兵/水位线）/ 01-pkg-dim / 02-pkg-dwd / 03-pkg-dq / 04-pkg-orch / 05-pkg-dws / 06-ads-views / 07-pkg-ads / 08-pkg-disclose |
 | 口径基线（B1~B5 待签字） | `sqls/dw/docs/metric-definitions.md` | 门店三态/统一截止日/COUNT 口径/品类归属（B5）/YoY 规则 |
