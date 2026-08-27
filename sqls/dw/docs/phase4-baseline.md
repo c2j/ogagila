@@ -83,7 +83,7 @@
 | `dbe_sql_util` 6 个函数（create_hint/create_abort/enable/disable/drop/show） | ✅ 存在 |
 | `enable_resource_track` / `instr_unique_sql_count` | ✅ on / 100 |
 | `show_sql_patch('不存在')` 调用 | ✅ 返回预期 "No such SQL patch"（机制链路通） |
-| 端到端命中（create → 生效 → 禁用） | ⚠️ **未完成**：需 `unique_sql_id`（从 WDR/`statement_history` 取）。已尝试：`track_stmt_stat_level` 是 user 级（SET 'L0,L0' 生效）但采集仍为空；`dbe_perf.statement_history`（含 `unique_query_id` 列）0 记录。**结论：这是 openGauss 资源追踪器的采集行为（官方文档的可靠 unique_sql_id 来源是 WDR 快照，需 `enable_wdr_snapshot=on`，lite 默认关闭 G11），非功能缺失** |
+| 端到端命中（create → 生效 → 禁用） | ⚠️ **lite 上不可用（穷尽验证）**：需 `unique_sql_id`（WDR/`statement_history` 来源）。已穷尽尝试：① `track_stmt_stat_level='L0,L0'`（user 级 SET 生效）→ `statement_history` 仍 0 记录；② `gs_guc reload enable_wdr_snapshot=on`（sighup 热开启成功）→ 80s 后 `snapshot.snapshot` 仍 0 记录，**无 WDR 采集线程**。**结论：lite 版裁剪了资源追踪与 WDR 后台采集线程（G11 的深层功能阉割，非配置问题）** |
 
 **结论**：SQL PATCH **机制在 lite 完全就绪**（6 函数 + GUC + 调用链路全通，`show_sql_patch` 返回预期错误）。端到端命中需 WDR 快照环境（`enable_wdr_snapshot=on` + 定时快照）提供 unique_sql_id——属**环境配置**而非功能问题，待 WDR 可用环境补做。
 
