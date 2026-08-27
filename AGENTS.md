@@ -65,7 +65,7 @@ ogagila/
 | 函数/聚合 | `sqls/program/functions.sql` | 含 `check_function_bodies = false` 头部（允许前向引用） |
 | 触发器 | `sqls/program/triggers.sql` | 依赖 ddl/schema.sql 的表 + functions.sql 的触发器函数 |
 | 视图 | `sqls/program/views.sql` | 含物化视图 MV 上的唯一索引 |
-| 修改 Docker | `docker-compose.yml` | `GS_DB=pagila` 自动建库，24 个 SQL 文件按序号自动加载 |
+| 修改 Docker | `docker-compose.yml` | `GS_DB=pagila` 自动建库，25 个 SQL 文件按序号自动加载（9 基础 + 16 个 9-dw-*） |
 | 初始化顺序 | `docker-compose.yml` volumes | 0-gaussdb-schema → 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum → 9-dw-*（DDL 00~06 → program 10~18） |
 | pgAdmin 连接 | `pgadmin/pgadmin_servers.json` | Host=pagila, User=gaussdb, DB=pagila |
 | 分区定义 | `sqls/ddl/schema.sql` payment 表 | openGauss 内联 `VALUES LESS THAN` 语法 |
