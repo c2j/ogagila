@@ -203,5 +203,5 @@ docker-compose down -v
 - **queries 与 ogexplain-analyzer 的关系**：ogagila 的 benchmark 提供 ground-truth 数据集，评估 EXPLAIN 诊断工具（如 ogexplain-analyzer）的准确率。评估器（`evaluate.py`）不在本仓库 — 见 ogexplain-analyzer 项目。
 - **case JSON 的 `ogexplain_rule_id` 字段**：引用 ogexplain-analyzer 定义的 25 条诊断规则体系。该字段名是外部规则命名空间引用，不要重命名。
 - **不要直接 `gsql < benchmark/v1/queries.sql`** — 该文件含副作用语句（SET/DELETE STATISTICS/UPDATE），会污染后续 query 的执行环境。必须用 `scripts/run_explain.py`（每条 query 在独立 BEGIN/ROLLBACK 内）。
-- **数仓分层（DIM/DWD/DWS/ADS + 披露）设计依据**：`.sisyphus/plans/opengauss-tiered-reporting.md`。包含 19 条实测平台约束（G18~G40，如 `::date` 不做日截断、列存不支持 INTERVAL/SPLIT/UNIQUE/FILTER、KVecturbo 使企业版无法在 Apple Silicon 运行）与对官方文档的 3 处修正（向量化引擎/列存窗口函数/`FILTER`）。
+- **数仓分层（DIM/DWD/DWS/ADS + 披露）设计依据**：`.sisyphus/plans/opengauss-tiered-reporting.md`。包含 20 条实测平台约束（G18~G41，如 `::date` 不做日截断、列存不支持 INTERVAL/SPLIT/UNIQUE/FILTER、KVecturbo 使企业版无法在 Apple Silicon 运行）与对官方文档的 3 处修正（向量化引擎/列存窗口函数/`FILTER`）。
 - **企业版验证套件 `qa-enterprise.sh`**：V1（O1/O3 裁定）/V15/SMP/Codegen 验证需 x86_64 或鲲鹏（本机 7.0.1 lite 与 5.0.0 均无 SMP，G40 双路确认）。套件带三重防假阳性防线（数据下限 / MIN_BASE_MS / 统一探针 SQL）。

@@ -870,6 +870,20 @@ Q3 的 QA 因此完整演示 **"注入 → 拒绝 → 整改 → 冻结 → 重�
 是两项独立能力）。含 SMP 的企业版/极简版必须 x86_64 或鲲鹏环境 —— 此结论由三个
 版本/两次实验交叉确认，不是疏漏。
 
+**补充验证（2026-08-27，第四个版本）**：另拉取 `opengauss/opengauss-server:7.0.0-RC3.B025`
+（企业版镜像，arm64 原生，**可在 Apple Silicon 启动** —— KVecturbo CPU 检测在 RC3 不再
+崩溃，与 RC2 不同）。实测其行为与轻量版一致：
+- `dbe_scheduler`/`dbe_task` **不存在**（V15 进一步确认：企业版 Docker 镜像同样走
+  `PKG_SERVICE` 调度，与 lite 无差异）
+- `enable_smp` GUC 不存在；500 万行 dop=1 vs 4 加速比 ≈ **1.01x** → **无 SMP**
+- `enable_codegen` 可开关但无多核并行（再次印证 Codegen ≠ SMP）
+
+**结论（G41）**：`opengauss/opengauss-server` 的 Docker 镜像（RC2 与 RC3 均验证）实质为
+**轻量版内核** —— 与 `opengauss/opengauss`（lite）功能等价，仅 RC3 修复了 KVecturbo 在
+Apple Silicon 的崩溃。**"换企业版镜像 tag"无法获得 SMP**；含 SMP 的内核只能通过
+x86_64/鲲鹏上的官方企业版**源码/二进制包**部署（非 Docker Hub 镜像）获取。这排除了
+通过 Docker Hub 在企业版镜像上做 SMP 验证的最后路径。
+
 ---
 
 ### 企业版验证套件已交付（Q1 剩余项的"一条命令"化）
