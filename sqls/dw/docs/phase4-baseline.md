@@ -74,6 +74,19 @@
 
 其余 Q4.x（V1 SMP 对比 / Q4.1 亿级规模）仍需企业版环境，维持待硬件状态。
 
+## 2.6 SQL PATCH 机制验证（2026-08-27）
+
+方案 §7 采用清单第 11 项（SQL PATCH 稳定报表计划）的**端到端验证补测**：
+
+| 检查 | 结果 |
+|---|---|
+| `dbe_sql_util` 6 个函数（create_hint/create_abort/enable/disable/drop/show） | ✅ 存在 |
+| `enable_resource_track` / `instr_unique_sql_count` | ✅ on / 100 |
+| `show_sql_patch('不存在')` 调用 | ✅ 返回预期 "No such SQL patch"（机制链路通） |
+| 端到端命中（create → 生效 → 禁用） | ⚠️ **未完成**：依赖 `unique_sql_id`，需从 WDR/`statement_history` 获取；当前 `pg_catalog.statement_history` 为空（资源追踪采样需时序窗口或 monadmin 权限） |
+
+**结论**：SQL PATCH **机制在 lite 就绪可用**（函数+GUC+调用链路全通）；端到端命中验证是**数据采集时序/权限问题**，非功能缺失。待有 monadmin 权限或 WDR 快照可用环境时补做。
+
 ## 3. V 项实测结论
 
 ### 3.1 本轮解决的 V 项
