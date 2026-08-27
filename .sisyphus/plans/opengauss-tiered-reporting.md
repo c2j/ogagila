@@ -118,7 +118,7 @@
 | G8 | `LAG` 环比可用；`LAG(amt, 12)` 同比基线**全 NULL**（只有 7 个月数据） | 实测 |
 | G9 | lite schema 仅有：`dbe_perf`、`dbe_pldebugger`、`dbe_pldeveloper`、`dbe_sql_util`、`pkg_service`。**`dbe_sql_util` 存在 → SQL PATCH 在 lite 可用** | 实测 |
 | G10 | `pkg_service` 有 6 个过程：`job_submit`/`job_update`/`job_cancel`/`job_finish`/`submit_on_nodes`/`isubmit_on_nodes`。实测提交 job id=10046 成功并取消 | 实测 |
-| G11 | lite GUC 实测：`enable_vector_engine=on`、`try_vector_engine_strategy=off`、`enable_codegen=off`、`query_dop=1`、`enable_delta_store=off`、`enable_ustore=on`、`enable_default_ustore_table=off`、`job_queue_processes=10`、`enable_wdr_snapshot=off`、`enable_asp=on`、`enable_stmt_track=on`、`instr_unique_sql_count=100`、`work_mem=64MB` | 实测 |
+| G11 | lite GUC 实测：`enable_vector_engine=on`、`try_vector_engine_strategy=off`、`enable_codegen=off`、`query_dop=1`、`enable_delta_store=off`、`enable_ustore=on`、`enable_default_ustore_table=off`、`job_queue_processes=10`、`enable_wdr_snapshot=off`、`enable_asp=on`、`enable_stmt_track=on`、`instr_unique_sql_count=100`、`work_mem=64MB`。⚠️ **参数开启 ≠ 采集可用（G42）**：`enable_asp=on`/`enable_stmt_track=on` 的采集线程在 lite 被阉割，`gs_asp` 与 `statement_history` 实测均 0 记录 | 实测 |
 | G12 | 企业版镜像在本机无法启动。初判为内存不足（要求 12GB / 实有 7.7GB）；**后经 G37 实测修正：内存并非根因** | 实测 |
 | G37 | 企业版 `libkvecturbo.so` 启动期无条件加载，CPU 特性不匹配即退出（`KVecturbo: ... please check CPU architect`）。镜像入口支持 `OTHER_PG_CONF` 环境变量追加任意 GUC；`GAUSSLOG` 必须显式设置 | 实测 |
 
@@ -441,7 +441,7 @@ etl_watermark(
 | 16 | **`GROUPING SETS`/`CUBE`/`ROLLUP` + `GROUPING()`** | C2 多粒度下钻 | 三版全有 | ✅ 实测可用 |
 | 17 | **`FILTER (WHERE ...)`** 条件聚合 | 各层指标 | — | ✅ **实测可用（修正文档）** |
 | 18 | **窗口函数全集** `LAG/LEAD/RANK/DENSE_RANK/NTILE/FIRST_VALUE/LAST_VALUE/SUM OVER + ROWS/RANGE frame` | C3 环比/趋势/TOP N | 三版全有（**列存表受限见 V7**） | ✅ 实测可用 |
-| 19 | **`DBE_PERF` / `gs_asp` / `statement_history`** | 管线可观测性 | 三版全有 | ✅ `enable_asp=on`、`enable_stmt_track=on`(G11)；需授 `monadmin` |
+| 19 | **`DBE_PERF` / `gs_asp` / `statement_history`** | 管线可观测性 | 三版全有（lite 采集线程被阉割，G42） | ⚠️ **lite 实测不可用**：参数 on 但 `gs_asp`/`statement_history` 均 0 记录（G42）；企业版需授 `monadmin` |
 | 20 | **`gs_probackup`** 物理备份 | C4 披露期数据冻结留存 | 三版全有 | 需实测 V12 |
 | 21 | **`PKG_SERVICE.JOB_SUBMIT`** | 备用库内调度（主用外部触发） | 三版全有 | ✅ 实测 job 提交/取消成功(G10) |
 | 22 | *(增强，企业/极简版)* **SMP `query_dop`** | 重型聚合加速 | 企业版/极简版 | ❌ lite 不可（G13 另限过程内） |

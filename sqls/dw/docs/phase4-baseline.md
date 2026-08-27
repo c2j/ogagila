@@ -87,6 +87,21 @@
 
 **结论**：SQL PATCH **机制在 lite 完全就绪**（6 函数 + GUC + 调用链路全通，`show_sql_patch` 返回预期错误）。端到端命中需 WDR 快照环境（`enable_wdr_snapshot=on` + 定时快照）提供 unique_sql_id——属**环境配置**而非功能问题，待 WDR 可用环境补做。
 
+## 2.7 G42：lite 可观测性采集被阉割（2026-08-27 实测）
+
+方案 §7 采用清单第 19 项（`DBE_PERF`/`gs_asp`/`statement_history` 管线可观测性）原标注"✅ 可用"，
+**实测推翻**：
+
+| 观测项 | 参数 | 实测 |
+|---|---|---|
+| `gs_asp`（活动会话采样，`enable_asp=on` + `asp_sample_interval=1`） | on | **0 记录**（执行 SQL 后仍 0） |
+| `statement_history`（`enable_stmt_track=on` + `track_stmt_stat_level='L0,L0'`） | on | **0 记录** |
+| WDR 快照（`gs_guc reload enable_wdr_snapshot=on` 成功） | on | `snapshot.snapshot` **0 记录**，无采集线程 |
+
+**结论（G42）**：lite 版**参数保留但采集后台线程被裁剪**——`enable_asp`/`enable_stmt_track`/`enable_wdr_snapshot`
+全部是"参数在、采集无"。可观测性在 lite 上**不可用**（与 SQL PATCH 的 unique_sql_id 缺失同根因）。
+管线可观测性方案（§7 第 19 项）需企业版环境；lite 仅能依赖外部 `EXPLAIN`/日志。
+
 ## 3. V 项实测结论
 
 ### 3.1 本轮解决的 V 项
