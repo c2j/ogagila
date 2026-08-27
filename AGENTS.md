@@ -1,17 +1,17 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-06-20
+**Generated:** 2026-08-27
 **Branch:** main
 
 ## OVERVIEW
 
-Pagila — Sakila 示例数据库的 openGauss 移植版。从 PostgreSQL 迁移到 openGauss 7.0（Oracle 兼容模式）。Docker Compose 自动初始化 schema + 数据。核心是 schema/data/Docker 项目，附带一套 openGauss EXPLAIN 评估套件（`benchmark/`：SQL 查询集 + EXPLAIN 物料 + ground-truth case + 工具脚本）用于评估 EXPLAIN 诊断工具。
+Pagila — Sakila 示例数据库的 openGauss 移植版。从 PostgreSQL 迁移到 openGauss 7.0（Oracle 兼容模式）。Docker Compose 自动初始化 schema + 数据。核心是 schema/data/Docker 项目，附带一套 openGauss EXPLAIN 评估套件（`benchmark/`：SQL 查询集 + EXPLAIN 物料 + ground-truth case + 工具脚本）用于评估 EXPLAIN 诊断工具，以及一套**分层报表体系**（`sqls/dw/`：DIM/DWD/DWS/ADS 四层 + 披露层 + 13 套 QA 验收套件）。
 
 ## STRUCTURE
 
 ```
 ogagila/
-├── docker-compose.yml              # openGauss + pgAdmin4 编排
+├── docker-compose.yml              # openGauss + pgAdmin4 编排（含 16 个 9-dw-* 初始化文件）
 ├── docker/
 │   └── gsql-wrapper.sh             # gsql 包装脚本（自动注入 gaussdb 用户名密码）
 ├── sqls/
@@ -23,6 +23,12 @@ ogagila/
 │   │   ├── functions.sql           # 10 函数 + 1 自定义聚合 group_concat
 │   │   ├── triggers.sql            # 15 触发器（14 last_update + 1 fulltext）
 │   │   └── views.sql               # 7 视图 + 1 物化视图
+│   ├── dw/                         # 分层报表体系（数仓：DIM/DWD/DWS/ADS + 披露层）
+│   │   ├── ddl/                    # 7 个文件：源修复、基础设施、DIM、DWD、DWS、ADS、披露四件套
+│   │   ├── program/                # 9 个 PACKAGE + 视图集：ETL_CORE/DIM/DWD/DQ/ORCH/DWS/ADS/DISCLOSE
+│   │   ├── scripts/                # etl_worker.sh（K1~K10 契约）、sdv_gen.py（SDV 造数）
+│   │   ├── docs/                   # metric-definitions.md（口径基线）、phase4-baseline.md（性能基线）
+│   │   └── tests/                  # 13 套 QA：qa-phase0~3、qa-t2-sdv、qa-enterprise、fixtures(t1/t3)
 │   └── init_data/                  # 初始数据
 │       ├── data.sql                # 业务数据（COPY 格式，payment 重定向到父表）
 │       ├── data-apt-jsonb.sql      # apt 包 JSONB 数据（纯 SQL，67109 行）
@@ -45,6 +51,7 @@ ogagila/
 ├── pgadmin/                        # pgAdmin4 预配置
 │   ├── pgadmin_servers.json        # 服务器定义 → 容器 pagila，用户 gaussdb
 │   └── pgadmin_pass                # 密码文件（libpq .pgpass 格式）
+├── .sisyphus/plans/                # 实施计划（opengauss-tiered-reporting.md）
 ├── README.md
 └── LICENSE.txt
 ```
@@ -58,10 +65,18 @@ ogagila/
 | 函数/聚合 | `sqls/program/functions.sql` | 含 `check_function_bodies = false` 头部（允许前向引用） |
 | 触发器 | `sqls/program/triggers.sql` | 依赖 ddl/schema.sql 的表 + functions.sql 的触发器函数 |
 | 视图 | `sqls/program/views.sql` | 含物化视图 MV 上的唯一索引 |
-| 修改 Docker | `docker-compose.yml` | `GS_DB=pagila` 自动建库，8 个 SQL 文件按序号自动加载 |
-| 初始化顺序 | `docker-compose.yml` volumes | 0-gaussdb-schema → 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum |
+| 修改 Docker | `docker-compose.yml` | `GS_DB=pagila` 自动建库，24 个 SQL 文件按序号自动加载 |
+| 初始化顺序 | `docker-compose.yml` volumes | 0-gaussdb-schema → 1-ddl → 2-ddl-jsonb → 3-functions → 4-triggers → 5-views → 6-data → 7-apt → 8-yum → 9-dw-*（DDL 00~06 → program 10~18） |
 | pgAdmin 连接 | `pgadmin/pgadmin_servers.json` | Host=pagila, User=gaussdb, DB=pagila |
 | 分区定义 | `sqls/ddl/schema.sql` payment 表 | openGauss 内联 `VALUES LESS THAN` 语法 |
+| 报表分层总览 | `.sisyphus/plans/opengauss-tiered-reporting.md` | 991 行方案：19 条实测约束（G18~G40）+ 13 套 QA 记录 |
+| 数仓 DDL | `sqls/dw/ddl/` | 7 文件：00-source-fixes（MAXVALUE 兜底分区+F2 索引）/ 01-infra / 02-dim / 03-dwd / 04-dws / 05-ads / 06-rpt |
+| 数仓存储程序 | `sqls/dw/program/` | 9 文件：00-pkg-etl-core（分区哨兵/水位线）/ 01-pkg-dim / 02-pkg-dwd / 03-pkg-dq / 04-pkg-orch / 05-pkg-dws / 06-ads-views / 07-pkg-ads / 08-pkg-disclose |
+| 口径基线（B1~B5 待签字） | `sqls/dw/docs/metric-definitions.md` | 门店三态/统一截止日/COUNT 口径/品类归属（B5）/YoY 规则 |
+| 性能基线 | `sqls/dw/docs/phase4-baseline.md` | lite 串行基线 + V2~V13 实测结论 |
+| 造数三层 | `sqls/dw/tests/fixtures/` | T1 确定性（t1-deterministic.sql）/ T2 SDV（scripts/sdv_gen.py）/ T3 规模（t3-scale.sh） |
+| QA 套件 | `sqls/dw/tests/` | 13 套：qa-phase0~3 + qa-t2-sdv + qa-enterprise + cv-assertions |
+| ETL worker | `sqls/dw/scripts/etl_worker.sh` | 外部触发、库内编排（K1~K10 契约）；`PKG_ORCH` 双模式 DIRECT/QUEUE |
 | EXPLAIN 测试 query | `benchmark/v1/queries.sql` | 97 条 query，每条用 `-- @id`/`-- @target`/`-- @severity`/`-- @scenario` 标记 |
 | EXPLAIN 输出 | `benchmark/v1/explains/Q*.explain` | 真 EXPLAIN ANALYZE 输出 + `.meta.json`（含 warnings） |
 | query 元数据 | `benchmark/v1/queries_meta.json` | target_rule / severity / scenario / is_healthy 标签 |
@@ -82,7 +97,16 @@ ogagila/
 - **全文检索**：`film.fulltext`（tsvector 列）+ `tsvector_update_trigger` 内置触发器
 - **Docker init 排序**：文件名数字前缀（`1-`, `2-`, `3-`）控制执行顺序
 - **`ON_ERROR_STOP=1`**：Docker 初始化严格模式，任何 SQL 错误都会终止启动
-- **加载顺序**：DDL → PROGRAM（functions → triggers → views）→ init_data
+- **加载顺序**：DDL → PROGRAM（functions → triggers → views）→ init_data → 9-dw-*（DDL → program）
+- **数仓对象全限定命名**：`dw.` schema 前缀必写 —— 连接用户 `gaussdb` 的 `search_path` 为 `"$user", public`，裸名会解析到 `public` 或报错
+- **数仓对象独立 schema `dw`**：不污染 `public` 的 Pagila 源对象
+- **幂等规则**：每个 `build_*` 过程先 `DELETE 区间` 再 `INSERT`，单事务，过程内禁止 COMMIT
+- **半开区间参数**：所有日期参数 `[from, to)`，闭区间会破坏分区裁剪与边界归属
+- **日期截断用 `date_trunc('day', ...)` 而非 `::date`**：A 兼容模式下 `::date` 只做秒级四舍五入不做日截断（G24）
+- **列存条件计数用 `count(CASE WHEN ... THEN 1 END)`**：`FILTER (WHERE)` 在列存表上不可用（G30）
+- **列存表不支持**：UNIQUE 索引、FK、CHECK、INTERVAL 自动分区、`SPLIT PARTITION`（G21/G22/G34）
+- **分区表必须保留 MAXVALUE 兜底分区**：无兜底时超界查询报 `Fail to find partition from sequence.`（G23）
+- **结构性 DQ 规则全局生效**：一条结构性 CRITICAL（如 `STORE_NO_STAFF`）会阻塞所有期间冻结，直到源头修复
 
 ## ANTI-PATTERNS (THIS PROJECT)
 
@@ -95,6 +119,14 @@ ogagila/
 - **不要加载二进制 `.backup` 文件** — JSONB 数据已转为纯 SQL 文本格式
 - **不要修改加载顺序** — functions.sql 必须在 triggers.sql 和 views.sql 之前加载（依赖关系）
 - **开发凭据硬编码** — `GS_PASSWORD: Enmo@123`，pgAdmin: `admin@admin.com` / `root`。不要用于生产。
+- **不要用 `::date` 做日截断** — A 兼容模式只做秒级四舍五入，月末 23:59:59.999 会被舍入进下月（G24）
+- **不要在列存表用 `FILTER (WHERE ...)`** — 报 `variable not found in subplan target list` 或语法错误（G30）
+- **不要对源表做分区 DDL 测试** — `TRUNCATE/DROP PARTITION` 是 DDL 不受 ROLLBACK 保护（G28，曾真实删除 payment 723 行）
+- **不要用 `EXPLAIN` 作子查询/CTAS/包 CALL** — openGauss 仅支持独立语句输出文本（G38/G39）
+- **不要在 `rpt_disclosure_snapshot` 写测试数据** — 不可变触发器使其永久无法删除（G31）
+- **不要对不完整期间算环比/同比** — 必须 `is_complete_period` 且返回 NULL（实测 +228.46% 假暴增）
+- **严禁 `COALESCE(prev_year, 0)` 填同比** — 会产出 ±∞% 增长率
+- **造数/迁移后必须重置水位线** — 高位显式 id 会把 ID 轨永久抬高导致静默丢数（G29）
 
 ## COMMANDS
 
@@ -133,6 +165,21 @@ python3 benchmark/scripts/run_explain.py --host localhost --port 5432 \
 python3 benchmark/scripts/build_cases.py
 # 切换版本:--version v2（自动读写 benchmark/v2/，与 v1 完全隔离）
 
+# === 数仓 QA（需先启动容器，DW 对象在 init 时自动创建）===
+docker exec pagila gsql-pagila -f /dw-tests/qa-phase0.sql
+docker exec pagila gsql-pagila -f /dw-tests/qa-phase1.sql
+bash sqls/dw/tests/qa-phase2-worker.sh
+bash sqls/dw/tests/qa-phase3-disclose.sh      # 披露层（重载夹具+重建各层，幂等）
+bash sqls/dw/tests/qa-t2-sdv.sh --rows 20000  # SDV 造数（需 venv: python3 -m venv /tmp/sdvenv && pip install sdv）
+
+# === 数仓造数三层 ===
+docker exec pagila gsql-pagila -f /dw-tests/fixtures/t1-deterministic.sql   # T1 确定性夹具（CV1~CV14）
+bash sqls/dw/tests/fixtures/t3-scale.sh --rentals 200000 --payments 1000000 --months 12  # T3 规模
+docker exec pagila gsql-pagila -f /dw-tests/fixtures/t1-cleanup.sql         # 清理 T1
+
+# === 企业版验证套件（需 x86_64/鲲鹏，本机 Apple Silicon 无 SMP）===
+CONTAINER=<企业版容器> bash sqls/dw/tests/qa-enterprise.sh
+
 # 停止（保留数据卷）
 docker-compose down
 
@@ -156,3 +203,5 @@ docker-compose down -v
 - **queries 与 ogexplain-analyzer 的关系**：ogagila 的 benchmark 提供 ground-truth 数据集，评估 EXPLAIN 诊断工具（如 ogexplain-analyzer）的准确率。评估器（`evaluate.py`）不在本仓库 — 见 ogexplain-analyzer 项目。
 - **case JSON 的 `ogexplain_rule_id` 字段**：引用 ogexplain-analyzer 定义的 25 条诊断规则体系。该字段名是外部规则命名空间引用，不要重命名。
 - **不要直接 `gsql < benchmark/v1/queries.sql`** — 该文件含副作用语句（SET/DELETE STATISTICS/UPDATE），会污染后续 query 的执行环境。必须用 `scripts/run_explain.py`（每条 query 在独立 BEGIN/ROLLBACK 内）。
+- **数仓分层（DIM/DWD/DWS/ADS + 披露）设计依据**：`.sisyphus/plans/opengauss-tiered-reporting.md`。包含 19 条实测平台约束（G18~G40，如 `::date` 不做日截断、列存不支持 INTERVAL/SPLIT/UNIQUE/FILTER、KVecturbo 使企业版无法在 Apple Silicon 运行）与对官方文档的 3 处修正（向量化引擎/列存窗口函数/`FILTER`）。
+- **企业版验证套件 `qa-enterprise.sh`**：V1（O1/O3 裁定）/V15/SMP/Codegen 验证需 x86_64 或鲲鹏（本机 7.0.1 lite 与 5.0.0 均无 SMP，G40 双路确认）。套件带三重防假阳性防线（数据下限 / MIN_BASE_MS / 统一探针 SQL）。

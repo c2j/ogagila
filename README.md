@@ -125,6 +125,20 @@ LIMIT 5;
 
 ER 图见 `pagila-schema-diagram.png`。
 
+### 数仓分层报表体系（`sqls/dw/`）
+
+基于 Pagila 源数据构建的分层数仓，面向门店大屏 / 中层 / 高层 / 上市公司报告四类消费者：
+
+| 层 | 内容 | 载体 |
+|----|------|------|
+| **DIM** | 门店（含 ACTIVE/DORMANT/EXCLUDED/UNCLASSIFIED 四态）/ 员工 / 影片 / 地理 | 行存 + zstd 压缩表 |
+| **DWD** | 维度退化明细（payment/rental），统一分析截止日 | **列存** + RANGE 月分区 + HIGH 压缩 |
+| **DWS** | 日×店×品类 / 日×店×员工 / 日租赁 / 月门店（SSOT） | 列存分区表 + Ustore 月表 |
+| **ADS** | C1 大屏（HyperLogLog UV）/ C2 中层下钻视图 / C3 高层趋势视图 | 小表 + 视图 |
+| **披露** | 期间锁定 / 口径版本 / 输入指纹 / 不可变快照（C4 上市公司报告） | 4 张 rpt 表 + 触发器 |
+
+实现要点：9 个 `PKG_*` PACKAGE（ETL 幂等构建、分区哨兵、水位线双轨增量、16 条 DQ 规则、双模式编排）、外部 worker（K1~K10 契约）、13 套 QA 验收、三层造数（T1 确定性 / T2 SDV / T3 规模）。口径基线见 `sqls/dw/docs/metric-definitions.md`（B1~B5 待业务方签字）。
+
 ## Docker 配置
 
 | 配置项 | 值 |
@@ -151,6 +165,12 @@ ogagila/
 │   │   ├── functions.sql            # 函数 + 自定义聚合
 │   │   ├── triggers.sql             # 触发器
 │   │   └── views.sql                # 视图 + 物化视图
+│   ├── dw/                          # 数仓分层报表体系（DIM/DWD/DWS/ADS + 披露）
+│   │   ├── ddl/                     # 源修复、基础设施、各层表、披露四件套
+│   │   ├── program/                 # 9 个 PKG_* PACKAGE + ADS 视图
+│   │   ├── scripts/                 # etl_worker.sh、sdv_gen.py
+│   │   ├── docs/                    # 口径基线、性能基线
+│   │   └── tests/                   # 13 套 QA + 造数三层（t1/t3 fixtures）
 │   └── init_data/                   # 初始数据
 │       ├── data.sql                 # 业务数据（COPY 格式）
 │       ├── data-apt-jsonb.sql       # apt 包 JSONB 数据
