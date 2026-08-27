@@ -24,6 +24,23 @@ services:
       - ./sqls/init_data/data.sql:/docker-entrypoint-initdb.d/6-data.sql
       - ./sqls/init_data/data-apt-jsonb.sql:/docker-entrypoint-initdb.d/7-data-apt-jsonb.sql
       - ./sqls/init_data/data-yum-jsonb.sql:/docker-entrypoint-initdb.d/8-data-yum-jsonb.sql
+      - ./sqls/dw/ddl/00-source-fixes.sql:/docker-entrypoint-initdb.d/9-dw-00-source-fixes.sql
+      - ./sqls/dw/ddl/01-infra-tables.sql:/docker-entrypoint-initdb.d/9-dw-01-infra-tables.sql
+      - ./sqls/dw/ddl/02-dim-tables.sql:/docker-entrypoint-initdb.d/9-dw-02-dim-tables.sql
+      - ./sqls/dw/ddl/03-dwd-tables.sql:/docker-entrypoint-initdb.d/9-dw-03-dwd-tables.sql
+      - ./sqls/dw/program/00-pkg-etl-core.sql:/docker-entrypoint-initdb.d/9-dw-10-pkg-etl-core.sql
+      - ./sqls/dw/program/01-pkg-dim.sql:/docker-entrypoint-initdb.d/9-dw-11-pkg-dim.sql
+      - ./sqls/dw/program/02-pkg-dwd.sql:/docker-entrypoint-initdb.d/9-dw-12-pkg-dwd.sql
+      - ./sqls/dw/program/03-pkg-dq.sql:/docker-entrypoint-initdb.d/9-dw-13-pkg-dq.sql
+      - ./sqls/dw/ddl/04-dws-tables.sql:/docker-entrypoint-initdb.d/9-dw-04-dws-tables.sql
+      - ./sqls/dw/ddl/05-ads-tables.sql:/docker-entrypoint-initdb.d/9-dw-05-ads-tables.sql
+      - ./sqls/dw/program/04-pkg-orch.sql:/docker-entrypoint-initdb.d/9-dw-14-pkg-orch.sql
+      - ./sqls/dw/program/05-pkg-dws.sql:/docker-entrypoint-initdb.d/9-dw-15-pkg-dws.sql
+      - ./sqls/dw/program/06-ads-views.sql:/docker-entrypoint-initdb.d/9-dw-16-ads-views.sql
+      - ./sqls/dw/ddl/06-rpt-tables.sql:/docker-entrypoint-initdb.d/9-dw-06-rpt-tables.sql
+      - ./sqls/dw/program/07-pkg-ads.sql:/docker-entrypoint-initdb.d/9-dw-17-pkg-ads.sql
+      - ./sqls/dw/program/08-pkg-disclose.sql:/docker-entrypoint-initdb.d/9-dw-18-pkg-disclose.sql
+      - ./sqls/dw/tests:/dw-tests:ro
       - ./docker/gsql-wrapper.sh:/usr/local/bin/gsql-pagila:ro
       - pgdata:/var/lib/opengauss/data
     ports:
