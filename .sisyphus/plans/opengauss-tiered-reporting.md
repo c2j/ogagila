@@ -1062,6 +1062,11 @@ categorical，不可依赖自动识别。**
 | `YOY_BASE_MISSING` | WARN | YoY 基线缺失（历史不足） | G8 |
 | `GLOBAL_INDEX_INVALID` | **CRITICAL** | GLOBAL 索引失效 | G18 |
 | `FINGERPRINT_MISMATCH` | **CRITICAL** | 期间输入指纹与已冻结指纹不一致（源数据被改动） | DD8 / §Q3.4 |
+| `DWD_DUPLICATE_KEY` | **CRITICAL** | DWD 明细重复（列存不支持 UNIQUE 索引的替代检测） | G22 |
+| `FILM_MULTI_CATEGORY` | WARN | 多品类影片影响面（B5 待裁定） | §5 |
+| `RECON_DWD_VS_BASE` | **CRITICAL** | DWD 与源表逐月笔数/金额对账（实施期由 RECON_L2_VS_BASE 更名） | §6.3 |
+| `STAT_DATE_NOT_TRUNCATED` | **CRITICAL** | stat_date 非整日零点（`::date` 不做日截断的兜底检测） | G24 |
+| `STORE_UNCLASSIFIED` | WARN | 门店四态中的 UNCLASSIFIED（无库存但有客户，B4 待裁定） | §1.1 |
 
 **闸门语义（关键的不对称设计）**：
 - **C1/C2/C3**：CRITICAL 不阻塞，但 DWS 行打 `dq_flag`，ADS 视图必须透出 → "带瑕疵可用"。
