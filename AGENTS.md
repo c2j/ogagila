@@ -206,3 +206,13 @@ docker-compose down -v
 - **数仓分层（DIM/DWD/DWS/ADS + 披露）设计依据**：`.sisyphus/plans/opengauss-tiered-reporting.md`。包含 24 条实测平台约束（G18~G41，如 `::date` 不做日截断、列存不支持 INTERVAL/SPLIT/UNIQUE/FILTER、KVecturbo 使企业版无法在 Apple Silicon 运行）与对官方文档的 3 处修正（向量化引擎/列存窗口函数/`FILTER`）。
 - **企业版验证套件 `qa-enterprise.sh`**：V1（O1/O3 裁定）/V15/SMP/Codegen 验证需 x86_64 或鲲鹏（本机 7.0.1 lite 与 5.0.0 均无 SMP，G40 双路确认）。套件带三重防假阳性防线（数据下限 / MIN_BASE_MS / 统一探针 SQL）。
 - **极简版/企业版获取与部署**：操作指引见 `sqls/dw/docs/enterprise-smp-verification.md`（官网人工下载极简版二进制 + 单节点部署 + SMP 自检 + 套件运行 + 结果回写）。极简版核心包无法脚本化获取（OBS 列举被拒/JS 渲染），需人工从下载页点击。
+
+## TDD 说明（仅 benchmark 脚本适用）
+
+本仓库不是应用代码仓库——核心是 SQL schema/数据 + Docker 编排，没有单元测试框架。TDD 只适用于 `benchmark/scripts/` 下的 Python 工具脚本（`run_explain.py`、`build_cases.py` 等）。
+
+- 改 `benchmark/scripts/*.py` 前：先写能复现当前行为（输入 query → 输出 case/explain 物料）的特征测试，锁定 `benchmark/v1/` 与 `v2/` 的产物格式。
+- 新增/修改 ground-truth 生成逻辑（`build_cases.py`）或 EXPLAIN 采集逻辑（`run_explain.py`）时：先有失败的行为断言（例如「给定 query 元数据，生成的 case JSON 必须符合 `benchmark/groundtruth.schema.json`」），再改脚本。
+- 禁止：删/改已有的 97 条 ground-truth case（`OGEXP-GT-*.json`）或 `queries.sql` 的 `@id/@target/@severity/@scenario` 标记来迁就脚本；`case_index.json`、`trigger_coverage.md` 是生成产物，应重新生成而不是手改。
+- schema/数据（`sqls/`）改动不做 TDD，但必须保证 `ON_ERROR_STOP=1` 下 Docker 初始化干净启动（`docker-compose down -v && docker-compose up -d`）。
+- 汇报时说明：改了哪个脚本、加了什么特征测试、验证命令与结果。
